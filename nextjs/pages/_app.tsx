@@ -1,8 +1,20 @@
-import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+import Head from 'next/head'
+
+import '../stylesheets/application.css'
+
+function App({ Component, pageProps }: AppProps) {
+  return <>
+      <Head>
+        <title>NextNewsletter 🚀</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className="app-content">
+        <Component {...pageProps} />
+      </main>
+    </>
 }
 
-export default MyApp
+export default App
