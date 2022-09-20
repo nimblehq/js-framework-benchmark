@@ -7,9 +7,7 @@ async function signInRoute(req: NextApiRequest, res: NextApiResponse) {
   try {
     const authService = new AuthGoogleService()
     
-    authService.authenticate()(req, res, (...args) => {
-      console.log('passport authenticated', args)
-    })
+    authService.authenticate()(req, res)
   } catch (error) {
     res.status(500).json({ message: (error as Error).message })
   }

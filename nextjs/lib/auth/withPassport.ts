@@ -1,15 +1,13 @@
 import passport from 'passport'
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 
-import type { User } from '../../models/user'
+passport.serializeUser((user, callback: any) => {
+  const { photos, displayName, emails } = user
 
-passport.serializeUser((user: User, callback) => {
-  const { avatarUrl, name, email } = user
-
-  callback(null, { avatarUrl: avatarUrl, name: name, email: email });
+  callback(null, { avatarUrl: photos[0].value, name: displayName, email: emails[0].value });
 });
 
-passport.deserializeUser((user: User, callback) => {
+passport.deserializeUser((user, callback) => {
   callback(null, user);
 });
 
@@ -21,9 +19,9 @@ passport.use(
       scope: ['profile', 'email'],
       callbackURL: '/api/oauth/google', 
     },
-    async (_accessToken, _refreshToken, user, callback: any) => {
+    (_accessToken, _refreshToken, user, callback: any) => {
       try {
-        return callback(null, user);
+        callback(null, user);
       } catch (error: any) {
         throw new Error(error);
       }
@@ -33,12 +31,12 @@ passport.use(
 
 export { passport }
 
-export default fn => (req, res) => {
+export default handler => (req, res) => {
   // Nesting of middleware handlers does what app.use(passport.initialize()) does in Express
   passport.initialize()(req, res, () =>
-    passport.session()(req, res, () =>
+    passport.session()(req, res, () => {
       // Call wrapped API route as innermost handler
-      fn(req, res)
-    )
+      handler(req, res)
+    })
   )
 }

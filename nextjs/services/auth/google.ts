@@ -1,43 +1,14 @@
-import passport from 'passport'
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
+import { passport } from '../../lib/auth/withPassport'
+class AuthGoogleService {
+  provider: any
 
-import type { User } from '../../models/user'
+  constructor(provider = passport) {
+    this.provider = provider
+  }
 
-passport.serializeUser((user: User, callback) => {
-  process.nextTick(() => {
-    callback(null, { name: user.name, avatarUrl: user.avatarUrl, email: user.email });
-  });
-});
-
-passport.deserializeUser((user: User, callback) => {
-  process.nextTick(() => {
-    return callback(null, user);
-  });
-});
-
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      scope: ['profile', 'email'],
-      // Endpoint registered on Google while creating the application
-      callbackURL: '/api/oauth2/google', 
-    },
-    async (_accessToken, _refreshToken, profile, callback: any) => {
-      try {
-        return callback(null, profile);
-      } catch (error: any) {
-        throw new Error(error);
-      }
-    }
-  )
-)
-
-const AuthGoogleService = {
-  authenticate: () => {
-    passport.authenticate('google')
+  authenticate() {
+    return this.provider.authenticate('google')
   }
 }
 
-export { AuthGoogleService }
+export default AuthGoogleService
