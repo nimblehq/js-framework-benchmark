@@ -1,13 +1,18 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { AuthGoogleService } from '../../../services/auth/google'
+import withPassport from '../../../lib/auth/withPassport'
+import AuthGoogleService from '../../../services/auth/google'
 
 async function signInRoute(req: NextApiRequest, res: NextApiResponse) {
   try {
-    AuthGoogleService.authenticate()
+    const authService = new AuthGoogleService()
+    
+    authService.authenticate()(req, res, (...args) => {
+      console.log('passport authenticated', args)
+    })
   } catch (error) {
     res.status(500).json({ message: (error as Error).message })
   }
 }
 
-export default signInRoute
+export default withPassport(signInRoute)

@@ -14,7 +14,7 @@ export const defaultOptions = (): {
     },
   })
 
-const requestManager = (
+const requestManager = async (
     method: HTTPMethod,
     endpoint: string,
     requestOptions: AxiosRequestConfig = {}
