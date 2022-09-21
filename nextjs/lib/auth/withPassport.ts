@@ -14,8 +14,8 @@ passport.deserializeUser((user, callback) => {
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.NEXT_PUBLIC_OAUTH_GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.NEXT_PUBLIC_OAUTH_GOOGLE_CLIENT_SECRET as string,
+      clientID: process.env.OAUTH_GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.OAUTH_GOOGLE_CLIENT_SECRET as string,
       scope: ['profile', 'email'],
       callbackURL: '/api/oauth/google', 
     },

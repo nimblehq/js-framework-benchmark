@@ -3,7 +3,7 @@ import type { IronSessionOptions } from 'iron-session'
 import type { User } from '../../models/user'
 
 export const sessionOptions: IronSessionOptions = {
-  password: process.env.NEXT_PUBLIC_COOKIE_SECRET as string,
+  password: process.env.COOKIE_SECRET as string,
   cookieName: 'next-newsletter',
   cookieOptions: {
     secure: process.env.NODE_ENV === 'production',
