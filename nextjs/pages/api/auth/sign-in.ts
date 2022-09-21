@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import withPassport from '../../../lib/auth/withPassport'
+import { baseHandler } from '../../../lib/handler/base.handler';
 import AuthGoogleService from '../../../services/auth/google'
 
-async function signInRoute(req: NextApiRequest, res: NextApiResponse) {
+export default baseHandler().get((req: NextApiRequest, res: NextApiResponse) => {
   try {
     const authService = new AuthGoogleService()
     
@@ -11,6 +11,4 @@ async function signInRoute(req: NextApiRequest, res: NextApiResponse) {
   } catch (error) {
     res.status(500).json({ message: (error as Error).message })
   }
-}
-
-export default withPassport(signInRoute)
+})

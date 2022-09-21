@@ -1,12 +1,6 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
 
-import requestManager from '../lib/http/manager'
-
-const loginWithGoogle = async () => {
-  return await requestManager('GET', 'auth/sign-in');
-}
-
 const Home: NextPage = () => {
   return (
     <>

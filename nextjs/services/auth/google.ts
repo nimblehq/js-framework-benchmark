@@ -1,4 +1,5 @@
-import { passport } from '../../lib/auth/withPassport'
+import { passport } from '../../lib/middleware/passport.middleware'
+
 class AuthGoogleService {
   provider: any
 
