@@ -3,7 +3,8 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 
 import { SerializedUser } from '../../models/user.model'
 import * as UserRepository from '../../repositories/user.repository'
-
+import AuthGoogleService from '../../services/auth/google.service'
+import AuthError from '../../services/auth/error'
 declare global {
   namespace Express {
     interface User extends SerializedUser {}
@@ -32,19 +33,11 @@ passport.use(
     },
     async (_accessToken, _refreshToken, userProfile, callback: any) => {
       try {
-        const { photos, displayName, emails } = userProfile
-        const existingUser = await UserRepository.findUserByEmail(emails[0].value)
-        
-        if (existingUser) {
-          return callback(null, existingUser);
-        } 
+        const user = await AuthGoogleService.verifyOrCreateUser(userProfile)
 
-        const userAttributes = { avatarUrl: photos[0].value, name: displayName, email: emails[0].value }
-        const newUser = await UserRepository.createUser(userAttributes)
-
-        return callback(null, newUser);
+        return callback(null, user);
       } catch (error: any) {
-        throw new Error(error);
+        throw new AuthError(error);
       }
     }
   )
