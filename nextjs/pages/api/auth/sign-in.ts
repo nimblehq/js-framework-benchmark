@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { baseHandler } from '../../../lib/handler/base.handler';
-import AuthGoogleService from '../../../services/auth/google'
+import AuthGoogleService from '../../../services/auth/google.service'
 
 export default baseHandler().get((req: NextApiRequest, res: NextApiResponse) => {
   try {

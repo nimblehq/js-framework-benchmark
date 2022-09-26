@@ -1,18 +1,19 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { baseHandler } from '../../../lib/handler/base.handler';
-import AuthGoogleService from '../../../services/auth/google'
+import { baseHandler } from '../../../lib/handler/base.handler'
+import * as UserRepository from '../../../repositories/user.repository'
+import AuthGoogleService from '../../../services/auth/google.service'
 
 export default baseHandler().get((req: NextApiRequest, res: NextApiResponse) => {
   try {
     const authService = new AuthGoogleService()
 
     authService.authenticate()(req, res, async () => {
-      const { passport: { user: { avatarUrl, name, email }} } = req.session
+      const { passport: { user: userId} } = req.session
 
-      const userInfo = { name: name, avatarUrl: avatarUrl, email: email }
+      const userInfo = await UserRepository.findUserById(userId)
+
       req.session.user = userInfo
-
       await req.session.save()
 
       res.redirect('/')

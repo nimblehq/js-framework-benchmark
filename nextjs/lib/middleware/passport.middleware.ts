@@ -1,25 +1,26 @@
 import passport from 'passport'
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 
-import { SerializedUser as UserModel } from '../../models/user.model'
+import { SerializedUser } from '../../models/user.model'
+import * as UserRepository from '../../repositories/user.repository'
 
 declare global {
   namespace Express {
-    interface User extends UserModel {}
+    interface User extends SerializedUser {}
   }
 }
 
-passport.serializeUser<UserModel>((user, callback) => {
-  const { photos, displayName, emails } = user
+passport.serializeUser(({ id }, callback) => {
+  callback(null, id);
+})
 
-  callback(null, { avatarUrl: photos[0].value, name: displayName, email: emails[0].value });
-});
+passport.deserializeUser(
+  async (userId: string, callback) => {
+    const authenticatedUser = await UserRepository.findUserById(userId)
 
-passport.deserializeUser<UserModel>(
-  async (user, callback) => {
-    callback(null, user);
+    callback(null, authenticatedUser);
   }
-);
+)
 
 passport.use(
   new GoogleStrategy(
@@ -29,9 +30,19 @@ passport.use(
       scope: ['profile', 'email'],
       callbackURL: '/api/oauth/google', 
     },
-    (_accessToken, _refreshToken, user, callback: any) => {
+    async (_accessToken, _refreshToken, userProfile, callback: any) => {
       try {
-        callback(null, user);
+        const { photos, displayName, emails } = userProfile
+        const existingUser = await UserRepository.findUserByEmail(emails[0].value)
+        
+        if (existingUser) {
+          return callback(null, existingUser);
+        } 
+
+        const userAttributes = { avatarUrl: photos[0].value, name: displayName, email: emails[0].value }
+        const newUser = await UserRepository.createUser(userAttributes)
+
+        return callback(null, newUser);
       } catch (error: any) {
         throw new Error(error);
       }
