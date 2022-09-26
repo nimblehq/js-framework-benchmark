@@ -1,10 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import nextConnect from 'next-connect'
-import { ironSession } from 'iron-session/express'
+import { ironSession } from 'iron-session/express';
+import { NextApiRequest, NextApiResponse } from 'next';
+import nextConnect from 'next-connect';
 
-import { sessionOptions} from '../../config/session'
-import { passportMiddleware} from '../middleware/passport.middleware'
-import { sessionMiddleware } from '../middleware/session.middleware'
+import { sessionOptions } from '../../config/session';
+import { passportMiddleware } from '../middleware/passport.middleware';
+import { sessionMiddleware } from '../middleware/session.middleware';
 
 export const baseHandler = () => {
   return nextConnect<NextApiRequest, NextApiResponse>({
@@ -13,10 +13,10 @@ export const baseHandler = () => {
       response.statusCode = 500;
       // eslint-disable-next-line no-console
       console.error(error);
-      response.end("Internal Server Error");
+      response.end('Internal Server Error');
     },
   })
-  .use(ironSession(sessionOptions))
-  .use(sessionMiddleware)
-  .use(...passportMiddleware)
-}
+    .use(ironSession(sessionOptions))
+    .use(sessionMiddleware)
+    .use(...passportMiddleware);
+};

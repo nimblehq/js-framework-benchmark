@@ -1,4 +1,3 @@
 export type SerializedUser = {
-  id: string
-}
-
+  id: string;
+};

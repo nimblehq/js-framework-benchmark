@@ -1,16 +1,10 @@
-export class BaseError extends Error {
-  constructor({
-    message,
-  }: {
-    message: string
-  }) {
+export default class BaseError extends Error {
+  constructor({ message }: { message: string }) {
     // Pass remaining arguments (including vendor specific ones) to parent constructor
-    super(message)
+    super(message);
 
     if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, BaseError)
+      Error.captureStackTrace(this, BaseError);
     }
   }
 }
-
-export default BaseError
