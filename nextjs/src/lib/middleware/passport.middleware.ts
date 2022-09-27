@@ -1,9 +1,17 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
+import { SerializedUser } from '../../models/user.model';
 import * as UserRepository from '../../repositories/user.repository';
 import AuthError from '../../services/auth/error';
 import AuthGoogleService from '../../services/auth/google.service';
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface User extends SerializedUser {}
+  }
+}
 
 passport.serializeUser(({ id }, callback) => {
   callback(null, id);
