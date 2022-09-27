@@ -8,8 +8,8 @@ jest.mock('../src/config/database', () => ({
   default: mockDeep<PrismaClient>(),
 }));
 
-beforeEach(() => {
-  mockReset(dbClientMock)
-});
-
 export const dbClientMock = dbClient as unknown as DeepMockProxy<PrismaClient>;
+
+beforeEach(() => {
+  mockReset(dbClientMock);
+});

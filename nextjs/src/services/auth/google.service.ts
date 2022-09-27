@@ -25,6 +25,13 @@ class AuthGoogleService {
   ): Promise<User | AuthError> {
     try {
       const { photos, displayName, emails } = userProfile;
+
+      if (emails === undefined) {
+        return Promise.reject(
+          new AuthError({ message: 'No valid email was provided' })
+        );
+      }
+
       const existingUser = await UserRepository.findUserByEmail(
         emails[0].value
       );
@@ -34,7 +41,7 @@ class AuthGoogleService {
       }
 
       const userAttributes = {
-        avatarUrl: photos[0].value,
+        avatarUrl: photos ? photos[0].value : '',
         name: displayName,
         email: emails[0].value,
       };
