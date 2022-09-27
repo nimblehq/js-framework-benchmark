@@ -1,4 +1,4 @@
-import { dbClient } from '../config/database';
+import dbClient from '../config/database';
 import { User } from '../models/user.model';
 
 const findUserById = async (id: string) =>
