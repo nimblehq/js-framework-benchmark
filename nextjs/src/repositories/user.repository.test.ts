@@ -1,6 +1,6 @@
 import { findUserById, findUserByEmail, createUser } from './user.repository'
-import { dbClientMock } from '../tests/database'
-import { userFactory } from '../tests/factories/user.factory'
+import { dbClientMock } from '../../tests/database'
+import { userFactory } from '../../tests/factories/user.factory'
 
 describe('User Respository', () => {
   describe('findUserById', () => {
