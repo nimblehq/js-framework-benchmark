@@ -1,11 +1,11 @@
-import type { AppProps } from 'next/app'
+import type { AppProps } from 'next/app';
+import Head from 'next/head';
 
-import Head from 'next/head'
-
-import '../stylesheets/application.css'
+import '../stylesheets/application.css';
 
 function App({ Component, pageProps }: AppProps) {
-  return <>
+  return (
+    <>
       <Head>
         <title>NextNewsletter 🚀</title>
         <link rel="icon" href="/favicon.ico" />
@@ -15,6 +15,7 @@ function App({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </main>
     </>
+  );
 }
 
-export default App
+export default App;
