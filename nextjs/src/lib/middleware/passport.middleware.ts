@@ -9,7 +9,7 @@ import AuthGoogleService from '../../services/auth/google.service';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
-    interface User extends SerializedUser {}
+    type User = SerializedUser;
   }
 }
 
