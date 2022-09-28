@@ -1,8 +1,7 @@
-import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 
-const AuthSignInPage: NextPage = () => {
+const AuthSignInPage = () => {
   return (
     <>
       <Head>
@@ -15,5 +14,7 @@ const AuthSignInPage: NextPage = () => {
     </>
   );
 };
+
+AuthSignInPage.authRequired = false;
 
 export default AuthSignInPage;
