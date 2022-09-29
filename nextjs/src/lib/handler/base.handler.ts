@@ -4,7 +4,6 @@ import nextConnect from 'next-connect';
 
 import { sessionOptions } from '../../config/session';
 import { passportMiddleware } from '../middleware/passport.middleware';
-import { sessionMiddleware } from '../middleware/session.middleware';
 
 export const baseHandler = () => {
   return nextConnect<NextApiRequest, NextApiResponse>({
@@ -17,6 +16,5 @@ export const baseHandler = () => {
     },
   })
     .use(ironSession(sessionOptions))
-    .use(sessionMiddleware)
     .use(...passportMiddleware);
 };
