@@ -1,7 +1,12 @@
+import type { ReactElement } from 'react';
+
 import Head from 'next/head';
 import Link from 'next/link';
 
-const AuthSignInPage = () => {
+import AuthLayout from '../../components/AuthLayout';
+import type { AppNextPage } from '../_app';
+
+const AuthSignInPage: AppNextPage = () => {
   return (
     <>
       <Head>
@@ -16,5 +21,9 @@ const AuthSignInPage = () => {
 };
 
 AuthSignInPage.authRequired = false;
+
+AuthSignInPage.setLayout = (page: ReactElement) => {
+  return <AuthLayout>{page}</AuthLayout>;
+};
 
 export default AuthSignInPage;

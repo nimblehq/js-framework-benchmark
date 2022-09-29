@@ -1,9 +1,11 @@
+import type { ReactElement, ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
+import AppLayout from '../components/AppLayout';
 import {
   UserState,
   UserContext,
@@ -14,8 +16,9 @@ import { ApiMeResponse } from './api/v1/me';
 
 import '../stylesheets/application.css';
 
-type AppNextPage = NextPage & {
+export type AppNextPage = NextPage & {
   authRequired?: boolean;
+  setLayout?: (page: ReactElement) => ReactNode;
 };
 
 type CustomAppProps = AppProps & {
@@ -24,6 +27,10 @@ type CustomAppProps = AppProps & {
 
 const App = ({ Component, pageProps }: CustomAppProps) => {
   const [user, setUser] = useState<UserState>('loading');
+  // Use the layout defined at the page level or fallback to the default layout
+  const withLayout =
+    Component.setLayout ??
+    ((page: ReactElement) => <AppLayout>{page}</AppLayout>);
 
   const fetchCurrentUser = useCallback(async () => {
     const { user: currentUser } = await requestManager<ApiMeResponse>(
@@ -45,16 +52,14 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
     [user]
   );
 
-  return (
+  return withLayout(
     <UserContext.Provider value={userContextValue}>
       <Head>
         <title>NextNewsletter 🚀</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="app-content">
-        <Component {...pageProps} />
-      </main>
+      <Component {...pageProps} />
     </UserContext.Provider>
   );
 };
