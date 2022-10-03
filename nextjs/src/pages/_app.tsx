@@ -14,7 +14,7 @@ import {
 import requestManager from '../lib/request/manager';
 import { ApiMeResponse } from './api/v1/me';
 
-import '../stylesheets/application.css';
+import 'stylesheets/application.scss';
 
 export type AppNextPage = NextPage & {
   authRequired?: boolean;
