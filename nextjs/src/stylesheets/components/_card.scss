@@ -6,8 +6,8 @@
 
   padding: var(--size-7);
   
-  height: var(--size-fluid-8);
-  width: var(--size-fluid-9);
+  min-height: var(--size-fluid-8);
+  min-width: var(--size-fluid-9);
 
   background: var(--surface-1);
   border-radius: var(--radius-2);

@@ -1,6 +1,22 @@
 import Link from 'next/link';
 
+import { useUser } from 'context/user.context';
+
+type HeaderUserProps = {
+  name: string;
+};
+
+const HeaderUserProfile = ({ name }: HeaderUserProps) => {
+  return (
+    <div className="user-profile">
+      {name}
+    </div>
+  )
+}
+
 const Header = () => {
+  const { user } = useUser();
+
   return (
     <header className="app-header">
       <nav className="app-header__navigation">
@@ -9,6 +25,7 @@ const Header = () => {
             NextNewsletter 🚀
           </a>
         </Link>
+        {user && <HeaderUserProfile name={user.name} />}
       </nav>
     </header>
   );

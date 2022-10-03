@@ -26,12 +26,8 @@ type CustomAppProps = AppProps & {
 };
 
 const App = ({ Component, pageProps }: CustomAppProps) => {
-  const [user, setUser] = useState<UserState>('loading');
-  // Use the layout defined at the page level or fallback to the default layout
-  const withLayout =
-    Component.setLayout ??
-    ((page: ReactElement) => <AppLayout>{page}</AppLayout>);
-
+  const [user, setUser] = useState<UserState>(undefined);
+  
   const fetchCurrentUser = useCallback(async () => {
     const { user: currentUser } = await requestManager<ApiMeResponse>(
       'GET',
@@ -52,15 +48,26 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
     [user]
   );
 
+  // Use the layout defined at the page level or fallback to the default layout
+  const withLayout =
+    Component.setLayout ??
+    ((page: ReactElement) => {
+      return (
+        <UserContext.Provider value={userContextValue}>
+          <AppLayout>{page}</AppLayout>
+        </UserContext.Provider>
+      )
+    });
+
   return withLayout(
-    <UserContext.Provider value={userContextValue}>
+    <>
       <Head>
         <title>NextNewsletter 🚀</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Component {...pageProps} />
-    </UserContext.Provider>
+    </>
   );
 };
 

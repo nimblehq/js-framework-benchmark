@@ -1,3 +1,21 @@
 .app-header {
+  display: flex;
+  align-items: center;
 
+  height: var(--size-10);
+
+  background: white;
+
+  &__navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
+  &__brand {
+    font-size: var(--font-size-fluid-1);
+    font-weight: var(--font-weight-7);
+  }
 }

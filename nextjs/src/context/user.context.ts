@@ -2,7 +2,7 @@ import { createContext, Dispatch, SetStateAction, useContext } from 'react';
 
 import type { User } from '@prisma/client';
 
-export type UserState = User | 'loading' | undefined;
+export type UserState = User | undefined;
 
 export type UserContextValue = {
   user: UserState;
