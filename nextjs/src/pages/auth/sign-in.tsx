@@ -12,7 +12,7 @@ const AuthSignInPage: AppNextPage = () => {
       <Head>
         <title>Sign in | NextNewsletter 🚀</title>
       </Head>
-      <p>NextNewsletter 🚀</p>
+      <h4>NextNewsletter 🚀</h4>
       <Link href="../api/auth/sign-in">
         <button className="btn">Login with Google</button>
       </Link>

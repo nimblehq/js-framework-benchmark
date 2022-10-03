@@ -1,3 +1,8 @@
+import { useRouter } from 'next/router';
+import classNames from 'classnames'; 
+
+import { slugizePathname } from 'helpers/string.helpers';
+
 import Header from '../Header';
 
 interface AppLayoutProps {
@@ -5,8 +10,10 @@ interface AppLayoutProps {
 }
 
 const AppLayout = ({ children }: AppLayoutProps) => {
+  const router = useRouter();
+
   return (
-    <div className="layout-default">
+    <div className={classNames('layout-default', slugizePathname(router.pathname))}>
       <Header />
       <main className="app-content">
         {children}
