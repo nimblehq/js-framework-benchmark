@@ -1,5 +1,5 @@
+import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import classNames from 'classnames'; 
 
 import { slugizePathname } from 'helpers/string.helpers';
 
@@ -13,11 +13,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const router = useRouter();
 
   return (
-    <div className={classNames('layout-default', slugizePathname(router.pathname))}>
+    <div
+      className={classNames('layout-default', slugizePathname(router.pathname))}
+    >
       <Header />
-      <main className="app-content">
-        {children}
-      </main>
+      <main className="app-content">{children}</main>
     </div>
   );
 };

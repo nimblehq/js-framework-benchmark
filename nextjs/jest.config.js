@@ -13,7 +13,7 @@ const customJestConfig = {
   // if using TypeScript with a baseUrl set to the root directory then you need the below for alias' to work
   moduleDirectories: ['node_modules', '<rootDir>/'],
   testEnvironment: 'jest-environment-jsdom',
-  setupFilesAfterEnv: ['<rootDir>/test/database.ts'],
+  setupFilesAfterEnv: ['<rootDir>/test/database.ts', '<rootDir>/test/jest.ts'],
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/config/*.{js,ts}',

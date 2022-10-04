@@ -1,24 +1,13 @@
 import Link from 'next/link';
 
-import { useUser } from 'context/user.context';
+import { useUser } from '../../context/user.context';
+import HeaderUserProfile from './UserProfile';
 
-type HeaderUserProps = {
-  name: string;
-};
-
-const HeaderUserProfile = ({ name }: HeaderUserProps) => {
-  return (
-    <div className="user-profile">
-      {name}
-    </div>
-  )
-}
-
-const Header = () => {
+const Header = ({ ...rest }) => {
   const { user } = useUser();
 
   return (
-    <header className="app-header">
+    <header className="app-header" {...rest}>
       <nav className="app-header__navigation">
         <Link href="/" passHref>
           <a href="home" className="app-header__brand">

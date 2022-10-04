@@ -3,8 +3,6 @@ const slugizePathname = (pathname: string) => {
   const slug = lastUrlPart ? lastUrlPart.replace(/[_\s]/, '-') : '';
 
   return slug;
-}
+};
 
-export {
-  slugizePathname
-}
+export { slugizePathname };

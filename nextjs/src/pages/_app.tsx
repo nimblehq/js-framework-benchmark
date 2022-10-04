@@ -27,7 +27,7 @@ type CustomAppProps = AppProps & {
 
 const App = ({ Component, pageProps }: CustomAppProps) => {
   const [user, setUser] = useState<UserState>(undefined);
-  
+
   const fetchCurrentUser = useCallback(async () => {
     const { user: currentUser } = await requestManager<ApiMeResponse>(
       'GET',
@@ -56,7 +56,7 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
         <UserContext.Provider value={userContextValue}>
           <AppLayout>{page}</AppLayout>
         </UserContext.Provider>
-      )
+      );
     });
 
   return withLayout(
