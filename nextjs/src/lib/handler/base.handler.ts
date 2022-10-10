@@ -7,11 +7,12 @@ import { passportMiddleware } from '../middleware/passport.middleware';
 
 export const baseHandler = () => {
   return nextConnect<NextApiRequest, NextApiResponse>({
-    onError: async (error, _request, response) => {
+    onError: (error, _request, response) => {
       // Default next-connect behavior
       response.statusCode = 500;
       // eslint-disable-next-line no-console
       console.error(error);
+
       response.end('Internal Server Error');
     },
   })

@@ -8,9 +8,11 @@ export const authenticationGuardMiddleware: Middleware<
   const { user } = req.session;
 
   if (!user) {
-    return res
+    res
       .status(401)
       .json({ message: 'This action requires to be authenticated' });
+
+    return res.end();
   }
 
   next();

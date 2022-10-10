@@ -10,6 +10,7 @@ export default authenticatedHandler().get(
   async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const { id: userId } = req.session.user;
+
       const currentUser = await UserRepository.findUserById(userId);
 
       res.status(200).json({ user: currentUser });
