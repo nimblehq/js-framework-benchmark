@@ -13,6 +13,6 @@ export const sessionOptions: IronSessionOptions = {
 // Specify the typings of req.session.*
 declare module 'iron-session' {
   interface IronSessionData {
-    user?: SerializedUser;
+    user: SerializedUser;
   }
 }

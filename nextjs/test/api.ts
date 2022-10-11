@@ -13,6 +13,7 @@ function parseQuery(url: string): NextApiRequestQuery {
   const params = new URL(url, 'http://dummy.app').searchParams;
   const query: NextApiRequestQuery = {};
 
+  // @ts-ignore: 'URLSearchParams' can only be iterated when using the '--downlevelIteration' flag
   for (const [key, value] of params) {
     if (query[key]) {
       const previousValue = query[key];

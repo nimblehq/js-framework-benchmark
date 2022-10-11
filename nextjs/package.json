@@ -40,6 +40,7 @@
     "@types/node": "18.7.17",
     "@types/react": "18.0.19",
     "@types/react-dom": "18.0.6",
+    "@types/supertest": "2.0.12",
     "cookie": "0.5.0",
     "eslint": "8.23.1",
     "eslint-config-next": "12.3.0",
