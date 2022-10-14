@@ -1,13 +1,10 @@
 import { User } from '@prisma/client';
 import request from 'supertest';
 
-import {
-  ApiTestServer,
-  createApiServer,
-  createCookieFor,
-} from '../../../../test/api';
-import { dbClientMock } from '../../../../test/database';
-import { userFactory } from '../../../../test/factories/user.factory';
+import { ApiTestServer, createApiServer, createCookieFor } from '@test/api';
+import { dbClientMock } from '@test/database';
+import { userFactory } from '@test/factories/user.factory';
+
 import meApiHandler from './me';
 
 describe('GET /v1/me', () => {
