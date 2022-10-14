@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
-import request from 'supertest';
+import { agent } from 'supertest';
 
 import { ApiTestServer, createApiServer, createCookieFor } from '@test/api';
 import { dbClientMock } from '@test/database';
@@ -28,8 +28,7 @@ describe('GET /v1/me', () => {
 
       const cookie = await createCookieFor(userAttributes);
 
-      const response = await request
-        .agent(server)
+      const response = await agent(server)
         .set('Cookie', cookie)
         .get('/api/v1/me');
 
@@ -46,7 +45,7 @@ describe('GET /v1/me', () => {
 
   describe('given an unauthenticated user', () => {
     it('returns a user', async () => {
-      const response = await request.agent(server).get('/api/v1/me');
+      const response = await agent(server).get('/api/v1/me');
 
       expect(response.status).toBe(401);
     });
