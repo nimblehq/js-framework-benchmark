@@ -13,7 +13,7 @@ const renderHeader = (user: User | Record<string, never>) => {
 
   render(
     <UserContext.Provider value={contextValue}>
-      <Header data-testid="header" />
+      <Header />
     </UserContext.Provider>
   );
 };
@@ -28,7 +28,7 @@ describe('Header', () => {
 
       renderHeader(user);
 
-      const header = screen.getByTestId('header');
+      const header = screen.getByTestId('appHeader');
 
       expect(header).toHaveTextContent('John Doe');
     });
@@ -38,7 +38,7 @@ describe('Header', () => {
     it('does NOT renders the user name', () => {
       renderHeader({});
 
-      const header = screen.getByTestId('header');
+      const header = screen.getByTestId('appHeader');
 
       expect(header).not.toContainHTML('<div className="user-profile">');
     });

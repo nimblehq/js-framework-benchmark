@@ -7,7 +7,7 @@ const Header = ({ ...rest }) => {
   const { user } = useUser();
 
   return (
-    <header className="app-header" {...rest}>
+    <header className="app-header" data-testid="appHeader" {...rest}>
       <nav className="app-header__navigation">
         <Link href="/" passHref>
           <a href="home" className="app-header__brand">
