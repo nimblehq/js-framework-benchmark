@@ -1,5 +1,8 @@
 import passport, { Profile } from 'passport';
-import { Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
+import {
+  Strategy as GoogleStrategy,
+  VerifyCallback,
+} from 'passport-google-oauth20';
 
 import MockStrategy from '@test/mocks/passport';
 
@@ -42,7 +45,7 @@ const getStrategy = (strategyName?: string) => {
       passportStrategyCallback
     );
   }
-  
+
   return new MockStrategy({}, passportStrategyCallback);
 };
 

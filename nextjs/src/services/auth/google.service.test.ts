@@ -45,7 +45,7 @@ describe('User AuthGoogleService', () => {
           photos: undefined,
         };
         const profile = { ...passportProfileFactory, ...profileAttributes };
-        const newUser = { ...userFactory, avatarUrl: '' }
+        const newUser = { ...userFactory, avatarUrl: '' };
 
         dbClientMock.user.findUnique.mockResolvedValue(null);
         dbClientMock.user.create.mockResolvedValue(newUser);
@@ -68,8 +68,6 @@ describe('User AuthGoogleService', () => {
         ).rejects.toThrow('No valid email was provided');
       });
     });
-
-    
 
     describe('given the profile contains invalid data', () => {
       it('returns an error', async () => {

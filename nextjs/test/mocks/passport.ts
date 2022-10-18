@@ -13,6 +13,7 @@ class StrategyMock extends Strategy {
   passAuthentication: boolean;
   refreshToken: string;
   userId: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   verify: any;
 
   constructor(
@@ -22,7 +23,7 @@ class StrategyMock extends Strategy {
       refreshToken: string,
       profile: Profile,
       callback: VerifyCallback
-    ) => {}
+    ) => void
   ) {
     super();
 
@@ -47,6 +48,7 @@ class StrategyMock extends Strategy {
         this.accessToken,
         this.refreshToken,
         userProfile,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (error: any, done: any) => {
           if (error) {
             this.fail(error);

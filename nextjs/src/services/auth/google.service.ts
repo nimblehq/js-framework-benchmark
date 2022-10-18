@@ -9,7 +9,10 @@ class AuthGoogleService {
   provider: PassportStatic;
   strategy: string;
 
-  constructor(provider = passport, strategy: string = process.env.OAUTH_PASSPORT_STRATEGY || 'mock') {
+  constructor(
+    provider = passport,
+    strategy: string = process.env.OAUTH_PASSPORT_STRATEGY || 'mock'
+  ) {
     this.provider = provider;
     this.strategy = strategy;
   }
