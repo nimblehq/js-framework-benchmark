@@ -1,4 +1,5 @@
 import { Profile, Strategy } from 'passport';
+import { VerifyCallback } from 'passport-google-oauth20';
 
 type MockStrategyProps = {
   accessToken?: string;
@@ -20,7 +21,7 @@ class StrategyMock extends Strategy {
       accessToken: string,
       refreshToken: string,
       profile: Profile,
-      callback: void
+      callback: VerifyCallback
     ) => {}
   ) {
     super();

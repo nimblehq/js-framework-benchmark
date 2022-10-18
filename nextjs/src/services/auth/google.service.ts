@@ -1,10 +1,7 @@
 import { User } from '@prisma/client';
 import { Profile, PassportStatic } from 'passport';
 
-import {
-  passport,
-  strategyNameForEnvironment,
-} from '../../lib/middleware/passport.middleware';
+import { passport } from '../../lib/middleware/passport.middleware';
 import * as UserRepository from '../../repositories/user.repository';
 import AuthError from './error';
 
@@ -12,17 +9,13 @@ class AuthGoogleService {
   provider: PassportStatic;
   strategy: string;
 
-  constructor(provider = passport, environment: string = process.env.NODE_ENV) {
+  constructor(provider = passport, strategy: string = process.env.OAUTH_PASSPORT_STRATEGY || 'mock') {
     this.provider = provider;
-    this.strategy = strategyNameForEnvironment(environment);
+    this.strategy = strategy;
   }
 
   authenticate() {
-    try {
-      return this.provider.authenticate(this.strategy);
-    } catch (error) {
-      throw new AuthError(error as Error);
-    }
+    return this.provider.authenticate(this.strategy);
   }
 
   static async verifyOrCreateUser(

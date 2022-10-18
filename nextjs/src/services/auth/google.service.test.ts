@@ -1,6 +1,7 @@
-import { dbClientMock } from '../../../test/database';
-import { passportProfileFactory } from '../../../test/factories/passport/profile.factory';
-import { userFactory } from '../../../test/factories/user.factory';
+import { dbClientMock } from '@test/database';
+import { passportProfileFactory } from '@test/factories/passport/profile.factory';
+import { userFactory } from '@test/factories/user.factory';
+
 import AuthGoogleService from './google.service';
 
 describe('User AuthGoogleService', () => {
@@ -22,12 +23,29 @@ describe('User AuthGoogleService', () => {
     });
 
     describe('given there is NO existing user', () => {
-      it('created and returns a new user', async () => {
+      it('creates and returns a new user', async () => {
         const profileAttributes = {
           email: 'dev@nimblehq.co',
         };
         const profile = { ...passportProfileFactory, ...profileAttributes };
         const newUser = userFactory;
+
+        dbClientMock.user.findUnique.mockResolvedValue(null);
+        dbClientMock.user.create.mockResolvedValue(newUser);
+
+        await expect(
+          AuthGoogleService.verifyOrCreateUser(profile)
+        ).resolves.toEqual(newUser);
+      });
+    });
+
+    describe('given there is NO existing user and the profile contains NO photos', () => {
+      it('creates and returns a new user with an empty avatarUrl', async () => {
+        const profileAttributes = {
+          photos: undefined,
+        };
+        const profile = { ...passportProfileFactory, ...profileAttributes };
+        const newUser = { ...userFactory, avatarUrl: '' }
 
         dbClientMock.user.findUnique.mockResolvedValue(null);
         dbClientMock.user.create.mockResolvedValue(newUser);
@@ -50,6 +68,8 @@ describe('User AuthGoogleService', () => {
         ).rejects.toThrow('No valid email was provided');
       });
     });
+
+    
 
     describe('given the profile contains invalid data', () => {
       it('returns an error', async () => {

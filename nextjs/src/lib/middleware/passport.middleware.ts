@@ -1,5 +1,5 @@
 import passport, { Profile } from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
 
 import MockStrategy from '@test/mocks/passport';
 
@@ -19,7 +19,7 @@ const passportStrategyCallback = async (
   _accessToken: string,
   _refreshToken: string,
   userProfile: Profile,
-  callback: (error, user) => {}
+  callback: VerifyCallback
 ) => {
   try {
     const user = await AuthGoogleService.verifyOrCreateUser(userProfile);
@@ -30,26 +30,23 @@ const passportStrategyCallback = async (
   }
 };
 
-const strategyForEnvironment = (environment: string) => {
-  if (environment === 'test') {
-    return new MockStrategy({}, passportStrategyCallback);
+const getStrategy = (strategyName?: string) => {
+  if (strategyName === 'google') {
+    return new GoogleStrategy(
+      {
+        clientID: process.env.OAUTH_GOOGLE_CLIENT_ID as string,
+        clientSecret: process.env.OAUTH_GOOGLE_CLIENT_SECRET as string,
+        scope: ['profile', 'email'],
+        callbackURL: '/api/oauth/google',
+      },
+      passportStrategyCallback
+    );
   }
-
-  return new GoogleStrategy(
-    {
-      clientID: process.env.OAUTH_GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.OAUTH_GOOGLE_CLIENT_SECRET as string,
-      scope: ['profile', 'email'],
-      callbackURL: '/api/oauth/google',
-    },
-    passportStrategyCallback
-  );
+  
+  return new MockStrategy({}, passportStrategyCallback);
 };
 
-const strategyNameForEnvironment = (environment: string) =>
-  environment === 'test' ? 'mock' : 'google';
-
-passport.use(strategyForEnvironment(process.env.NODE_ENV));
+passport.use(getStrategy(process.env.OAUTH_PASSPORT_STRATEGY));
 
 passport.serializeUser(({ id }, callback) => {
   callback(null, id);
@@ -63,4 +60,4 @@ passport.deserializeUser(async (userId: string, callback) => {
 
 const passportMiddleware = [passport.initialize(), passport.session()];
 
-export { passport, passportMiddleware, strategyNameForEnvironment };
+export { passport, passportMiddleware };
