@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { baseHandler } from '../../../lib/handler/base.handler';
-import * as UserRepository from '../../../repositories/user.repository';
 import AuthGoogleService from '../../../services/auth/google.service';
 
 export default baseHandler().get(
@@ -14,9 +13,7 @@ export default baseHandler().get(
           passport: { user: userId },
         } = req.session;
 
-        const userInfo = await UserRepository.findUserById(userId);
-
-        req.session.user = userInfo;
+        req.session.user = { id: userId };
         await req.session.save();
 
         res.redirect('/');

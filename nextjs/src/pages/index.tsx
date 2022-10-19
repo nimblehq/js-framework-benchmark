@@ -1,15 +1,13 @@
-import type { NextPage } from 'next';
-import Link from 'next/link';
+import type { AppNextPage } from 'pages/_app';
 
-const Home: NextPage = () => {
+const Home: AppNextPage = () => {
   return (
     <>
       <div>JS Framework Benchmark</div>
-      <Link href="api/auth/sign-in">
-        <button className="btn">Login</button>
-      </Link>
     </>
   );
 };
+
+Home.authRequired = true;
 
 export default Home;

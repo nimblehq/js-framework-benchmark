@@ -1,0 +1,9 @@
+a {
+  &, &:visited {
+    color: var(--brand-light);
+
+    @media (prefers-color-scheme: dark) {
+      color: var(--brand-dark);
+    }
+  }
+}

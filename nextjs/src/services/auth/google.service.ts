@@ -7,17 +7,18 @@ import AuthError from './error';
 
 class AuthGoogleService {
   provider: PassportStatic;
+  strategy: string;
 
-  constructor(provider = passport) {
+  constructor(
+    provider = passport,
+    strategy: string = process.env.OAUTH_PASSPORT_STRATEGY || 'mock'
+  ) {
     this.provider = provider;
+    this.strategy = strategy;
   }
 
   authenticate() {
-    try {
-      return this.provider.authenticate('google');
-    } catch (error) {
-      throw new AuthError(error as Error);
-    }
+    return this.provider.authenticate(this.strategy);
   }
 
   static async verifyOrCreateUser(

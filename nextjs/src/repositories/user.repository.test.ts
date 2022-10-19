@@ -1,5 +1,6 @@
-import { dbClientMock } from '../../test/database';
-import { userFactory } from '../../test/factories/user.factory';
+import { dbClientMock } from '@test/database';
+import { userFactory } from '@test/factories/user.factory';
+
 import { findUserById, findUserByEmail, createUser } from './user.repository';
 
 describe('User Respository', () => {

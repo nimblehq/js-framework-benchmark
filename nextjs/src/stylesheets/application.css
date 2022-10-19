@@ -1,9 +1,0 @@
-/* Vendor */
-@import "open-props/style";
-@import "open-props/normalize";
-@import "open-props/buttons";
-
-html {
-  display: grid;
-  place-content: center;
-}

@@ -11,12 +11,17 @@ const customJestConfig = {
   // Add more setup options before each test is run
   // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   // if using TypeScript with a baseUrl set to the root directory then you need the below for alias' to work
-  moduleDirectories: ['node_modules', '<rootDir>/'],
+  moduleDirectories: ['node_modules', '<rootDir>/src'],
+  moduleNameMapper: {
+    '^@test/(.*)$': '<rootDir>/test/$1',
+  },
   testEnvironment: 'jest-environment-jsdom',
-  setupFilesAfterEnv: ['<rootDir>/test/database.ts'],
+  setupFilesAfterEnv: ['<rootDir>/test/database.ts', '<rootDir>/test/jest.ts'],
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/config/*.{js,ts}',
+    '!src/pages/_*.tsx',
+    '!src/middleware.ts',
     '!src/**/*.d.ts',
     '!src/tests/**/*'
   ]

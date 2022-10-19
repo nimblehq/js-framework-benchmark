@@ -1,6 +1,6 @@
 import type { IronSessionOptions } from 'iron-session';
 
-import type { SerializedUser as User } from '../models/user.model';
+import type { SerializedUser } from '../models/user.model';
 
 export const sessionOptions: IronSessionOptions = {
   password: process.env.COOKIE_SECRET as string,
@@ -13,6 +13,6 @@ export const sessionOptions: IronSessionOptions = {
 // Specify the typings of req.session.*
 declare module 'iron-session' {
   interface IronSessionData {
-    user?: User;
+    user: SerializedUser;
   }
 }
