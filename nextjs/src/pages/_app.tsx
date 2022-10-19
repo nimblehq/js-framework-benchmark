@@ -38,7 +38,7 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
   }, []);
 
   useEffect(() => {
-    if (Component.authRequired) {
+    if (Component.authRequired && !user) {
       void fetchCurrentUser();
     }
   }, [fetchCurrentUser, Component]);
