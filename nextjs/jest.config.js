@@ -21,6 +21,7 @@ const customJestConfig = {
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/config/*.{js,ts}',
     '!src/pages/_*.tsx',
+    '!src/middleware.ts',
     '!src/**/*.d.ts',
     '!src/tests/**/*'
   ]
