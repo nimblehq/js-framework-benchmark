@@ -15,6 +15,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <div
       className={classNames('layout-default', slugizePathname(router.pathname))}
+      data-testid="appLayout"
     >
       <Header />
       <main className="app-content">{children}</main>

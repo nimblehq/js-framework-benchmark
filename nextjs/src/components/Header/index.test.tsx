@@ -8,10 +8,11 @@ import Header from './';
 const renderHeader = (user: User | Record<string, never>) => {
   const contextValue = {
     user: user,
-    setUser: jest.fn,
+    setUser: jest.fn(),
   };
 
   render(
+    // @ts-expect-error
     <UserContext.Provider value={contextValue}>
       <Header />
     </UserContext.Provider>

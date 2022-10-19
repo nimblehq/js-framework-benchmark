@@ -1,29 +1,29 @@
 import { useRouter } from 'next/router';
 import { render, screen } from '@testing-library/react';
 
-import AppLayout from './';
+import AuthLayout from './';
 
 jest.mock('next/router', () => {
   return { useRouter: jest.fn() };
 });
 
-describe('AppLayout', () => {
-  it('renders the header component', () => {
+describe('AuthLayout', () => {
+  it('renders the component', () => {
     const mockedUseRouter = useRouter as jest.Mock;
     mockedUseRouter.mockImplementation(() => ({ pathname: '' })); 
 
-    render(<AppLayout><></></AppLayout>);
+    render(<AuthLayout><></></AuthLayout>);
 
-    expect(screen.getByTestId('appHeader')).toBeVisible();
+    expect(screen.getByTestId('authLayout')).toBeVisible();
   });
 
   it('adds a class name to the root element', () => {
     const mockedUseRouter = useRouter as jest.Mock;
     mockedUseRouter.mockImplementation(() => ({ pathname: 'path/to/action-name' })); 
 
-    render(<AppLayout><></></AppLayout>);
+    render(<AuthLayout><></></AuthLayout>);
 
-    const rootElement = screen.getByTestId('appLayout');
+    const rootElement = screen.getByTestId('authLayout');
 
     expect(rootElement).toHaveClass('action-name');
   });

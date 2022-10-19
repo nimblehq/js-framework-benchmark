@@ -14,6 +14,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
     <div
       className={classNames('layout-auth', slugizePathname(router.pathname))}
+      data-testid="authLayout"
     >
       <main className="app-content">
         <Card>{children}</Card>
