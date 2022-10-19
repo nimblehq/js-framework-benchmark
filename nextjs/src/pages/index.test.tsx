@@ -1,11 +1,11 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import IndexPage from './';
 
 describe('Index page', () => {
   it('renders the content', () => {
-    const { getByText } = render(<IndexPage />);
+    render(<IndexPage />);
 
-    expect(getByText('JS Framework Benchmark')).toBeInTheDocument();
+    expect(screen.getByText('JS Framework Benchmark')).toBeInTheDocument();
   });
 });

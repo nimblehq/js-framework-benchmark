@@ -5,8 +5,8 @@ import requestManager from './manager';
 jest.mock('axios', () => ({
   __esModule: true,
   default: {
-    request: jest.fn(() => Promise.resolve(true))
-  }
+    request: jest.fn(() => Promise.resolve(true)),
+  },
 }));
 
 describe('RequestManager', () => {
@@ -18,13 +18,13 @@ describe('RequestManager', () => {
     requestManager('GET', 'api/v1/me');
 
     expect(axios.request).toHaveBeenNthCalledWith(1, {
-      "baseURL": "/api/", 
-      "headers": {
-        "Content-Type": "application/json"
-      }, 
-      "method": "GET", 
-      "responseType": "json", 
-      "url": "api/v1/me"
+      baseURL: '/api/',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'GET',
+      responseType: 'json',
+      url: 'api/v1/me',
     });
   });
 });

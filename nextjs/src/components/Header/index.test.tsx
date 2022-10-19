@@ -12,7 +12,7 @@ const renderHeader = (user: User | Record<string, never>) => {
   };
 
   render(
-    // @ts-expect-error
+    // @ts-expect-error: contextValue does not conform to the required type for simplicity
     <UserContext.Provider value={contextValue}>
       <Header />
     </UserContext.Provider>

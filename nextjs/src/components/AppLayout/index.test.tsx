@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
 import { render, screen } from '@testing-library/react';
+import { useRouter } from 'next/router';
 
 import AppLayout from './';
 
@@ -10,18 +10,28 @@ jest.mock('next/router', () => {
 describe('AppLayout', () => {
   it('renders the header component', () => {
     const mockedUseRouter = useRouter as jest.Mock;
-    mockedUseRouter.mockImplementation(() => ({ pathname: '' })); 
+    mockedUseRouter.mockImplementation(() => ({ pathname: '' }));
 
-    render(<AppLayout><></></AppLayout>);
+    render(
+      <AppLayout>
+        <></>
+      </AppLayout>
+    );
 
     expect(screen.getByTestId('appHeader')).toBeVisible();
   });
 
   it('adds a class name to the root element', () => {
     const mockedUseRouter = useRouter as jest.Mock;
-    mockedUseRouter.mockImplementation(() => ({ pathname: 'path/to/action-name' })); 
+    mockedUseRouter.mockImplementation(() => ({
+      pathname: 'path/to/action-name',
+    }));
 
-    render(<AppLayout><></></AppLayout>);
+    render(
+      <AppLayout>
+        <></>
+      </AppLayout>
+    );
 
     const rootElement = screen.getByTestId('appLayout');
 

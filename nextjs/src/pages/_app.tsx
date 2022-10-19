@@ -41,7 +41,7 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
     if (Component.authRequired && !user) {
       void fetchCurrentUser();
     }
-  }, [fetchCurrentUser, Component]);
+  }, [Component, fetchCurrentUser, user]);
 
   const userContextValue = useMemo<UserContextValue>(
     () => ({ user, setUser }),

@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
 import { render, screen } from '@testing-library/react';
+import { useRouter } from 'next/router';
 
 import AuthLayout from './';
 
@@ -10,18 +10,28 @@ jest.mock('next/router', () => {
 describe('AuthLayout', () => {
   it('renders the component', () => {
     const mockedUseRouter = useRouter as jest.Mock;
-    mockedUseRouter.mockImplementation(() => ({ pathname: '' })); 
+    mockedUseRouter.mockImplementation(() => ({ pathname: '' }));
 
-    render(<AuthLayout><></></AuthLayout>);
+    render(
+      <AuthLayout>
+        <></>
+      </AuthLayout>
+    );
 
     expect(screen.getByTestId('authLayout')).toBeVisible();
   });
 
   it('adds a class name to the root element', () => {
     const mockedUseRouter = useRouter as jest.Mock;
-    mockedUseRouter.mockImplementation(() => ({ pathname: 'path/to/action-name' })); 
+    mockedUseRouter.mockImplementation(() => ({
+      pathname: 'path/to/action-name',
+    }));
 
-    render(<AuthLayout><></></AuthLayout>);
+    render(
+      <AuthLayout>
+        <></>
+      </AuthLayout>
+    );
 
     const rootElement = screen.getByTestId('authLayout');
 
