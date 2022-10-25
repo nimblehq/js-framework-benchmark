@@ -44,7 +44,7 @@ describe('GET /v1/me', () => {
   });
 
   describe('given an unauthenticated user', () => {
-    it('returns a user', async () => {
+    it('returns an unauthorized error', async () => {
       const response = await agent(server).get('/api/v1/me');
 
       expect(response.status).toBe(401);

@@ -52,6 +52,9 @@ export function createApiServer(handler: NextApiHandler): http.Server {
   return http.createServer(requestHandler);
 }
 
+export const COOKIE_REGEX_PATTERN =
+  /^next-newsletter=(.+); Max-Age=\d+; Path=\/; HttpOnly; SameSite=Lax$/;
+
 export async function createCookieFor(user: SerializedUser): Promise<string> {
   const cookieOptions: CookieSerializeOptions = {
     httpOnly: true,
