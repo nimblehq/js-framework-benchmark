@@ -1,26 +1,35 @@
-import { useState } from 'react';
+import { useRouter } from 'next/router';
 
+import requestManager from '../../lib/request/manager';
 import Dropdown from '../Dropdown';
 
 type HeaderUserProfileProps = {
   name: string;
 };
 
-const logoutMenuItem = () => {
+const logoutMenuItem = (logoutHandler: (event: React.SyntheticEvent) => Promise<void>) => {
   return (
-    <form action="/api/auth/sgn-out" method="delete">
+    <form action="auth/sign-out" method="delete" onSubmit={logoutHandler}>
       <button type="submit">Sign out</button>
     </form>
   );
-}
+};
 
 const HeaderUserProfile = ({ name, ...rest }: HeaderUserProfileProps) => {
-  const [showDropdown, toggleDropdown] = useState(false);
+  const router = useRouter();
+
+  const logoutHandler = async (event: React.SyntheticEvent) => {
+    event.preventDefault();
+
+    await requestManager('DELETE', 'auth/sign-out');
+
+    router.push('/');
+  };
 
   return (
     <div className="user-profile" {...rest}>
       <div className="user-profile__name">{name}</div>
-      <Dropdown items={[logoutMenuItem()]} />
+      <Dropdown items={[logoutMenuItem(logoutHandler)]} />
     </div>
   );
 };

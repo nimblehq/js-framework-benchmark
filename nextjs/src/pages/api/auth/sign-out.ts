@@ -6,6 +6,7 @@ export default baseHandler().delete(
   async (req: NextApiRequest, res: NextApiResponse) => {
     await req.session.destroy();
 
+    // Required to clear the session cookie
     res.redirect('/');
   }
 );

@@ -10,7 +10,7 @@ import { userFactory } from '@test/factories/user.factory';
 
 import signOutApiHandler from './sign-out';
 
-describe('DELETE /auth/sign-out', () => {
+describe('DELETE /api/auth/sign-out', () => {
   let server: ApiTestServer;
 
   beforeEach(async () => {
