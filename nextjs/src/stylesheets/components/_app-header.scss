@@ -23,17 +23,20 @@
   &__navigation {
     .dropdown__menu {
       width: 8rem;
+    }
 
-      button {
-        @include chromeless();
-  
-        padding: 0;
-  
-        color: var(--text1);
-  
-        font-size: var(--font-size-0);
-        white-space: pre;
-      }
+    .dropdown__menu button {
+      @include chromeless();
+
+      display: block;
+      padding: 0;
+      width: 100%;
+
+      color: var(--text1);
+      text-align: left;
+
+      font-size: var(--font-size-0);
+      white-space: pre;
     }
   }
 }
