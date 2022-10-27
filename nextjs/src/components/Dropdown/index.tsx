@@ -25,8 +25,8 @@ const Dropdown = ({ items }: DropdownProps) => {
 
   return (
     <div className="dropdown">
-      <button className="user-profile__toggle" onClick={() => toggleDropdown(!showDropdown)}>
-        open
+      <button className="dropdown__toggle" onClick={() => toggleDropdown(!showDropdown)}>
+        <img src="images/icons/three-dots-vertical.svg" alt="Open menu" />
       </button>
       {showDropdown && renderDropdownMenu(items)}
     </div>

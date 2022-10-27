@@ -1,0 +1,32 @@
+.dropdown {
+  position: relative;
+
+  &__toggle {
+    @include chromeless();
+
+    padding-right: 0;
+  }
+
+  &__menu {
+    position: absolute;
+    right: 0;
+
+    padding-top: var(--size-2);
+    padding-bottom: var(--size-2);
+
+    background-color: white;
+    border: 1px solid var(--gray-1);
+    box-shadow: var(--shadow-3);
+    border-radius: var(--radius-1);
+  }
+
+  &__menu-item {
+    padding: var(--size-1) var(--size-3);
+
+    &:hover {
+      color: white;
+
+      background-color: var(--link);
+    }
+  }
+}

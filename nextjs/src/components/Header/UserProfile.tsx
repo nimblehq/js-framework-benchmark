@@ -9,7 +9,7 @@ type HeaderUserProfileProps = {
 const logoutMenuItem = () => {
   return (
     <form action="/api/auth/sgn-out" method="delete">
-      <button type="submit">Logout</button>
+      <button type="submit">Sign out</button>
     </form>
   );
 }
