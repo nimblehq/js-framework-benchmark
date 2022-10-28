@@ -16,6 +16,7 @@
     "incremental": true,
     "baseUrl": "./src",
     "paths": {
+      "@components/*": ["./components/*"],
       "@test/*": ["../test/*"]
     },
   },
