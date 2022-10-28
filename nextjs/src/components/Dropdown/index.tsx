@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { nanoid } from 'nanoid';
-import Image from 'next/image';
+import Icon from '@components/Icon';
 
 type DropdownProps = {
   items: Array<JSX.Element>;
@@ -10,9 +9,9 @@ type DropdownProps = {
 const renderDropdownMenu = (items: Array<JSX.Element>) => {
   return (
     <div className="dropdown__menu" role="navigation">
-      {items.map((element) => {
+      {items.map((element, index) => {
         return (
-          <div className="dropdown__menu-item" key={nanoid()}>
+          <div className="dropdown__menu-item" key={`dropdown-${index}`}>
             {element}
           </div>
         );
@@ -30,11 +29,7 @@ const Dropdown = ({ items }: DropdownProps) => {
         className="dropdown__toggle"
         onClick={() => toggleDropdown(!showDropdown)}
       >
-        <Image
-          src="/images/icons/three-dots-vertical.svg"
-          alt="Open menu"
-          layout="fill"
-        />
+        <Icon name={'three-dots-vertical'} alt="Open menu" />
       </button>
       {showDropdown && renderDropdownMenu(items)}
     </div>

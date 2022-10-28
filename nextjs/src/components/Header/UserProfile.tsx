@@ -1,13 +1,15 @@
 import { useRouter } from 'next/router';
 
 import requestManager from '../../lib/request/manager';
-import Dropdown from '../Dropdown';
+import Dropdown from '@components/Dropdown';
 
 type HeaderUserProfileProps = {
   name: string;
 };
 
-const logoutMenuItem = (logoutHandler: (event: React.SyntheticEvent) => Promise<void>) => {
+const logoutMenuItem = (
+  logoutHandler: (event: React.SyntheticEvent) => Promise<void>
+) => {
   return (
     <form action="auth/sign-out" method="delete" onSubmit={logoutHandler}>
       <button type="submit">Sign out</button>
