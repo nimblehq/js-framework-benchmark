@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 
-import requestManager from '../../lib/request/manager';
 import Dropdown from '@components/Dropdown';
+
+import requestManager from '../../lib/request/manager';
 
 type HeaderUserProfileProps = {
   name: string;

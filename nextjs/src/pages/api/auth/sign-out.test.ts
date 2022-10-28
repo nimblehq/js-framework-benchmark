@@ -34,5 +34,11 @@ describe('DELETE /api/auth/sign-out', () => {
 
       expect(cookieValue).toBeNull();
     });
+
+    it('sends a redirect response', async () => {
+      const response = await agent(server).delete('/api/auth/sign-out');
+
+      expect(response.status).toBe(307);
+    });
   });
 });

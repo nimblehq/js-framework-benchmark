@@ -8,7 +8,11 @@ type DropdownProps = {
 
 const renderDropdownMenu = (items: Array<JSX.Element>) => {
   return (
-    <div className="dropdown__menu" role="navigation">
+    <div
+      className="dropdown__menu"
+      role="navigation"
+      data-testid="dropdown-menu"
+    >
       {items.map((element, index) => {
         return (
           <div className="dropdown__menu-item" key={`dropdown-${index}`}>
@@ -20,14 +24,16 @@ const renderDropdownMenu = (items: Array<JSX.Element>) => {
   );
 };
 
-const Dropdown = ({ items }: DropdownProps) => {
+const Dropdown = ({ items, ...rest }: DropdownProps) => {
   const [showDropdown, toggleDropdown] = useState(false);
 
   return (
-    <div className="dropdown">
+    <div className="dropdown" data-testid="dropdown" {...rest}>
       <button
         className="dropdown__toggle"
         onClick={() => toggleDropdown(!showDropdown)}
+        title="Open menu"
+        data-testid="dropdown-toggle"
       >
         <Icon name={'three-dots-vertical'} alt="Open menu" />
       </button>
