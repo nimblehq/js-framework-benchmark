@@ -1,4 +1,6 @@
-NextNewsletter 🚀 is bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NextNewsletter 🚀 [Next.JS 12]
+
+The application is bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
