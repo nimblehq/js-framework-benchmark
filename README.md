@@ -1,6 +1,6 @@
 # JS Framework Benchmark
 
-The pository contains POC applications to assess full-stack JS frameworks. The benchmarking process aims to make an informed decision on which framework is best suited for Nimble.
+The repository contains POC applications to assess full-stack JS frameworks. The benchmarking process aims to make an informed decision on which framework best suits Nimble.
 
 More information can be found on Notion:
 - [Engineeing Initiative](https://www.notion.so/nimblehq/Benchmark-full-stack-JS-application-frameworks-8d8a4016855d43f6b3d88cfdb1aea287)
