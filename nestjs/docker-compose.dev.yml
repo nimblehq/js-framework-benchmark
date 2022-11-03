@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: nest-newsletter_db
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB=nest-newsletter_dev
+    ports:
+      - "5432:5432"
