@@ -64,10 +64,13 @@
     "transform": {
       ".+\\.(t|j)s$": "ts-jest"
     },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
     "coverageDirectory": "../coverage",
+    "collectCoverageFrom": [
+      "**/*.(t|j)s",
+      "!app.module.ts",
+      "!database.service.ts",
+      "!main.ts"
+    ],
     "testEnvironment": "node"
   }
 }
