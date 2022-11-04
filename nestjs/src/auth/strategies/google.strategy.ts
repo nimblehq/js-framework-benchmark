@@ -17,7 +17,7 @@ export class AuthStrategyGoogle implements FastifyOAuth2Options {
   get() {
     return {
       name: 'googleOAuth2',
-      scope: ['profile'],
+      scope: ['profile', 'email'],
       credentials: {
         client: {
           id: this.configService.get('OAUTH_GOOGLE_CLIENT_ID'),
