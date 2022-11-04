@@ -1,8 +1,12 @@
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import oauthPlugin from '@fastify/oauth2';
+
+import { AuthStrategyGoogle } from './auth/strategies/google.strategy';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -10,6 +14,10 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter({ logger: true }),
   );
+  const config = app.get<ConfigService>(ConfigService);
+  const authStrategyGoogle = new AuthStrategyGoogle(config);
+
+  app.register(oauthPlugin, authStrategyGoogle.get());
 
   await app.listen(3000, '0.0.0.0');
 }

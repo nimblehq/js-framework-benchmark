@@ -21,7 +21,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@fastify/oauth2": "6.1.0",
+    "@nestjs/axios": "1.0.0",
     "@nestjs/common": "9.0.0",
+    "@nestjs/config": "2.2.0",
     "@nestjs/core": "9.0.0",
     "@nestjs/platform-fastify": "9.1.6",
     "@prisma/client": "4.5.0",
