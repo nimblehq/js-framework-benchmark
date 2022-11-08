@@ -5,18 +5,18 @@ import { DatabaseService } from '../database.service';
 
 @Injectable()
 export class UserService {
-  constructor(private dbService: DatabaseService) {}
+  constructor(private databaseService: DatabaseService) {}
 
   async find(
     whereAttribute: Prisma.UserWhereUniqueInput,
   ): Promise<UserModel | null> {
-    return this.dbService.user.findUnique({
+    return this.databaseService.user.findUnique({
       where: whereAttribute,
     });
   }
 
   async create(data: Prisma.UserCreateInput): Promise<UserModel> {
-    return this.dbService.user.create({
+    return this.databaseService.user.create({
       data,
     });
   }

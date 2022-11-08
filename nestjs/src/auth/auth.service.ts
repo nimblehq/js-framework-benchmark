@@ -1,7 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
 
 import { User as UserModel } from '@prisma/client';
+import { AuthGoogleClient as GoogleClient } from './client/google.client';
+import { AuthError } from './auth.error';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -11,31 +14,17 @@ export class AuthService {
     private readonly userService: UserService,
   ) {}
 
-  async signInWithGoogle(request) {
-    const {
-      server: { googleOAuth2 },
-    } = request;
+  async signInWithGoogle(accessToken: string) {
+    try {
+      const googleClient = new GoogleClient(accessToken, this.httpService);
+      const userProfile = await lastValueFrom(await googleClient.getUserInfo());
 
-    googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(
-      request,
-      async (error, result) => {
-        if (error) {
-          throw new UnauthorizedException();
-        }
+      const user = await this.verifyOrCreateUser(userProfile.data);
 
-        const requestOptions = {
-          headers: {
-            Authorization: 'Bearer ' + result.token.access_token,
-          },
-        };
-        const userProfile = await this.httpService
-          .get('https://www.googleapis.com/oauth2/v2/userinfo', requestOptions)
-          .toPromise();
-        const user = await this.verifyOrCreateUser(userProfile.data);
-
-        return user;
-      },
-    );
+      return user;
+    } catch (error) {
+      throw new AuthError('Authentication with Google failed');
+    }
   }
 
   private async verifyOrCreateUser(userProfile): Promise<UserModel | Error> {
