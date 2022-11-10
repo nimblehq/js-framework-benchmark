@@ -32,7 +32,7 @@ export class AuthService {
       const { picture, name, email } = userProfile;
 
       if (email === undefined) {
-        return Promise.reject(new Error('No valid email was provided'));
+        return Promise.reject(new AuthError('No valid email was provided'));
       }
 
       const existingUser = await this.userService.find({ email: email });
@@ -50,7 +50,7 @@ export class AuthService {
 
       return Promise.resolve(newUser);
     } catch (error) {
-      return Promise.reject(new Error('User could not be verified or created'));
+      return Promise.reject(new AuthError('User could not be verified or created'));
     }
   }
 }
