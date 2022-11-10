@@ -35,7 +35,10 @@ describe('AuthService', () => {
           };
           const existingUser = { ...userFactory, ...userAttributes };
           const userProfile = { ...userAttributes, name: 'Nimble', photo: '' };
-          const googleClientResponse = { ...axiosResponseFactory, data: userProfile };
+          const googleClientResponse = {
+            ...axiosResponseFactory,
+            data: userProfile,
+          };
 
           jest
             .spyOn(httpService, 'get')
@@ -50,16 +53,23 @@ describe('AuthService', () => {
 
       describe('given there is NO existing user', () => {
         it('creates and returns a new user', async () => {
-          const userProfile = { email: 'dev@nimblehq.co', name: 'Nimble', photo: '' };
-          const googleClientResponse = { ...axiosResponseFactory, data: userProfile };
-          const newUser = { ...userFactory,  email: 'dev@nimblehq.co' };
-  
+          const userProfile = {
+            email: 'dev@nimblehq.co',
+            name: 'Nimble',
+            photo: '',
+          };
+          const googleClientResponse = {
+            ...axiosResponseFactory,
+            data: userProfile,
+          };
+          const newUser = { ...userFactory, email: 'dev@nimblehq.co' };
+
           jest
             .spyOn(httpService, 'get')
             .mockImplementation(() => of(googleClientResponse));
           jest.spyOn(userService, 'find').mockResolvedValue(null);
           jest.spyOn(userService, 'create').mockResolvedValue(newUser);
-  
+
           await expect(
             service.signInWithGoogle('VALID_TOKEN'),
           ).resolves.toEqual(newUser);
@@ -69,8 +79,11 @@ describe('AuthService', () => {
       describe('given the Google profile contains NO email', () => {
         it('returns an error', async () => {
           const userProfile = { email: undefined, name: 'Nimble', photo: '' };
-          const googleClientResponse = { ...axiosResponseFactory, data: userProfile };
-  
+          const googleClientResponse = {
+            ...axiosResponseFactory,
+            data: userProfile,
+          };
+
           jest
             .spyOn(httpService, 'get')
             .mockImplementation(() => of(googleClientResponse));

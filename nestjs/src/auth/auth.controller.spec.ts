@@ -1,25 +1,63 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpModule } from '@nestjs/axios';
-import { AuthController } from './auth.controller';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 
+import { AuthModule } from './auth.module';
 import { AuthService } from './auth.service';
-import { DatabaseService } from '../database.service';
-import { UserService } from '../user/user.service';
 
 describe('AuthController', () => {
-  let controller: AuthController;
+  let app: NestFastifyApplication;
+  const authService = { signInWithGoogle: () => Promise.resolve(true) };
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [HttpModule],
-      controllers: [AuthController],
-      providers: [AuthService, DatabaseService, UserService],
-    }).compile();
+      imports: [AuthModule],
+    })
+      .overrideProvider(AuthService)
+      .useValue(authService)
+      .compile();
 
-    controller = module.get<AuthController>(AuthController);
+    app = module.createNestApplication<NestFastifyApplication>(
+      new FastifyAdapter(),
+    );
+
+    await app.init();
+    await app.getHttpAdapter().getInstance().ready();
   });
 
-  it('is defined', () => {
-    expect(controller).toBeDefined();
+  afterAll(async () => {
+    await app.close();
+  });
+
+  describe('GET /auth/google', () => {
+    describe('given a successful user authentication', () => {
+      it('redirects to the success page', async () => {
+        return app
+          .inject({
+            method: 'GET',
+            url: '/auth/google',
+          })
+          .then((result) => {
+            expect(result.statusCode).toEqual(302);
+            expect(result.headers.location).toEqual('/');
+          });
+      });
+    });
+
+    describe('given a failed user authentication', () => {
+      it('redirects to the sign-in page', async () => {
+        return app
+          .inject({
+            method: 'GET',
+            url: '/auth/google',
+          })
+          .then((result) => {
+            expect(result.statusCode).toEqual(302);
+            expect(result.headers.location).toEqual('/auth/sign-in');
+          });
+      });
+    });
   });
 });

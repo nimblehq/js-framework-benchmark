@@ -14,22 +14,24 @@ export class AuthService {
     private readonly userService: UserService,
   ) {}
 
-  async signInWithGoogle(accessToken: string) {
+  async signInWithGoogle(accessToken: string): Promise<UserModel | AuthError> {
     try {
       const googleClient = new GoogleClient(accessToken, this.httpService);
       const userProfile = await lastValueFrom(await googleClient.getUserInfo());
 
       const user = await this.verifyOrCreateUser(userProfile.data);
 
-      return user;
+      return Promise.resolve(user);
     } catch (error) {
-      throw new AuthError('Authentication with Google failed');
+      return Promise.reject(error);
     }
   }
 
-  private async verifyOrCreateUser(userProfile): Promise<UserModel | Error> {
+  private async verifyOrCreateUser(
+    userProfile,
+  ): Promise<UserModel | AuthError> {
     try {
-      const { picture, name, email } = userProfile;
+      const { email, name, picture } = userProfile;
 
       if (email === undefined) {
         return Promise.reject(new AuthError('No valid email was provided'));
@@ -50,7 +52,9 @@ export class AuthService {
 
       return Promise.resolve(newUser);
     } catch (error) {
-      return Promise.reject(new AuthError('User could not be verified or created'));
+      return Promise.reject(
+        new AuthError('User could not be verified or created'),
+      );
     }
   }
 }
