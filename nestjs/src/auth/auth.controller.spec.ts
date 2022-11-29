@@ -3,6 +3,8 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { Request } from '@nestjs/common';
+import oauthPlugin, { FastifyOAuth2Options } from '@fastify/oauth2';
 
 import { AuthModule } from './auth.module';
 import { AuthService } from './auth.service';
@@ -22,6 +24,17 @@ describe('AuthController', () => {
     app = module.createNestApplication<NestFastifyApplication>(
       new FastifyAdapter(),
     );
+
+    app.register(oauthPlugin, {
+      name: 'googleOAuth2',
+      scope: ['profile', 'email'],
+      credentials: { 
+        client: { id: 'mock', secret: 'mock' }, 
+        auth: oauthPlugin.GOOGLE_CONFIGURATION
+      },
+      startRedirectPath: '/auth/sign-in',
+      callbackUri: '/auth/google'
+    } as FastifyOAuth2Options);
 
     await app.init();
     await app.getHttpAdapter().getInstance().ready();
