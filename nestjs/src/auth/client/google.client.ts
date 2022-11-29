@@ -13,7 +13,7 @@ export class AuthGoogleClient {
   private async get(endpointUrl) {
     const requestOptions = {
       headers: {
-        Authorization: 'Bearer ' + this.acccessToken,
+        Authorization: `Bearer ${this.acccessToken}`,
       },
     };
 

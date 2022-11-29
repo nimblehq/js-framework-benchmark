@@ -6,7 +6,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('/google')
-  async authenticate(@Request() request, @Response() response) {
+  async authenticate(@Request() request, @Response({ passthrough: true }) response) {
     try {
       const {
         server: { googleOAuth2 },
@@ -16,11 +16,18 @@ export class AuthController {
         token: { access_token: accessToken },
       } = await googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(request);
 
-      await this.authService.signInWithGoogle(accessToken);
+      let currentUser = await this.authService.signInWithGoogle(accessToken);
 
-      response.status(302).redirect('/');
+      response
+        .setCookie('nest-newsletter', JSON.stringify({
+          user: currentUser['id']
+        }), {
+          path: '/',
+          signed: true
+        })
+        .status(302).redirect('/');
     } catch (error) {
-      response.status(302).redirect('/auth/sign-in');
+      response.status(302).redirect('/auth/sign-in').send();
     }
   }
 }

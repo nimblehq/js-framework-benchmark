@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@fastify/cookie": "8.3.0",
     "@fastify/oauth2": "6.1.0",
     "@nestjs/axios": "1.0.0",
     "@nestjs/common": "9.0.0",

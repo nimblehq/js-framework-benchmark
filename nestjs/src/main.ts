@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
+import fastifyCookie from '@fastify/cookie';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -17,6 +18,9 @@ async function bootstrap() {
   const config = app.get<ConfigService>(ConfigService);
   const authStrategyGoogle = new AuthStrategyGoogle(config);
 
+  await app.register(fastifyCookie, {
+    secret: config.get('COOKIE_SECRET')
+  });
   app.register(oauthPlugin, authStrategyGoogle.get());
 
   await app.listen(3000, '0.0.0.0');
