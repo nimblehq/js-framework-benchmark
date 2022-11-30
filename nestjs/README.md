@@ -4,13 +4,26 @@ The application is bootstrapped with [`@nestjs/cli`](https://docs.nestjs.com/cli
 
 ## Getting Started
 
-## Installation
+### Prerequisites
+
+- Ensure you have ![node-version-image](https://img.shields.io/badge/node-16.17.0-brightgreen.svg) version installed.
+- Define the local environment variables by copying `.env.sample`:
+
+```
+cp .env.sample .env.local
+```
+
+- Fill in all environment variables by their respective values
+
+💡Secrets can be generated via node CLI with `crypto.randomBytes(128).toString('base64')` .
+
+### Installation
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+### Running the app
 
 ```bash
 # development
@@ -20,7 +33,7 @@ $ make start
 $ npm run start:prod
 ```
 
-## Test
+### Test
 
 ```bash
 # unit tests
