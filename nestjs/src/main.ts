@@ -19,7 +19,7 @@ async function bootstrap() {
   const authStrategyGoogle = new AuthStrategyGoogle(config);
 
   await app.register(fastifyCookie, {
-    secret: config.get('COOKIE_SECRET')
+    secret: config.get('COOKIE_SECRET'),
   });
   app.register(oauthPlugin, authStrategyGoogle.get());
 
