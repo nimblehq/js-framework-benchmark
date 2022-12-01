@@ -8,6 +8,7 @@ import {
 } from '@nestjs/platform-fastify';
 import oauthPlugin from '@fastify/oauth2';
 import fastifyServeSatic from '@fastify/static';
+import fastifyView from '@fastify/view';
 
 import { AuthStrategyGoogle } from './auth/strategies/google.strategy';
 import { AppModule } from './app.module';
@@ -28,8 +29,7 @@ async function bootstrap() {
 
   app.register(fastifyServeSatic, {
     root: join(__dirname, '..', 'client'),
-    prefix: '/app/',
-    allowedPath: (pathName, _root, _request) => !pathName.includes('api')
+    prefix: '/app/'
   });
 
   app.register(fastifyServeSatic, {
@@ -40,7 +40,14 @@ async function bootstrap() {
     decorateReply: false 
   });
 
-  app.setGlobalPrefix('api');
+  app.register(fastifyView, {
+    engine: {
+      ejs: require('ejs'),
+    },
+    root: join(__dirname, '..', 'views'),
+    layout: './layouts/default',
+    includeViewExtension: true
+  });
 
   await app.listen(3000, '0.0.0.0');
 }
