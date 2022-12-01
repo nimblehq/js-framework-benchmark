@@ -25,8 +25,8 @@ export class AuthStrategyGoogle implements FastifyOAuth2Options {
         },
         auth: oauthPlugin.GOOGLE_CONFIGURATION,
       },
-      startRedirectPath: '/auth/sign-in',
-      callbackUri: `${this.configService.get('HOST_URL')}/auth/google`,
+      startRedirectPath: '/api/auth/sign-in',
+      callbackUri: `${this.configService.get('HOST_URL')}/api/oauth/google`,
     };
   }
 }

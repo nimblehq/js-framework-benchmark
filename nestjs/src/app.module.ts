@@ -9,7 +9,11 @@ import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
 
 @Module({
-  imports: [ConfigModule.forRoot(), AuthModule, UserModule],
+  imports: [
+    ConfigModule.forRoot(),
+    AuthModule, 
+    UserModule,
+  ],
   controllers: [AppController],
   providers: [DatabaseService, AppService, UserService],
 })
