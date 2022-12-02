@@ -33,8 +33,7 @@ async function bootstrap() {
   });
 
   app.register(fastifyServeSatic, {
-    root: join(__dirname, '..', 'public'),
-    prefix: '/assets/',
+    root: join(__dirname, '..', 'dist', 'public'),
     allowedPath: (pathName, _root, _request) => pathName.includes('assets'),
     // The reply decorator has been added by the first plugin registration
     decorateReply: false 
