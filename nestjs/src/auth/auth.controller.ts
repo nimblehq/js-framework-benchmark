@@ -1,7 +1,7 @@
 import { Controller, Get, Request, Response } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-@Controller('auth')
+@Controller('oauth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -30,7 +30,7 @@ export class AuthController {
         .status(302)
         .redirect('/');
     } catch (error) {
-      response.status(302).redirect('/auth/sign-in').send();
+      response.status(302).redirect('/').send();
     }
   }
 }
