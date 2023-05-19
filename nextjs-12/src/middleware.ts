@@ -6,19 +6,13 @@ import { sessionOptions } from './config/session';
 
 export const middleware = async (req: NextRequest) => {
   const res = NextResponse.next();
-  const session = await getIronSession(req, res, {
-    cookieName: "myapp_cookiename",
-    password: "complex_password_at_least_32_characters_long",
-    // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
-    cookieOptions: {
-      secure: process.env.NODE_ENV === "production",
-    },
-  });
+  const session = await getIronSession(req, res, sessionOptions);
   const { user } = session;
 
   if (user && req.nextUrl.pathname.startsWith('/auth')) {
     return NextResponse.redirect(new URL('/', req.url));
   }
+
   if (user === undefined && !req.nextUrl.pathname.startsWith('/auth')) {
     return NextResponse.redirect(new URL('/auth/sign-in', req.url));
   }
