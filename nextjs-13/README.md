@@ -1,34 +1,16 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# JS Framework Benchmark
 
-## Getting Started
+The pository contains POC applications to assess full-stack JS frameworks. The benchmarking process aims to make an informed decision on which framework is best suited for Nimble.
 
-First, run the development server:
+More information can be found on Notion:
+- [Engineeing Initiative](https://www.notion.so/nimblehq/Benchmark-full-stack-JS-application-frameworks-8d8a4016855d43f6b3d88cfdb1aea287)
+- [Assessment Criteria](https://www.notion.so/nimblehq/JS-application-frameworks-Assessment-Criteria-eb4d92659566426791516c5c071ec052)
+- [Scope of the POC applications](https://www.notion.so/nimblehq/JS-application-frameworks-POC-Application-Requirements-b95856f0eed4477c8a41cbebb072c612)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Usage
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Clone the repository
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`git clone git@github.com:nimblehq/js-framework-benchmark.git`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## License
