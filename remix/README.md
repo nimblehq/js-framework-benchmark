@@ -1,53 +1,72 @@
-# Welcome to Remix!
+# RemixNewsletter 💿 [Remix]
 
-- [Remix Docs](https://remix.run/docs)
+The application is bootstrapped with [`npx create-remix@latest`](https://remix.run/docs/en/main).
 
-## Development
+## Getting Started
 
-From your terminal:
+### Prerequisites
 
-```sh
-npm run dev
+- Ensure you have ![node-version-image](https://img.shields.io/badge/node-16.17.0-brightgreen.svg) version installed.
+- Define the local environment variables by copying `.env.sample`:
+
+```
+cp .env.sample .env.local
 ```
 
-This starts your app in development mode, rebuilding assets on file changes.
+- Fill in all environment variables by their respective values
 
-## Deployment
+### Development
 
-First, build your app for production:
+1. Install all dependencies:
 
-```sh
-npm run build
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+2. Run the development server:
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+3. Open [http://localhost:3400](http://localhost:3400) with your browser to see the result.
+
+## Tests
+
+- Define the local environment variables by copying `.env.sample`:
+
+```
+cp .env.sample .env.test
 ```
 
-Then run the app in production mode:
+- Fill in all environment variables by their respective values
 
-```sh
-npm start
-```
+## License
 
-Now you'll need to pick a host to deploy it to.
+This project is Copyright (c) 2014 and onwards Nimble. It is free software and may be redistributed under the terms specified in the [LICENSE] file.
 
-### DIY
+[license]: /LICENSE
 
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
+## About
 
-Make sure to deploy the output of `remix build`
+<a href="https://nimblehq.co/">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://assets.nimblehq.co/logo/dark/logo-dark-text-160.png">
+    <img alt="Nimble logo" src="https://assets.nimblehq.co/logo/light/logo-light-text-160.png">
+  </picture>
+</a>
 
-- `build/`
-- `public/build/`
+This project is maintained and funded by Nimble.
 
-### Using a Template
+We ❤️ open source and do our part in sharing our work with the community!
+See [our other projects][community] or [hire our team][hire] to help build your product.
 
-When you ran `npx create-remix@latest` there were a few choices for hosting. You can run that again to create a new project, then copy over your `app/` folder to the new project that's pre-configured for your target server.
+Want to join? [Check out our Jobs][jobs]!
 
-```sh
-cd ..
-# create a new project, and pick a pre-configured host
-npx create-remix@latest
-cd my-new-remix-app
-# remove the new project's app (not the old one!)
-rm -rf app
-# copy your app over
-cp -R ../my-old-remix-app/app app
-```
+[community]: https://github.com/nimblehq
+[hire]: https://nimblehq.co/
+[jobs]: https://jobs.nimblehq.co/
