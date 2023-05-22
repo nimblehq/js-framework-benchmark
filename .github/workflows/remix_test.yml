@@ -17,7 +17,9 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies
+        working-directory: remix
         run: npm ci
 
       - name: Run unit tests
+        working-directory: remix
         run: npm test -- --coverage
