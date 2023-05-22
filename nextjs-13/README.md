@@ -1,6 +1,6 @@
-# RemixNewsletter 💿 [Remix]
+# NextNewsletter 🚀 [Next.JS 13]
 
-The application is bootstrapped with [`npx create-remix@latest`](https://remix.run/docs/en/main).
+The application is bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
@@ -19,21 +19,23 @@ cp .env.sample .env.local
 
 1. Install all dependencies:
 
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
 
-2. Run the development server:
+2. Migrate database: TBD
 
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
+3. Run the development server:
 
-3. Open [http://localhost:3400](http://localhost:3400) with your browser to see the result.
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    ```
+
+4. Open [http://localhost:3300](http://localhost:3300) with your browser to see the result.
 
 ## Tests
 
@@ -44,15 +46,13 @@ cp .env.sample .env.test
 ```
 
 - Fill in all environment variables by their respective values
-
 ## License
 
 This project is Copyright (c) 2014 and onwards Nimble. It is free software and may be redistributed under the terms specified in the [LICENSE] file.
 
-[license]: /LICENSE
+[LICENSE]: /LICENSE
 
 ## About
-
 <a href="https://nimblehq.co/">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://assets.nimblehq.co/logo/dark/logo-dark-text-160.png">
