@@ -4,3 +4,7 @@ node_modules
 /build
 /public/build
 .env
+
+# Tests
+/coverage
+/.nyc_output
