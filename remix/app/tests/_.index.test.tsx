@@ -1,4 +1,4 @@
-import Index from "./_index";
+import Index from "../routes/_index";
 import { render } from "@testing-library/react";
 
 describe("Test Root route", () => {
