@@ -2,6 +2,7 @@
 
 up:
 	make start_db
+	make migrate_db
 	npm run dev
 
 down:
