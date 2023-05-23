@@ -9,6 +9,10 @@ jobs:
   test-remix:
     name: Run tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: remix
+
     steps:
       - uses: actions/checkout@v3
 
@@ -17,9 +21,7 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies
-        working-directory: remix
         run: npm ci
 
       - name: Run unit tests
-        working-directory: remix
         run: npm test -- --coverage
