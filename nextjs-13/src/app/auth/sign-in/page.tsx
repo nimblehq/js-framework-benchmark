@@ -1,5 +1,6 @@
+"use client"
 import Head from 'next/head';
-import Link from 'next/link';
+import { signIn } from "next-auth/react"
 
 const AuthSignInPage = () => {
   return (
@@ -8,11 +9,9 @@ const AuthSignInPage = () => {
         <title>Sign in | NextNewsletter 🚀</title>
       </Head>
       <h4>NextNewsletter 🚀</h4>
-      <Link href="../api/auth/sign-in">
-        <button className="btn" data-testid="loginButton">
-          Login with Google
-        </button>
-      </Link>
+      <button className="btn" data-testid="loginButton" onClick={() => signIn('google')}>
+        Login with Google
+      </button>
     </>
   );
 };
