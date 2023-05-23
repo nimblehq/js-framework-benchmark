@@ -5,16 +5,16 @@ import {
 } from 'passport-google-oauth20';
 
 import MockStrategy from '@test/mocks/passport';
-// import { SerializedUser } from '../../models/user.model';
-// import * as UserRepository from '../../repositories/user.repository';
-// import AuthError from '../../services/auth/error';
-// import AuthGoogleService from '../../services/auth/google.service';
+import { SerializedUser } from '../../models/user.model';
+import * as UserRepository from '../../repositories/user.repository';
+import AuthError from '../../services/auth/error';
+import AuthGoogleService from '../../services/auth/google.service';
 
-// declare global {
-//   namespace Express {
-//     type User = SerializedUser;
-//   }
-// }
+declare global {
+  namespace Express {
+    type User = SerializedUser;
+  }
+}
 
 const passportStrategyCallback = async (
   _accessToken: string,
@@ -22,15 +22,15 @@ const passportStrategyCallback = async (
   userProfile: Profile,
   callback: VerifyCallback
 ) => {
-  console.log('========>userProfile : ', userProfile)
   callback(null, {});
-  // try {
-  //   const user = await AuthGoogleService.verifyOrCreateUser(userProfile);
+  try {
+    const user = await AuthGoogleService.verifyOrCreateUser(userProfile);
+    console.log('========>user : ', user)
 
-  //   callback(null, user);
-  // } catch (error) {
-  //   throw new AuthError(error as Error);
-  // }
+    callback(null, user);
+  } catch (error) {
+    throw new AuthError(error as Error);
+  }
 };
 
 const getStrategy = (strategyName?: string) => {
@@ -48,18 +48,17 @@ const getStrategy = (strategyName?: string) => {
 
   return new MockStrategy({}, passportStrategyCallback);
 };
-
 passport.use(getStrategy(process.env.OAUTH_PASSPORT_STRATEGY));
 
-// passport.serializeUser(({ id }, callback) => {
-//   callback(null, id);
-// });
+passport.serializeUser(({ id }, callback) => {
+  callback(null, id);
+});
 
-// passport.deserializeUser(async (userId: string, callback) => {
-//   const authenticatedUser = await UserRepository.findUserById(userId);
+passport.deserializeUser(async (userId: string, callback) => {
+  const authenticatedUser = await UserRepository.findUserById(userId);
 
-//   callback(null, authenticatedUser);
-// });
+  callback(null, authenticatedUser);
+});
 
 const passportMiddleware = [passport.initialize(), passport.session()];
 
