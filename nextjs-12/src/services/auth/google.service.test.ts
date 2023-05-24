@@ -1,5 +1,6 @@
-import { dbClientMock } from '@test/database';
 import { passportProfileFactory } from '@test/factories/passport/profile.factory';
+
+import { dbClientMock } from '@test/database';
 import { userFactory } from '@test/factories/user.factory';
 
 import AuthGoogleService from './google.service';
