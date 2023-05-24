@@ -12,7 +12,7 @@ start_db:
 	docker-compose up -d
 	
 stop_db:
-	docker-compose down -v
+	docker-compose stop
 
 migrate_db:
 	npx prisma migrate dev --name init
