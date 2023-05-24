@@ -13,6 +13,9 @@ export const authOptions = {
   callbacks: {
     async signIn({ profile }: any) {
       return await AuthGoogleService.verifyOrCreateUser(profile);
+    },
+    async redirect(params) {
+      return params.baseUrl
     }
   }
 }
