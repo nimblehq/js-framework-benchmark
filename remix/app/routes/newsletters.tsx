@@ -3,7 +3,7 @@ import type { LoaderArgs } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { authenticator } from "~/config/auth.server";
 import type { UserProfile } from "~/types";
-import { db } from "~/config/db.server";
+import UserRespository from "~/repositories/user.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const profile = (await authenticator.isAuthenticated(request)) as {
@@ -16,13 +16,9 @@ export const loader = async ({ request }: LoaderArgs) => {
     throw new Response("Forbidden", { status: 403 });
   }
 
-  try {
-    user = await db.user.findUnique({
-      where: { email: profile?._json.email },
-    });
-  } catch (err) {
-    throw err;
-  }
+  user = await UserRespository.findBy({
+    email: profile?._json.email,
+  });
 
   return { user };
 };
