@@ -16,4 +16,4 @@ if (process.env.NODE_ENV === "production") {
   db.$connect();
 }
 
-export { db };
+export default db 
