@@ -1,6 +1,6 @@
 import type { User } from "@prisma/client";
-import { db } from "~/config/db.server";
-import type { UserProfile } from "~/types";
+import db from "../config/db.server";
+import type { UserProfile } from "../types";
 
 class UserRespository {
 
