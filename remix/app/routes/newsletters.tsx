@@ -6,18 +6,19 @@ import type { UserProfile } from "~/types";
 import { db } from "~/config/db.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const userRequest = (await authenticator.isAuthenticated(request)) as any;
-  const userProfile: UserProfile = userRequest?._json;
-
-  if (!userProfile) {
-    throw new Response("Forbidden", { status: 403 });
-  }
+  const profile = (await authenticator.isAuthenticated(request)) as {
+    _json: UserProfile;
+  };
 
   let user: User | null = null;
 
+  if (!profile?._json) {
+    throw new Response("Forbidden", { status: 403 });
+  }
+
   try {
     user = await db.user.findUnique({
-      where: { email: userProfile.email },
+      where: { email: profile?._json.email },
     });
   } catch (err) {
     throw err;
