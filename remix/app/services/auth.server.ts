@@ -21,7 +21,7 @@ export async function handleSocialAuthCallBack({ profile }: any) {
         },
       });
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   }
   return profile;
