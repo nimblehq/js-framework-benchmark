@@ -8,7 +8,7 @@ import {
 } from "@remix-run/react";
 import { authenticator } from "~/services/auth.server";
 import type { UserProfile } from "~/types";
-import { db } from "~/utils/db.server";
+import { db } from "~/config/db.server";
 
 import { SocialsProvider } from "remix-auth-socials";
 

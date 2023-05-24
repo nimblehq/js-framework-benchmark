@@ -1,6 +1,6 @@
 import { sessionStorage } from "./session.server";
 import type { UserProfile } from "~/types";
-import { db } from "~/utils/db.server";
+import { db } from "~/config/db.server";
 
 import { Authenticator } from "remix-auth";
 import { GoogleStrategy, SocialsProvider } from "remix-auth-socials";
