@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useSession } from "next-auth/react"
 import { redirect } from 'next/navigation';
 
-const Home = () => {
+const AuthSignInPage = () => {
   const { status } = useSession()
 
   if (status === "loading") {
@@ -24,4 +24,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default AuthSignInPage;

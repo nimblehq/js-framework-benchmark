@@ -6,6 +6,8 @@ import { redirect } from 'next/navigation';
 
 const AuthSignInPage = () => {
   const { status } = useSession()
+  console.log('status')
+  console.log(status)
 
   if (status === "loading") {
     return <p>Loading...</p>
