@@ -6,10 +6,11 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-import { SocialsProvider } from "remix-auth-socials";
 import { authenticator } from "~/services/auth.server";
 import type { UserProfile } from "~/types";
 import { db } from "~/utils/db.server";
+
+import { SocialsProvider } from "remix-auth-socials";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userRequest = (await authenticator.isAuthenticated(request)) as any;

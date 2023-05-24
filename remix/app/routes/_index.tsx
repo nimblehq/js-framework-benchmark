@@ -1,4 +1,5 @@
 import { Form } from "@remix-run/react";
+
 import { SocialsProvider } from "remix-auth-socials";
 
 export default function Index() {

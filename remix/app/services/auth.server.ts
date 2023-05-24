@@ -1,8 +1,9 @@
-import { Authenticator } from "remix-auth";
 import { sessionStorage } from "./session.server";
-import { GoogleStrategy, SocialsProvider } from "remix-auth-socials";
 import type { UserProfile } from "~/types";
 import { db } from "~/utils/db.server";
+
+import { Authenticator } from "remix-auth";
+import { GoogleStrategy, SocialsProvider } from "remix-auth-socials";
 
 export const authenticator = new Authenticator(sessionStorage);
 
