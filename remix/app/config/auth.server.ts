@@ -1,4 +1,4 @@
-import { sessionStorage } from "~/services/session.server";
+import { sessionStorage } from "~/config/session.server";
 import { handleSocialAuthCallBack } from "~/services/auth.server";
 
 import { Authenticator } from "remix-auth";
