@@ -1,8 +1,8 @@
 .PHONY: up start_db
 
 up:
-	make start_db
-	make migrate_db
+	make start_db && \
+	make migrate_db && \
 	npm run dev
 
 down:

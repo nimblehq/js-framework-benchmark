@@ -1,5 +1,5 @@
 import type { LoaderArgs } from "@remix-run/node";
-import { authenticator } from "~/services/auth.server";
+import { authenticator } from "~/config/auth.server";
 
 import { SocialsProvider } from "remix-auth-socials";
 

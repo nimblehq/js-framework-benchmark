@@ -6,7 +6,7 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-import { authenticator } from "~/services/auth.server";
+import { authenticator } from "~/config/auth.server";
 import type { UserProfile } from "~/types";
 import { db } from "~/config/db.server";
 
