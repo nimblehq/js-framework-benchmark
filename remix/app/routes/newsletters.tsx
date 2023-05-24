@@ -15,9 +15,11 @@ import { SocialsProvider } from "remix-auth-socials";
 export const loader = async ({ request }: LoaderArgs) => {
   const userRequest = (await authenticator.isAuthenticated(request)) as any;
   const userProfile: UserProfile = userRequest?._json;
+
   if (!userProfile) {
     throw new Response("Forbidden", { status: 403 });
   }
+
   let user: User | null = null;
 
   try {
@@ -27,11 +29,13 @@ export const loader = async ({ request }: LoaderArgs) => {
   } catch (err) {
     console.log(err);
   }
+
   return { user };
 };
 
 export default function Index() {
   const { user } = useLoaderData();
+
   return (
     <div>
       <h1>Newsletter Page</h1>

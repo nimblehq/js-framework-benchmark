@@ -9,6 +9,7 @@ export const authenticator = new Authenticator(sessionStorage);
 
 async function handleSocialAuthCallBack({ profile }: any) {
   const userProfile: UserProfile = profile?._json;
+
   if (userProfile) {
     try {
       await db.user.upsert({
