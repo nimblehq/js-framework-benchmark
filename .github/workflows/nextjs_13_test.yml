@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
-          cache-dependency-path: 'nextjs-13/yarn.lock'
+          cache-dependency-path: 'nextjs-13/package-lock.json'
 
       - name: Install dependencies
         run: npm ci
