@@ -1,14 +1,17 @@
 name: Test
 
-on: 
+on:
   pull_request:
-    paths: 
+    paths:
       - nextjs-12/**
 
 jobs:
   test:
     name: Run linters and tests Next.js 12
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./nextjs-12
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
@@ -23,13 +26,12 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
-          cache-dependency-path: 'nextjs-12/package-lock.json'
 
       - name: Install dependencies
-        run: 'cd nextjs-12 && npm ci'
+        run: npm ci
 
       - name: Run linter
-        run: 'cd nextjs-12 && npm run lint'
+        run: npm run lint
 
       - name: Run unit tests
-        run: 'cd nextjs-12 && npm run test:coverage'
+        run: npm run test:coverage
