@@ -1,7 +1,8 @@
-import Index from "../routes/_index";
 import { render } from "@testing-library/react";
 
-describe("Test Root route", () => {
+import Index from "../routes/_index";
+
+describe("Root Route", () => {
   test("renders Welcome Page", () => {
     const { getByText } = render(<Index />);
     expect(getByText("Welcome to Remix")).toBeInTheDocument();
