@@ -19,7 +19,7 @@ describe('User Respository', () => {
     });
 
     describe('given there is NO matching user', () => {
-      it('return null', async () => {
+      it('returns null', async () => {
         dbClientMock.user.findUnique.mockResolvedValue(null);
 
         await expect(findUserById('1')).resolves.toBeNull();
