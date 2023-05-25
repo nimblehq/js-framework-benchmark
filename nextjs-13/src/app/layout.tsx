@@ -1,4 +1,5 @@
 import { NextAuthProvider } from "./providers";
+import App from "./app";
 
 export const metadata = {
   title: 'Next.js',
@@ -13,7 +14,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NextAuthProvider>{children}</NextAuthProvider>
+        <NextAuthProvider>
+          <App>
+            {children}
+          </App>
+        </NextAuthProvider>
       </body>
     </html>
   )
