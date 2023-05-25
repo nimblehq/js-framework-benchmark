@@ -1,0 +1,19 @@
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: var(--size-7);
+  
+  min-height: var(--size-fluid-1);
+  min-width: var(--size-fluid-2);
+
+  background: var(--gradient-23);
+  border-radius: var(--radius-3);
+  box-shadow: var(--shadow-4);
+  gap: var(--size-5);
+
+  height: var(--size-fluid-9);
+
+  border-radius: var(--radius-blob-1);
+}
