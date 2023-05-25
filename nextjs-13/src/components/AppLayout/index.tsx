@@ -22,6 +22,7 @@ export default function AppLayout({
   children: React.ReactNode
 }) {
   const [user, setUser] = useState<UserState>(undefined);
+  console.log('========>"AppLayout" : ', "AppLayout")
 
   const fetchCurrentUser = useCallback(async () => {
     const { user: currentUser } = await requestManager<ApiMeResponse>(
@@ -43,7 +44,7 @@ export default function AppLayout({
 
   return (
     <UserContext.Provider value={userContextValue}>
-      <div className="layout-default">
+      <div data-testid="appLayout">
         <Header />
         <main className="app-content">{children}</main>
       </div>
