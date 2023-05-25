@@ -9,7 +9,7 @@ import {
 import { useSession } from "next-auth/react"
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import requestManager from '../lib/request/manager';
-import 'stylesheets/application.scss';
+// import 'stylesheets/application.scss';
 import { ApiMeResponse } from "./api/v1/me/route";
 
 export const metadata = {
