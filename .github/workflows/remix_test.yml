@@ -1,0 +1,39 @@
+name: Test Remix
+
+on:
+  pull_request:
+    paths:
+      - remix/**
+
+jobs:
+  test-remix:
+    name: Run linters and tests Remix
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: remix
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{github.token}}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node and restore cached dependencies
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: "remix/package-lock.json"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm test -- --coverage
