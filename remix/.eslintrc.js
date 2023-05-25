@@ -1,4 +1,8 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
-  extends: ["@remix-run/eslint-config", "@remix-run/eslint-config/node"],
+  extends: [
+    '@nimblehq/eslint-config-nimble',
+    'plugin:prettier/recommended',
+    // '@nimblehq/eslint-config-nimble-react',
+  ],
 };

@@ -1,9 +1,10 @@
-import type { User } from "@prisma/client";
-import type { LoaderArgs } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
-import { authenticator } from "~/config/auth.server";
-import type { UserProfile } from "~/types";
-import UserRespository from "~/repositories/user.server";
+import type { User } from '@prisma/client';
+import type { LoaderArgs } from '@remix-run/node';
+import { Outlet, useLoaderData } from '@remix-run/react';
+
+import { authenticator } from '../config/auth.server';
+import UserRespository from '../repositories/user.server';
+import type { UserProfile } from '../types';
 
 export const loader = async ({ request }: LoaderArgs) => {
   const profile = (await authenticator.isAuthenticated(request)) as {
@@ -13,7 +14,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   let user: User | null = null;
 
   if (!profile?._json) {
-    throw new Response("Forbidden", { status: 403 });
+    throw new Response('Forbidden', { status: 403 });
   }
 
   user = await UserRespository.findBy({

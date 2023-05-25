@@ -1,11 +1,11 @@
-.PHONY: up start_db
+.PHONY: start stop start_db stop_db migrate_db
 
-up:
+start:
 	make start_db && \
 	make migrate_db && \
 	npm run dev
 
-down:
+stop:
 	make stop_db
 	
 start_db:

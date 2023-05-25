@@ -1,11 +1,14 @@
-import type { UserProfile } from "~/types";
-import UserRespository from "~/repositories/user.server";
+import UserRespository from '../repositories/user.server';
+import type { UserProfile } from '../types';
 
-export async function handleSocialAuthCallBack({ profile }: any) {
+interface Profile {
+  profile: { _json: UserProfile };
+}
+export async function handleSocialAuthCallBack({ profile }: Profile) {
   const userProfile: UserProfile = profile?._json;
 
   if (userProfile) {
-    await UserRespository.updateOrCreate(userProfile)
+    await UserRespository.updateOrCreate(userProfile);
   }
   return profile;
 }

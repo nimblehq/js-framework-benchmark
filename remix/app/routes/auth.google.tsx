@@ -1,11 +1,11 @@
-import type { ActionArgs } from "@remix-run/node";
-import { authenticator } from "~/config/auth.server";
+import type { ActionArgs } from '@remix-run/node';
+import { SocialsProvider } from 'remix-auth-socials';
 
-import { SocialsProvider } from "remix-auth-socials";
+import { authenticator } from '../config/auth.server';
 
 export const action = async ({ request }: ActionArgs) => {
-  return await authenticator.authenticate(SocialsProvider.GOOGLE, request, {
-    successRedirect: "/newsletters",
-    failureRedirect: "/",
+  return authenticator.authenticate(SocialsProvider.GOOGLE, request, {
+    successRedirect: '/newsletters',
+    failureRedirect: '/',
   });
 };

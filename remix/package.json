@@ -10,6 +10,9 @@
     "lint": "eslint ./ --ext .ts,.tsx"
   },
   "dependencies": {
+    "@nimblehq/eslint-config-nimble": "^2.4.0",
+    "@nimblehq/eslint-config-nimble-react": "^1.2.0",
+    "@nimblehq/stylelint-config-nimble": "^1.0.2",
     "@prisma/client": "^4.14.1",
     "@remix-run/css-bundle": "^1.16.1",
     "@remix-run/node": "^1.16.1",
