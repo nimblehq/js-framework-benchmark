@@ -6,7 +6,8 @@
     "dev": "remix dev -p 3400",
     "start": "remix-serve build",
     "typecheck": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint ./ --ext .ts,.tsx"
   },
   "dependencies": {
     "@prisma/client": "^4.14.1",
