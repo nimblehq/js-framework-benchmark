@@ -15,6 +15,8 @@ cp .env.sample .env.local
 
 - Fill in all environment variables by their respective values
 
+💡Secrets can be generated via node CLI with `crypto.randomBytes(128).toString('base64')` .
+
 ### Development
 
 1. Install all dependencies:
@@ -25,7 +27,13 @@ cp .env.sample .env.local
     yarn install
     ```
 
-2. Migrate database: TBD
+2. Migrate database:
+
+    ```bash
+    prisma generate
+
+    prisma migrate dev
+    ```
 
 3. Run the development server:
 
@@ -39,13 +47,20 @@ cp .env.sample .env.local
 
 ## Tests
 
-- Define the local environment variables by copying `.env.sample`:
+1. Define the local environment variables by copying `.env.sample`:
 
 ```
 cp .env.sample .env.test
 ```
 
-- Fill in all environment variables by their respective values
+2. Fill in all environment variables by their respective values
+
+3. Run tests:
+
+    ```bash
+    yarn test
+    ```
+
 ## License
 
 This project is Copyright (c) 2014 and onwards Nimble. It is free software and may be redistributed under the terms specified in the [LICENSE] file.
