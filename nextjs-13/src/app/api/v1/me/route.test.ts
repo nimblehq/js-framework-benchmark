@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { User } from '@prisma/client';
 import { dbClientMock } from '@test/database';
 import { userFactory } from '@test/factories/user.factory';
