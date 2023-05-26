@@ -8,4 +8,5 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
   },
+  ignorePatterns: ['tailwind.config.ts', 'remix.config.ts'],
 };

@@ -1,4 +1,3 @@
-import { cssBundleHref } from '@remix-run/css-bundle';
 import type { LinksFunction } from '@remix-run/node';
 import {
   Form,
@@ -13,8 +12,10 @@ import {
 } from '@remix-run/react';
 import { SocialsProvider } from 'remix-auth-socials';
 
+import stylesheet from '../app/stylesheets/tailwind.css';
+
 export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
+  { rel: 'stylesheet', href: stylesheet },
 ];
 
 export default function App() {
