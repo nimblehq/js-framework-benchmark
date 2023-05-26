@@ -1,8 +1,8 @@
 import type { User } from '@prisma/client';
 
 import UserRepository from '../repositories/user.server';
+import { prismaMock } from '../tests/database';
 import { userFactory } from '../tests/factories/user.factory';
-import { prismaMock } from '../tests/setup-test-env';
 
 describe('User Repository', () => {
   describe('updateOrCreate', () => {
