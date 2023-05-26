@@ -1,7 +1,3 @@
-/**
- * @jest-environment node
- */
-
 import { User } from '@prisma/client';
 import { dbClientMock } from '@test/database';
 import { userFactory } from '@test/factories/user.factory';
@@ -10,10 +6,6 @@ import * as nextAuthJwtModule from "next-auth/jwt";
 import { GET } from './route';
 
 describe('GET /v1/me', () => {
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
-
   describe('given an authenticated user', () => {
     it('returns a user', async () => {
       const userAttributes = {
