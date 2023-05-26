@@ -5,7 +5,7 @@ import { authenticator } from '../config/auth.server';
 
 export const loader = ({ request }: LoaderArgs) => {
   return authenticator.authenticate(SocialsProvider.GOOGLE, request, {
-    successRedirect: '/newsletters',
-    failureRedirect: '/',
+    successRedirect: '/',
+    failureRedirect: '/auth/sign-in',
   });
 };

@@ -1,7 +1,6 @@
-import { cssBundleHref } from '@remix-run/css-bundle';
 import type { LinksFunction } from '@remix-run/node';
 import {
-  Form,
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -11,10 +10,11 @@ import {
   isRouteErrorResponse,
   useRouteError,
 } from '@remix-run/react';
-import { SocialsProvider } from 'remix-auth-socials';
+
+import stylesheet from '../app/stylesheets/tailwind.css';
 
 export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
+  { rel: 'stylesheet', href: stylesheet },
 ];
 
 export default function App() {
@@ -27,7 +27,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="h-screen w-full bg-gray-200">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
@@ -40,20 +40,14 @@ export default function App() {
 export function ErrorBoundary() {
   const error = useRouteError();
 
-  if (isRouteErrorResponse(error) && error.status === 403) {
+  if (isRouteErrorResponse(error) && error.status === 401) {
     return (
-      <div className="error-container">
-        <p>You must be logged.</p>
-        <Form method="post" action={`/auth/${SocialsProvider.GOOGLE}`}>
-          <button>Login with Google</button>
-        </Form>
+      <div>
+        <h3>You must be logged.</h3>
+        <Link to={'/auth/sign-in'}>Login with Google</Link>;
       </div>
     );
   }
 
-  return (
-    <div className="error-container">
-      Something unexpected went wrong. Sorry about that.
-    </div>
-  );
+  return <div>Something unexpected went wrong. Sorry about that.</div>;
 }
