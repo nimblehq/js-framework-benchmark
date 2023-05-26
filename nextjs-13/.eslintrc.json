@@ -1,3 +1,11 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "@nimblehq/eslint-config-nimble",
+    "@nimblehq/eslint-config-nimble-react"
+  ],
+  "rules": {
+    // suppress errors for missing 'import React' in files since Next.JS import React
+    "react/react-in-jsx-scope": "off"
+  }
 }
