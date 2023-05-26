@@ -7,7 +7,7 @@ interface AuthLayoutProps {
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
     <div
-      className={'layout-auth'}
+      className='layout-auth'
       data-testid="authLayout"
     >
       <main className="app-content">
