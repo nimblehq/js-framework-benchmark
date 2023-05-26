@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
+import 'isomorphic-fetch'
 
 // Workaround for the error in js-dom >= 16 (https://stackoverflow.com/a/68468204)
 import { TextEncoder, TextDecoder } from 'util';
