@@ -16,6 +16,7 @@ const customJestConfig = {
     '^@components/(.*)$': '<rootDir>/src/components/$1',
     '^@test/(.*)$': '<rootDir>/test/$1',
   },
+  testEnvironment: 'jest-environment-jsdom',
   setupFilesAfterEnv: ['<rootDir>/test/database.ts', '<rootDir>/test/jest.ts'],
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
