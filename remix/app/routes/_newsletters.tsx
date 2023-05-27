@@ -1,6 +1,6 @@
 import type { User } from '@prisma/client';
 import type { LoaderArgs } from '@remix-run/node';
-import { Outlet, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 
 import { authenticator } from '../config/auth.server';
 import UserRepository from '../repositories/user.server';
@@ -28,10 +28,11 @@ export default function Index() {
   const { user } = useLoaderData();
 
   return (
-    <div>
-      <h1>Newsletter Page</h1>
-      <p>{user?.name}</p>
-      <Outlet />
-    </div>
+    <section>
+      <article>
+        <h1>Newsletter Page</h1>
+        <p>{user?.name}</p>
+      </article>
+    </section>
   );
 }
