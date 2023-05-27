@@ -1,16 +1,12 @@
 import type { LinksFunction } from '@remix-run/node';
 import {
-  Form,
   Links,
   LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  isRouteErrorResponse,
-  useRouteError,
 } from '@remix-run/react';
-import { SocialsProvider } from 'remix-auth-socials';
 
 import stylesheet from '../app/stylesheets/tailwind.css';
 
@@ -35,26 +31,5 @@ export default function App() {
         <LiveReload />
       </body>
     </html>
-  );
-}
-
-export function ErrorBoundary() {
-  const error = useRouteError();
-
-  if (isRouteErrorResponse(error) && error.status === 403) {
-    return (
-      <div className="error-container">
-        <p>You must be logged.</p>
-        <Form method="post" action={`/auth/${SocialsProvider.GOOGLE}`}>
-          <button>Login with Google</button>
-        </Form>
-      </div>
-    );
-  }
-
-  return (
-    <div className="error-container">
-      Something unexpected went wrong. Sorry about that.
-    </div>
   );
 }
