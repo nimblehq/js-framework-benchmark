@@ -5,7 +5,7 @@ import { authenticator } from '../config/auth.server';
 
 export const action = async ({ request }: ActionArgs) => {
   return authenticator.authenticate(SocialsProvider.GOOGLE, request, {
-    successRedirect: '/newsletters',
-    failureRedirect: '/',
+    successRedirect: '/',
+    failureRedirect: '/auth/sign-in',
   });
 };
