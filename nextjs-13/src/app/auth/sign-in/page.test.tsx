@@ -16,13 +16,18 @@ describe('SignInPage', () => {
     });
   });
   describe('Session status is "authenticated', () => {
-    it.only('redirects to home page', () => {
+    it('redirects to home page', () => {
       useSession.mockReturnValue({ status: 'authenticated' });
       render(<SignInPage />);
       expect(redirect).toHaveBeenCalledWith('/');
     });
   });
   describe('Session status is "unauthenticated', () => {
+    it('renders h4', () => {
+      useSession.mockReturnValue({ status: 'authenticated' });
+      render(<SignInPage />);
+      expect(screen.getByText('NextNewsletter 🚀')).toBeInTheDocument();
+    });
     it('renders sign in button', () => {
       useSession.mockReturnValue({ status: 'unauthenticated' });
       render(<SignInPage />);
