@@ -2,6 +2,7 @@ interface HeaderUserProfileProps {
   name: string;
   avatarUrl: string | null;
 }
+
 export default function HeaderUserProfile({
   name,
   avatarUrl,

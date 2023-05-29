@@ -14,5 +14,5 @@ export async function handleSocialAuthCallBack({ profile }: Profile) {
     throw new Response('This action need authenticated', { status: 401 });
   }
 
-  return profile;
+  return profile._json;
 }
