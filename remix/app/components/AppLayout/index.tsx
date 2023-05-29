@@ -6,6 +6,7 @@ interface LayoutProps {
   children: React.ReactNode;
   user: User;
 }
+
 export default function Layout({ children, user }: LayoutProps) {
   return (
     <div data-testid="app-layout">
