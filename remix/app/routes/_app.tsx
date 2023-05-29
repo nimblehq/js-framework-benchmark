@@ -17,6 +17,7 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function Index() {
   const { user } = useLoaderData();
+
   return (
     <>
       <Layout user={user}>
