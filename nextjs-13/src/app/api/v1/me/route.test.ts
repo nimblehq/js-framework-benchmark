@@ -46,6 +46,7 @@ describe('GET /v1/me', () => {
         email: expect.any(String),
         avatarUrl: expect.any(String),
         createdAt: expect.any(String),
+        updatedAt: expect.any(String),
       });
     });
   });
