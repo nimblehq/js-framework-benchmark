@@ -6,10 +6,6 @@ import { signIn, useSession } from 'next-auth/react';
 const AuthSignInPage = () => {
   const { status } = useSession();
 
-  if (status === 'loading') {
-    return <p>Loading...</p>;
-  }
-
   if (status === 'authenticated') {
     redirect('/');
   }
