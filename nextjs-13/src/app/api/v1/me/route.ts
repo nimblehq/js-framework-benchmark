@@ -16,10 +16,16 @@ export async function GET(req: NextRequest) {
         token.userId as string
       );
 
-      return NextResponse.json({ user: currentUser }, { status: StatusCodes.OK });
+      return NextResponse.json(
+        { user: currentUser },
+        { status: StatusCodes.OK }
+      );
     }
 
-    return NextResponse.json({ message: 'Invalid token' }, { status: StatusCodes.UNAUTHORIZED });
+    return NextResponse.json(
+      { message: 'Invalid token' },
+      { status: StatusCodes.UNAUTHORIZED }
+    );
   } catch (error) {
     return NextResponse.json(
       { message: (error as Error).message },

@@ -15,6 +15,7 @@ describe('Home', () => {
       expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
   });
+
   describe('Session status is "unauthenticated', () => {
     it('redirects to home page', () => {
       useSession.mockReturnValue({ status: 'unauthenticated' });
@@ -22,6 +23,7 @@ describe('Home', () => {
       expect(redirect).toHaveBeenCalledWith('/auth/sign-in');
     });
   });
+
   describe('Session status is "authenticated', () => {
     it('renders h4', () => {
       useSession.mockReturnValue({ status: 'authenticated' });

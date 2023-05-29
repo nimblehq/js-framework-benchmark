@@ -3,8 +3,8 @@
  */
 
 import { User } from '@prisma/client';
-import * as nextAuthJwtModule from 'next-auth/jwt';
 import { StatusCodes } from 'http-status-codes';
+import * as nextAuthJwtModule from 'next-auth/jwt';
 
 import { dbClientMock } from '@test/database';
 import { userFactory } from '@test/factories/user.factory';
