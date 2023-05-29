@@ -6,6 +6,7 @@ import HeaderUserProfile from './UserProfile';
 interface HeaderProps {
   user: User;
 }
+
 export default function Header({ user }: HeaderProps) {
   return (
     <header className="bg-white drop-shadow-xl">
