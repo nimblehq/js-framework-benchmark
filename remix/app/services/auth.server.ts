@@ -9,6 +9,8 @@ export async function handleSocialAuthCallBack({ profile }: Profile) {
 
   if (userProfile) {
     await UserRepository.updateOrCreate(userProfile);
+  } else {
+    throw new Response('This action need authenticated', { status: 401 });
   }
 
   return profile;
