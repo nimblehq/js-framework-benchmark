@@ -4,6 +4,7 @@
 
 import { User } from '@prisma/client';
 import * as nextAuthJwtModule from 'next-auth/jwt';
+import { StatusCodes } from 'http-status-codes';
 
 import { dbClientMock } from '@test/database';
 import { userFactory } from '@test/factories/user.factory';
@@ -39,7 +40,7 @@ describe('GET /v1/me', () => {
       const body = await res.json();
 
       expect(mockGetToken).toBeCalled();
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(StatusCodes.OK);
       expect(body.user).toMatchObject<User>({
         id: '1',
         name: expect.any(String),
@@ -54,7 +55,7 @@ describe('GET /v1/me', () => {
     it('returns an unauthorized error', async () => {
       const res = await GET({});
 
-      expect(res.status).toBe(401);
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED);
     });
   });
 });
