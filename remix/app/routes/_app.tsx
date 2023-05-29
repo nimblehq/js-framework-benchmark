@@ -3,11 +3,11 @@ import type { LoaderArgs } from '@remix-run/node';
 import { Outlet, useLoaderData } from '@remix-run/react';
 
 import Header from '../components/Header';
-import { requireUserSession } from '../lib/middleware/session.middleware';
+import { middleware } from '../middleware';
 import UserRepository from '../repositories/user.server';
 
 export async function loader({ request }: LoaderArgs) {
-  const session = await requireUserSession(request);
+  const session = await middleware(request);
   const user: User = await UserRepository.findBy({
     email: session.email,
   });
