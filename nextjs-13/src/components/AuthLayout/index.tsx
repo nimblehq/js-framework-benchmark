@@ -1,14 +1,13 @@
 import Card from 'components/Card';
 
-interface AuthLayoutProps {
-  children: React.ReactNode;
-}
-
-const AuthLayout = ({ children }: AuthLayoutProps) => {
+export default function Layout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <div
       className='layout-auth'
-      data-testid="authLayout"
     >
       <main className="app-content">
         <Card>{children}</Card>
@@ -16,5 +15,3 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
     </div>
   );
 };
-
-export default AuthLayout;
