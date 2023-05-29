@@ -8,6 +8,7 @@ export default function Layout({
   return (
     <div
       className='layout-auth'
+      data-testid='layout-auth'
     >
       <main className="app-content">
         <Card>{children}</Card>

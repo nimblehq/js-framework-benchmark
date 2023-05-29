@@ -37,7 +37,6 @@ describe('SignInPage', () => {
       signIn
       useSession.mockReturnValue({ status: 'unauthenticated' });
       render(<SignInPage />);
-      // console.log('========>screen.getByTestId("loginButton") : ', userEvent.click(screen.getByTestId('loginButton')))
       await userEvent.click(screen.getByTestId('loginButton'));
       expect(signIn).toHaveBeenCalledWith('google');
     });
