@@ -1,6 +1,12 @@
+import { User } from '@prisma/client';
 import { Link } from '@remix-run/react';
 
-export default function Header() {
+import HeaderUserProfile from './UserProfile';
+
+interface HeaderProps {
+  user: User;
+}
+export default function Header({ user }: HeaderProps) {
   return (
     <header className="bg-white drop-shadow-xl">
       <nav className="px-6 py-4 flex justify-between w-full">
@@ -10,6 +16,7 @@ export default function Header() {
         >
           RemixNewsletter 📀
         </Link>
+        <HeaderUserProfile name={user.name} avatarUrl={user.avatarUrl} />
       </nav>
     </header>
   );
