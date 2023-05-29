@@ -1,6 +1,9 @@
 module.exports = {
   preset: 'ts-jest',
-  setupFilesAfterEnv: ['<rootDir>/app/tests/setup-test-env.ts'],
+  setupFilesAfterEnv: [
+    '<rootDir>/app/tests/jest.ts',
+    '<rootDir>/app/tests/database.ts',
+  ],
   testEnvironment: 'jsdom',
   testPathIgnorePatterns: [`node_modules`, `\\.cache`, `<rootDir>.*/public`],
   testURL: `http://localhost`,
