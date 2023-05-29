@@ -4,12 +4,16 @@ import { authenticator } from './config/auth.server';
 import { UserProfile } from './types';
 
 export async function middleware(request: Request) {
-  const profile = (await authenticator.isAuthenticated(request)) as {
+  const url = new URL(request.url);
+  const user = (await authenticator.isAuthenticated(request)) as {
     _json: UserProfile;
   };
 
-  if (!profile) {
+  if (user && url.pathname.startsWith('/auth')) {
+    throw redirect('/');
+  }
+  if (!user && !url.pathname.startsWith('/auth')) {
     throw redirect('/auth/sign-in');
   }
-  return profile?._json;
+  return user?._json;
 }

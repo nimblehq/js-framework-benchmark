@@ -1,7 +1,15 @@
+import { LoaderArgs } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 import { SocialsProvider } from 'remix-auth-socials';
 
 import googleIcon from '../../public/icons/google.svg';
+import { middleware } from '../middleware';
+
+export async function loader({ request }: LoaderArgs) {
+  const session = await middleware(request);
+
+  return { session };
+}
 
 export default function AuthSignInPage() {
   return (
