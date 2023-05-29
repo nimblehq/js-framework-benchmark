@@ -2,7 +2,7 @@ import { User } from '@prisma/client';
 import type { LoaderArgs } from '@remix-run/node';
 import { Outlet, useLoaderData } from '@remix-run/react';
 
-import Header from '../components/Header';
+import Layout from '../components/AppLayout';
 import { middleware } from '../middleware';
 import UserRepository from '../repositories/user.server';
 
@@ -19,10 +19,9 @@ export default function Index() {
   const { user } = useLoaderData();
   return (
     <>
-      <Header user={user} />
-      <main className="container m-auto py-6 overflow-y-auto overflow-x-hidden">
+      <Layout user={user}>
         <Outlet context={[user]} />
-      </main>
+      </Layout>
     </>
   );
 }

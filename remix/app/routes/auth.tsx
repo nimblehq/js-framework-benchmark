@@ -1,9 +1,11 @@
 import { Outlet } from '@remix-run/react';
 
-export default function Layout() {
+import Layout from '../components/AuthLayout';
+
+export default function Index() {
   return (
-    <main className="prose container h-full m-auto text-center flex justify-center items-center">
+    <Layout>
       <Outlet />
-    </main>
+    </Layout>
   );
 }
