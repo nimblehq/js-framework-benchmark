@@ -1,7 +1,7 @@
 import UserRepository from '../repositories/user.server';
 import type { UserProfile } from '../types';
 
-interface Profile {
+export interface Profile {
   profile: { _json: UserProfile };
 }
 

@@ -10,6 +10,10 @@ module.exports = {
   transformIgnorePatterns: [
     '/node_modules/(?!(@remix-run/web-fetch|@remix-run/web-blob|@remix-run/web-stream|@remix-run/web-form-data|@remix-run/web-file|@web3-storage/multipart-parser|uuid)/)',
   ],
+  moduleNameMapper: {
+    // Handle absolute imports in Remix
+    '~/(.*)': '<rootDir>/app/$1',
+  },
   transform: {
     '^.+\\.(ts|tsx)?$': 'ts-jest',
     '^.+\\.(js|jsx)$': 'babel-jest',

@@ -9,8 +9,10 @@ export async function middleware(request: Request) {
   if (user && url.pathname.startsWith('/auth')) {
     throw redirect('/');
   }
+
   if (!user && !url.pathname.startsWith('/auth')) {
     throw redirect('/auth/sign-in');
   }
+
   return user;
 }
