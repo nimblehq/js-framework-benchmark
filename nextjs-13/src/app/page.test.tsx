@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+
 import Home from './page';
 
 jest.mock('next-auth/react');
@@ -25,7 +26,9 @@ describe('Home', () => {
     it('renders h4', () => {
       useSession.mockReturnValue({ status: 'authenticated' });
       render(<Home />);
-      expect(screen.getByText('Welcome to NextNewsletter 🚀')).toBeInTheDocument();
+      expect(
+        screen.getByText('Welcome to NextNewsletter 🚀')
+      ).toBeInTheDocument();
     });
   });
 });

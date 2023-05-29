@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useSession, signIn } from 'next-auth/react';
 import { redirect } from 'next/navigation';
+import { useSession, signIn } from 'next-auth/react';
+
 import SignInPage from './page';
 
 jest.mock('next-auth/react');
@@ -34,7 +35,6 @@ describe('SignInPage', () => {
       expect(screen.getByTestId('loginButton')).toBeInTheDocument();
     });
     it('calls signIn on button click', async () => {
-      signIn
       useSession.mockReturnValue({ status: 'unauthenticated' });
       render(<SignInPage />);
       await userEvent.click(screen.getByTestId('loginButton'));

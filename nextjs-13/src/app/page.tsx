@@ -1,16 +1,16 @@
-"use client"
+'use client';
 import Head from 'next/head';
-import { useSession } from "next-auth/react"
 import { redirect } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 const Home = () => {
-  const { status } = useSession()
+  const { status } = useSession();
 
-  if (status === "loading") {
-    return <p>Loading...</p>
+  if (status === 'loading') {
+    return <p>Loading...</p>;
   }
 
-  if (status === "unauthenticated") {
+  if (status === 'unauthenticated') {
     redirect('/auth/sign-in');
   }
 

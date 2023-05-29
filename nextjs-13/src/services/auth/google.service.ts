@@ -1,5 +1,6 @@
-import { createUser, findUserByEmail } from "repositories/user.repository";
-import { Profile as NextAuthProfile } from 'next-auth/core/types'
+import { Profile as NextAuthProfile } from 'next-auth/core/types';
+
+import { createUser, findUserByEmail } from 'repositories/user.repository';
 
 interface Profile extends NextAuthProfile {
   picture?: string;
@@ -8,20 +9,18 @@ interface Profile extends NextAuthProfile {
 }
 
 class AuthGoogleService {
-  static async verifyOrCreateUser(
-    userProfile: Profile
-  ) {
+  static async verifyOrCreateUser(userProfile: Profile) {
     try {
       const { picture, name, email } = userProfile;
 
       if (!name || !email) {
-        return
+        return;
       }
 
       const existingUser = await findUserByEmail(email);
 
       if (existingUser) {
-        return existingUser
+        return existingUser;
       }
 
       const userAttributes = {
@@ -31,9 +30,7 @@ class AuthGoogleService {
       };
 
       return await createUser(userAttributes);
-    } catch (error) {
-      return
-    }
+    } catch (error) {}
   }
 }
 

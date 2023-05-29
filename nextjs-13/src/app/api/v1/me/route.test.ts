@@ -3,9 +3,10 @@
  */
 
 import { User } from '@prisma/client';
+import * as nextAuthJwtModule from 'next-auth/jwt';
+
 import { dbClientMock } from '@test/database';
 import { userFactory } from '@test/factories/user.factory';
-import * as nextAuthJwtModule from "next-auth/jwt";
 
 import { GET } from './route';
 
@@ -26,16 +27,18 @@ describe('GET /v1/me', () => {
         async () =>
           new Promise((resolve) => {
             resolve({
-              userId: '1'
+              userId: '1',
             });
           })
       );
-      jest.spyOn(nextAuthJwtModule, "getToken").mockImplementation(mockGetToken);
+      jest
+        .spyOn(nextAuthJwtModule, 'getToken')
+        .mockImplementation(mockGetToken);
 
       const res = await GET({});
-      const body = await res.json()
+      const body = await res.json();
 
-      expect(mockGetToken).toBeCalled()
+      expect(mockGetToken).toBeCalled();
       expect(res.status).toBe(200);
       expect(body.user).toMatchObject<User>({
         id: '1',

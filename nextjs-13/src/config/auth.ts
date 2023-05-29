@@ -1,7 +1,8 @@
-import NextAuth from "next-auth"
-import type { NextAuthOptions } from 'next-auth'
-import GoogleProvider from 'next-auth/providers/google'
-import AuthGoogleService from "services/auth/google.service";
+import NextAuth from 'next-auth';
+import type { NextAuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+
+import AuthGoogleService from 'services/auth/google.service';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -13,26 +14,26 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ profile, account }) {
-      if(!profile) return false
+      if (!profile) return false;
 
       const user = await AuthGoogleService.verifyOrCreateUser(profile);
 
       if (user && account) {
-        account.id = user.id
+        account.id = user.id;
       }
 
-      return !!user
+      return !!user;
     },
     async redirect({ baseUrl }) {
-      return baseUrl
+      return baseUrl;
     },
     async jwt({ token, account }) {
       if (account) {
-        token.userId = account.id
+        token.userId = account.id;
       }
       return Promise.resolve(token);
-    }
-  }
-}
+    },
+  },
+};
 
-export default NextAuth(authOptions)
+export default NextAuth(authOptions);

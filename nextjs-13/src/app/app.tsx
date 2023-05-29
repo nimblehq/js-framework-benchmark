@@ -1,27 +1,25 @@
-"use client"
-import AuthLayout from "../components/AuthLayout";
-import AppLayout from "../components/AppLayout";
+'use client';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
 import { usePathname } from 'next/navigation';
+
+import { ApiMeResponse } from './api/v1/me/route';
+import AppLayout from '../components/AppLayout';
+import AuthLayout from '../components/AuthLayout';
 import '../stylesheets/application.scss';
 import {
   UserState,
   UserContext,
   UserContextValue,
 } from '../context/user.context';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import requestManager from '../lib/request/manager';
-import { ApiMeResponse } from "./api/v1/me/route";
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   const pathname = usePathname();
-
-  if (pathname.includes('/sign-in')) {
-    return <AuthLayout>{children}</AuthLayout>
-  }
 
   const [user, setUser] = useState<UserState>(undefined);
 
@@ -43,9 +41,13 @@ export default function RootLayout({
     [user]
   );
 
+  if (pathname.includes('/sign-in')) {
+    return <AuthLayout>{children}</AuthLayout>;
+  }
+
   return (
     <UserContext.Provider value={userContextValue}>
       <AppLayout>{children}</AppLayout>
     </UserContext.Provider>
-  )
+  );
 }

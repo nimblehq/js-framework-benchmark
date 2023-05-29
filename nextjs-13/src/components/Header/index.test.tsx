@@ -1,9 +1,9 @@
 import { User } from '@prisma/client';
 import { render, screen } from '@testing-library/react';
 
+import Header from './';
 import { userFactory } from '../../../test/factories/user.factory';
 import { UserContext } from '../../context/user.context';
-import Header from './';
 
 const renderHeader = (user: User | Record<string, never>) => {
   const contextValue = {

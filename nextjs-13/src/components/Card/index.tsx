@@ -3,7 +3,11 @@ interface CardProps {
 }
 
 const Card = ({ children }: CardProps) => {
-  return <div className="card" data-testid="card">{children}</div>;
+  return (
+    <div className="card" data-testid="card">
+      {children}
+    </div>
+  );
 };
 
 export default Card;

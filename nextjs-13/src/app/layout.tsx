@@ -1,21 +1,18 @@
-import { NextAuthProvider } from "./session-providers";
-import App from "./app";
-
+import App from './app';
+import { NextAuthProvider } from './session-providers';
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body>
         <NextAuthProvider>
-          <App>
-            {children}
-          </App>
+          <App>{children}</App>
         </NextAuthProvider>
       </body>
     </html>
-  )
+  );
 }
