@@ -10,6 +10,6 @@ describe('AuthLayout', () => {
       </AuthLayout>
     );
 
-    expect(screen.getByTestId('authLayout')).toBeVisible();
+    expect(screen.getByTestId('layout-auth')).toBeVisible();
   });
 });
