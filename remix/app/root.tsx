@@ -1,11 +1,14 @@
 import type { LinksFunction } from '@remix-run/node';
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
+  useRouteError,
 } from '@remix-run/react';
 
 import stylesheet from '../app/stylesheets/tailwind.css';
@@ -32,4 +35,19 @@ export default function App() {
       </body>
     </html>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error) && error.status === 401) {
+    return (
+      <div>
+        <h3>You must be logged.</h3>
+        <Link to={'/auth/sign-in'}>Login with Google</Link>;
+      </div>
+    );
+  }
+
+  return <div>Something unexpected went wrong. Sorry about that.</div>;
 }
