@@ -7,7 +7,7 @@ import { middleware } from '../middleware';
 import UserRepository from '../repositories/user.server';
 
 export async function loader({ request }: LoaderArgs) {
-  const session = await middleware(request);
+  const session = (await middleware(request)) as User;
   const user: User = await UserRepository.findBy({
     email: session.email,
   });

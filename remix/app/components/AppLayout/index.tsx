@@ -8,11 +8,11 @@ interface LayoutProps {
 }
 export default function Layout({ children, user }: LayoutProps) {
   return (
-    <>
-      <Header user={user} />;
+    <div data-testid="app-layout">
+      <Header user={user} />
       <main className="container m-auto py-6 overflow-y-auto overflow-x-hidden">
         {children}
       </main>
-    </>
+    </div>
   );
 }
