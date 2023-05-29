@@ -1,5 +1,4 @@
-import type { PrismaClient } from '@prisma/client';
-import '@testing-library/jest-dom/extend-expect';
+import { PrismaClient } from '@prisma/client';
 import type { DeepMockProxy } from 'jest-mock-extended';
 import { mockDeep, mockReset } from 'jest-mock-extended';
 
