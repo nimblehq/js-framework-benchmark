@@ -6,7 +6,7 @@ import { prismaMock } from '../tests/setup-test-env';
 
 describe('User Repository', () => {
   describe('updateOrCreate', () => {
-    describe('given there is a user information', () => {
+    describe('given there is an existing user', () => {
       it('creates a user', async () => {
         const user = { ...userFactory };
 
