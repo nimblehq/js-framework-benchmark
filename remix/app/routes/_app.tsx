@@ -19,7 +19,7 @@ export default function Index() {
   const { user } = useLoaderData();
   return (
     <>
-      <Header />
+      <Header user={user} />
       <main className="container m-auto py-6 overflow-y-auto overflow-x-hidden">
         <Outlet context={[user]} />
       </main>
