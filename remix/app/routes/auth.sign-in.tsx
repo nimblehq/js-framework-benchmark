@@ -15,11 +15,11 @@ export default function AuthSignInPage() {
   return (
     <>
       <section className="flex flex-col gap-4">
-        <article>
+        <header>
           <h1>Sign in | Remix Newsletter 📀</h1>
           <h4>Remix Newsletter</h4>
-        </article>
-        <article className="flex justify-center">
+        </header>
+        <div className="flex justify-center">
           <Form method="post" action={`/auth/${SocialsProvider.GOOGLE}`}>
             <button
               type="submit"
@@ -29,7 +29,7 @@ export default function AuthSignInPage() {
               Login with Google
             </button>
           </Form>
-        </article>
+        </div>
       </section>
     </>
   );
