@@ -11,7 +11,6 @@ export default async function baseHandler(
   try {
     const token = await getToken({ req });
 
-    console.log('========>token : ', token)
     if (token && token.userId) {
       const currentUser = await findUserById(token.userId as string);
 
@@ -22,7 +21,6 @@ export default async function baseHandler(
           body = await req.json()
         } catch (err) {}
 
-        console.log('========>currentUser : ', currentUser)
         console.log('========>body : ', body)
         return await callback(currentUser, body);
       }
