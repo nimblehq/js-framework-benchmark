@@ -1,0 +1,40 @@
+.app-header {
+  display: flex;
+  align-items: center;
+
+  height: var(--size-10);
+
+  &__navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    width: 100%;
+  }
+
+  &__brand {
+    font-size: var(--font-size-fluid-1);
+    font-weight: var(--font-weight-7);
+  }
+
+  &__navigation {
+    .dropdown__menu {
+      width: 8rem;
+    }
+
+    .dropdown__menu button {
+      @include chromeless();
+
+      display: block;
+      padding: 0;
+      width: 100%;
+
+      color: var(--text1);
+      text-align: left;
+
+      font-size: var(--font-size-0);
+      white-space: pre;
+    }
+  }
+}

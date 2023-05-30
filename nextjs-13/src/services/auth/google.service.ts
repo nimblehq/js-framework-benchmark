@@ -1,24 +1,26 @@
-import { createUser, findUserByEmail } from "repositories/user.repository";
+import { Profile as NextAuthProfile } from 'next-auth/core/types';
 
-interface Profile {
-  picture: string;
-  name: string;
-  email: string;
+import { createUser, findUserByEmail } from 'repositories/user.repository';
+
+interface Profile extends NextAuthProfile {
+  picture?: string;
+  name?: string;
+  email?: string;
 }
 
 class AuthGoogleService {
-  static async verifyOrCreateUser(
-    userProfile: Profile
-  ) {
+  static async verifyOrCreateUser(userProfile: Profile) {
     try {
       const { picture, name, email } = userProfile;
 
-      const existingUser = await findUserByEmail(
-        email
-      );
+      if (!name || !email) {
+        return;
+      }
+
+      const existingUser = await findUserByEmail(email);
 
       if (existingUser) {
-        return true
+        return existingUser;
       }
 
       const userAttributes = {
@@ -27,12 +29,8 @@ class AuthGoogleService {
         email: email,
       };
 
-      await createUser(userAttributes);
-
-      return true
-    } catch (error) {
-      return false
-    }
+      return await createUser(userAttributes);
+    } catch (error) {}
   }
 }
 

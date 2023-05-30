@@ -1,0 +1,7 @@
+@mixin chromeless() {
+  text-shadow: none;
+
+  border: none;
+  box-shadow: none;
+  background: none;
+}

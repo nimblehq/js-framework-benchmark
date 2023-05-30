@@ -7,7 +7,7 @@ import AuthGoogleService from './google.service';
 describe('User AuthGoogleService', () => {
   describe('verifyOrCreateUser', () => {
     describe('given there is an existing user', () => {
-      it('returns true', async () => {
+      it('returns the existing user', async () => {
         const userAttributes = {
           email: 'dev@nimblehq.co',
         };
@@ -18,12 +18,12 @@ describe('User AuthGoogleService', () => {
 
         await expect(
           AuthGoogleService.verifyOrCreateUser(profile)
-        ).resolves.toEqual(true);
+        ).resolves.toEqual(existingUser);
       });
     });
 
     describe('given there is NO existing user', () => {
-      it('creates and returns true', async () => {
+      it('creates and returns a new user', async () => {
         const profileAttributes = {
           email: 'dev@nimblehq.co',
         };
@@ -35,12 +35,12 @@ describe('User AuthGoogleService', () => {
 
         await expect(
           AuthGoogleService.verifyOrCreateUser(profile)
-        ).resolves.toEqual(true);
+        ).resolves.toEqual(newUser);
       });
     });
 
     describe('given there is NO existing user and the profile contains NO photos', () => {
-      it('creates and returns true', async () => {
+      it('creates and returns a new user with an empty avatarUrl', async () => {
         const profileAttributes = {
           picture: '',
         };
@@ -52,7 +52,7 @@ describe('User AuthGoogleService', () => {
 
         await expect(
           AuthGoogleService.verifyOrCreateUser(profile)
-        ).resolves.toEqual(true);
+        ).resolves.toEqual(newUser);
       });
     });
   });
