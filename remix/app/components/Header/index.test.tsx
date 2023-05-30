@@ -1,5 +1,5 @@
+// eslint-disable-next-line import/order
 import { BrowserRouter } from 'react-router-dom';
-
 import { render, screen } from '@testing-library/react';
 
 import Header from './';
