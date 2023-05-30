@@ -5,7 +5,7 @@
 import { createCookieSessionStorage } from '@remix-run/node';
 import { Authenticator } from 'remix-auth';
 
-describe('Path Action', () => {
+describe('middleware', () => {
   const sessionStorage = createCookieSessionStorage({
     cookie: { secrets: ['s3cr3t'] },
   });
@@ -14,7 +14,7 @@ describe('Path Action', () => {
     jest.resetAllMocks();
   });
 
-  it('should return a redirect', async () => {
+  it('returns the user on the session', async () => {
     const user = { id: '123' };
     const session = await sessionStorage.getSession();
     session.set('user', user);
