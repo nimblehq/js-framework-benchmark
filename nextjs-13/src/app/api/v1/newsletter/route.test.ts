@@ -3,12 +3,14 @@
  */
 
 import { Newsletter } from '@prisma/client';
-import * as nextAuthJwtModule from 'next-auth/jwt';
 
 import { dbClientMock } from '@test/database';
 import { newsletterFactory } from '@test/factories/newsletter.factory';
 
 import { POST } from './route';
+import baseHandler from 'lib/handler/base.handler';
+
+jest.mock('lib/handler/base.handler');
 
 describe('POST /v1/newsletter', () => {
   afterEach(() => {
@@ -18,20 +20,11 @@ describe('POST /v1/newsletter', () => {
   describe('given an authenticated newsletter', () => {
     describe('given valid params', () => {
       it('creats a newsletter', async () => {
-        const userAttributes = { userId: '1' };
+        const user = { id: '1' };
 
-        const mockGetToken = jest.fn(
-          async () =>
-            new Promise((resolve) => {
-              resolve(userAttributes);
-            })
-        );
+        // const baseHandler = jest.fn().mockImplementation((req, callback) => callback(user));
 
-        jest
-          .spyOn(nextAuthJwtModule, 'getToken')
-          .mockImplementation(mockGetToken);
-
-        const newsletterAttributes = { id: '1', ...userAttributes };
+        const newsletterAttributes = { id: '1', userId: user.id };
         const newsletter = { ...newsletterFactory, ...newsletterAttributes };
         dbClientMock.newsletter.create.mockResolvedValue(newsletter);
 
@@ -41,7 +34,6 @@ describe('POST /v1/newsletter', () => {
         });
         const body = await res.json();
 
-        expect(mockGetToken).toBeCalled();
         expect(res.status).toBe(200);
         expect(body.newsletter).toMatchObject<Newsletter>({
           id: newsletterAttributes.id,
