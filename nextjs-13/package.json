@@ -34,7 +34,6 @@
     "open-props": "1.4.14",
     "prisma": "^4.14.1",
     "react": "18.2.0",
-    "react-alert": "^7.0.3",
     "react-dom": "18.2.0",
     "react-modal": "^3.16.1",
     "react-spinners": "^0.13.8",

@@ -31,7 +31,6 @@ const requestManager = <ResponseData = unknown>(
     ...defaultOptions(),
     ...requestOptions,
   };
-  console.log('========>requestParams : ', requestParams);
   return axios
     .request<ResponseData>(requestParams)
     .then((response: AxiosResponse) => {
