@@ -29,6 +29,19 @@ jobs:
           cache: "npm"
           cache-dependency-path: "remix/package-lock.json"
 
+      - name: Create env file
+        run: |
+          touch .env
+          echo NODE_ENV=development >> .env
+          echo GOOGLE_CLIENT_ID=274093098276-7sar8nsfcpsge9ni7p4nbi5rui6ed3dn.apps.googleusercontent.com >> .env
+          echo GOOGLE_CLIENT_SECRET=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 >> .env
+          echo SESSION_NAME=__session >> .env
+          echo SESSION_SAMESITE=lax >> .env
+          echo SESSION_PATH=/ >> .env
+          echo SESSION_HTTPONLY=1 >> .env
+          echo SESSION_SECRETS=veryscret >> .env
+          echo SESSION_SECURE=1 >> .env
+
       - name: Install dependencies
         run: npm ci
 
