@@ -16,17 +16,20 @@ describe('SignInPage', () => {
       expect(redirect).toHaveBeenCalledWith('/');
     });
   });
+
   describe('Session status is "unauthenticated', () => {
     it('renders h4', () => {
       useSession.mockReturnValue({ status: 'authenticated' });
       render(<SignInPage />);
       expect(screen.getByText('NextNewsletter 🚀')).toBeInTheDocument();
     });
+
     it('renders sign in button', () => {
       useSession.mockReturnValue({ status: 'unauthenticated' });
       render(<SignInPage />);
       expect(screen.getByTestId('loginButton')).toBeInTheDocument();
     });
+
     it('calls signIn on button click', async () => {
       useSession.mockReturnValue({ status: 'unauthenticated' });
       render(<SignInPage />);
