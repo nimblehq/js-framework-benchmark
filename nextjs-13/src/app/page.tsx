@@ -1,10 +1,15 @@
 'use client';
+import { useState } from 'react';
+
 import Head from 'next/head';
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
+import CreateNewsletterModal from '@components/CreateNewsletterModal/page';
+
 const Home = () => {
   const { status } = useSession();
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   if (status === 'loading') {
     return <p>Loading...</p>;
@@ -15,12 +20,29 @@ const Home = () => {
   }
 
   return (
-    <>
+    <div className="home">
       <Head>
         <title>Welcome to NextNewsletter 🚀</title>
       </Head>
-      <h4>Welcome to NextNewsletter 🚀</h4>
-    </>
+      <div className="home__nav">
+        <div className="home__tab">Newsletter</div>
+      </div>
+      <div className="home__dashboard">
+        <div></div>
+        <div>
+          <button
+            onClick={() => setIsOpen(true)}
+            className="home__create-button"
+          >
+            Create newsletter
+          </button>
+          <CreateNewsletterModal
+            modalIsOpen={modalIsOpen}
+            setIsOpen={setIsOpen}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 
