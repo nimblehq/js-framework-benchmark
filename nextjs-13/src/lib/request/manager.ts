@@ -31,14 +31,14 @@ const requestManager = <ResponseData = unknown>(
     ...defaultOptions(),
     ...requestOptions,
   };
-
+  console.log('========>requestParams : ', requestParams);
   return axios
     .request<ResponseData>(requestParams)
     .then((response: AxiosResponse) => {
       return response.data;
     })
     .catch((error: AxiosError) => {
-      throw new RequestError({ message: error.message });
+      throw new RequestError({ message: error?.response?.data?.message });
     });
 };
 
