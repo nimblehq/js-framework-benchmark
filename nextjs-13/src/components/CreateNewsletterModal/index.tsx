@@ -24,7 +24,6 @@ type Props = {
 };
 
 const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
-  console.log('========>requestManager : ', requestManager);
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
@@ -34,7 +33,6 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
     setName('');
     setContent('');
   };
-  console.log('========>content : ', content);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,7 +45,6 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
           content,
         },
       });
-      console.log('========>222 : ', 222);
 
       closeModal();
       setLoading(false);
@@ -57,9 +54,7 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
         hideProgressBar: false,
       });
     } catch (error) {
-      console.log('========>111 : ', 111);
       setLoading(false);
-      console.log('========>error : ', error);
       toast.error(error.message, {
         position: 'top-center',
         autoClose: 3000,
@@ -106,11 +101,6 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
               <label htmlFor="content">Content</label>
               <br />
 
-              {/* <textarea
-                id="content"
-                value={content}
-                onChange={(event) => setContent(event.target.value)}
-              ></textarea> */}
               <TextareaAutosize
                 minRows={5}
                 id="content"

@@ -14,14 +14,11 @@
   &__tab {
     display: flex;
     background: linear-gradient(var(--indigo-5), var(--indigo-7));
-    // height: 40px;
     border-radius: var(--radius-conditional-2);
     padding: var(--size-2);
     color: white;
     cursor: pointer;
     --_size: var(--font-size-1);
-
-    // text-align: center;
   }
 
   &__dashboard {
@@ -31,7 +28,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
   }
 
   &__create-button {
