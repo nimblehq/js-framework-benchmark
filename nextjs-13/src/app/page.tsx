@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-import CreateNewsletterModal from '@components/CreateNewsletterModal/page';
+import CreateNewsletterModal from '@components/CreateNewsletterModal';
 
 const Home = () => {
   const { status } = useSession();

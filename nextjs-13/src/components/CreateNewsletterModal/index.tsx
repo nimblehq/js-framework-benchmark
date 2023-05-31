@@ -24,6 +24,7 @@ type Props = {
 };
 
 const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
+  console.log('========>requestManager : ', requestManager);
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
@@ -33,6 +34,7 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
     setName('');
     setContent('');
   };
+  console.log('========>content : ', content);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -45,6 +47,7 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
           content,
         },
       });
+      console.log('========>222 : ', 222);
 
       closeModal();
       setLoading(false);
@@ -54,7 +57,9 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
         hideProgressBar: false,
       });
     } catch (error) {
+      console.log('========>111 : ', 111);
       setLoading(false);
+      console.log('========>error : ', error);
       toast.error(error.message, {
         position: 'top-center',
         autoClose: 3000,
@@ -70,7 +75,7 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={customStyles}
-        contentLabel="Example Modal"
+        ariaHideApp={false}
       >
         <button onClick={closeModal} className="ReactModalPortal__btn-close">
           X
@@ -82,26 +87,33 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
             className="ReactModalPortal__spinner"
           />
         ) : (
-          <div>
-            <h3>Create newsletter</h3>
+          <div data-testid="modal-content">
+            <h3>Create your newsletter</h3>
 
             <form onSubmit={handleSubmit}>
-              <label>Name</label>
+              <label htmlFor="name">Name</label>
               <br />
 
               <input
                 type="text"
+                id="name"
                 required
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
               <br />
 
-              <label>Content</label>
+              <label htmlFor="content">Content</label>
               <br />
 
+              {/* <textarea
+                id="content"
+                value={content}
+                onChange={(event) => setContent(event.target.value)}
+              ></textarea> */}
               <TextareaAutosize
                 minRows={5}
+                id="content"
                 required
                 value={content}
                 onChange={(event) => setContent(event.target.value)}
