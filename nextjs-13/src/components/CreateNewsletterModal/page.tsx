@@ -64,7 +64,7 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
   };
 
   return (
-    <>
+    <div data-testid="create-newsletter-modal">
       <ToastContainer />
       <Modal
         isOpen={modalIsOpen}
@@ -118,7 +118,7 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
           </div>
         )}
       </Modal>
-    </>
+    </div>
   );
 };
 

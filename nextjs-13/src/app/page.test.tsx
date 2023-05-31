@@ -1,4 +1,7 @@
+import React from 'react';
+
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
@@ -20,17 +23,37 @@ describe('Home', () => {
     it('redirects to home page', () => {
       useSession.mockReturnValue({ status: 'unauthenticated' });
       render(<Home />);
+
       expect(redirect).toHaveBeenCalledWith('/auth/sign-in');
     });
   });
 
   describe('Session status is "authenticated', () => {
-    it('renders h4', () => {
+    it('renders navigation bar', () => {
       useSession.mockReturnValue({ status: 'authenticated' });
       render(<Home />);
-      expect(
-        screen.getByText('Welcome to NextNewsletter 🚀')
-      ).toBeInTheDocument();
+
+      expect(screen.getByText('Newsletter')).toBeInTheDocument();
+    });
+
+    it('renders create newsletter button', () => {
+      useSession.mockReturnValue({ status: 'authenticated' });
+      render(<Home />);
+
+      expect(screen.getByText('Create newsletter')).toBeInTheDocument();
+    });
+
+    it('renders a modal to create newsletter when click create newsletter button', async () => {
+      useSession.mockReturnValue({ status: 'authenticated' });
+
+      const setStateMock = jest.fn();
+      const useStateMock = (useState) => [useState, setStateMock];
+      jest.spyOn(React, 'useState').mockImplementation(useStateMock);
+
+      render(<Home />);
+
+      await userEvent.click(screen.getByText('Create newsletter'));
+      expect(setStateMock).toHaveBeenCalledWith(true);
     });
   });
 });
