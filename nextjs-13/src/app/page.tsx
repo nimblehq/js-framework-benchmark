@@ -1,19 +1,17 @@
 'use client';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import { ClipLoader } from 'react-spinners';
 
 import Head from 'next/head';
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 import CreateNewsletterModal from '@components/CreateNewsletterModal';
+import ListNewsletter from '@components/ListNewsletter';
 
 const Home = () => {
   const { status } = useSession();
   const [modalIsOpen, setIsOpen] = useState(false);
-
-  if (status === 'loading') {
-    return <p>Loading...</p>;
-  }
 
   if (status === 'unauthenticated') {
     redirect('/auth/sign-in');
@@ -28,6 +26,12 @@ const Home = () => {
         <div className="home__tab">Newsletter</div>
       </div>
       <div className="home__dashboard">
+        <div>
+          <h3>Your Newsletters</h3>
+          <Suspense fallback={<ClipLoader loading={true} size={150} />}>
+            <ListNewsletter />
+          </Suspense>
+        </div>
         <div>
           <button
             onClick={() => setIsOpen(true)}
