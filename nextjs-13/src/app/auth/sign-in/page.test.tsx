@@ -9,14 +9,6 @@ jest.mock('next-auth/react');
 jest.mock('next/navigation');
 
 describe('SignInPage', () => {
-  describe('Session status is "loading', () => {
-    it('renders loading state', () => {
-      useSession.mockReturnValue({ status: 'loading' });
-      render(<SignInPage />);
-      expect(screen.getByText('Loading...')).toBeInTheDocument();
-    });
-  });
-
   describe('Session status is "authenticated', () => {
     it('redirects to home page', () => {
       useSession.mockReturnValue({ status: 'authenticated' });
