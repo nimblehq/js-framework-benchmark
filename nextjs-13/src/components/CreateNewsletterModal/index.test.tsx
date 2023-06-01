@@ -1,7 +1,7 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 
 import requestManager from 'lib/request/manager';
@@ -85,21 +85,24 @@ describe('CreateNewsletterModal', () => {
     const contentTextarea = screen.getByLabelText('Content');
     const createButton = screen.getByText('Create');
 
-    // When testing, code that causes React state updates should be wrapped into act
-    // eslint-disable-next-line testing-library/no-unnecessary-act
-    await act(async () => {
-      fireEvent.change(nameInput, { target: { value: 'Test Name' } });
-      fireEvent.change(contentTextarea, { target: { value: 'Test Content' } });
-      fireEvent.submit(createButton);
-    });
+    fireEvent.change(nameInput, { target: { value: 'Test Name' } });
+    fireEvent.change(contentTextarea, { target: { value: 'Test Content' } });
+    fireEvent.submit(createButton);
 
-    expect(requestManager).toHaveBeenCalledWith('POST', 'v1/newsletter', {
-      data: { name: 'Test Name', content: 'Test Content' },
+    await waitFor(() => {
+      expect(requestManager).toHaveBeenCalledWith('POST', 'v1/newsletter', {
+        data: { name: 'Test Name', content: 'Test Content' },
+      });
     });
-    expect(toast.success).toHaveBeenCalledWith('Created newsletter success!', {
-      position: 'top-center',
-      autoClose: 1000,
-      hideProgressBar: false,
+    await waitFor(() => {
+      expect(toast.success).toHaveBeenCalledWith(
+        'Created newsletter success!',
+        {
+          position: 'top-center',
+          autoClose: 1000,
+          hideProgressBar: false,
+        }
+      );
     });
   });
 
