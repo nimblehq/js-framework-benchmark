@@ -13,10 +13,7 @@ import Home from './page';
 jest.mock('next-auth/react');
 jest.mock('next/navigation');
 
-jest.mock('@components/ListNewsletter', () => {
-  // simulate a processing promise
-  return jest.fn();
-});
+jest.mock('@components/ListNewsletter');
 
 jest.mock('react-spinners', () => ({
   ClipLoader: () => <div data-testid="clip-loader">Loading...</div>,
