@@ -7,6 +7,7 @@ import { Newsletter, Prisma } from '@prisma/client';
 import { dbClientMock } from '@test/database';
 import { newsletterFactory } from '@test/factories/newsletter.factory';
 import baseHandler from 'lib/handler/base.handler';
+
 import { POST } from './route';
 
 jest.mock('lib/handler/base.handler');
