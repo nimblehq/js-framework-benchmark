@@ -18,7 +18,7 @@ const ListNewsletter = () => {
   }, []);
 
   return (
-    <div className="list-newsletter">
+    <div className="list-newsletter" data-testid="list-newsletter">
       <div>
         <ul className="">
           {records.map((item) => {
