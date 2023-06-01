@@ -6,9 +6,9 @@ import { Newsletter, Prisma } from '@prisma/client';
 
 import { dbClientMock } from '@test/database';
 import { newsletterFactory } from '@test/factories/newsletter.factory';
+import baseHandler from 'lib/handler/base.handler';
 
 import { POST } from './route';
-import baseHandler from 'lib/handler/base.handler';
 
 jest.mock('lib/handler/base.handler');
 
@@ -25,9 +25,11 @@ describe('POST /v1/newsletter', () => {
       const requestBody = {
         name: newsletter.name,
         content: newsletter.content,
-      }
+      };
 
-      baseHandler.mockImplementation((req, callback) => callback(user, requestBody));
+      baseHandler.mockImplementation((req, callback) =>
+        callback(user, requestBody)
+      );
       dbClientMock.newsletter.create.mockResolvedValue(newsletter);
 
       const res = await POST(requestBody);
@@ -51,11 +53,13 @@ describe('POST /v1/newsletter', () => {
       const requestBody = {
         name: null,
         content: newsletterFactory.content,
-      }
+      };
 
-      baseHandler.mockImplementation((req, callback) => callback(user, requestBody));
+      baseHandler.mockImplementation((req, callback) =>
+        callback(user, requestBody)
+      );
       dbClientMock.newsletter.create.mockImplementation(() => {
-        throw new Prisma.PrismaClientValidationError;
+        throw new Prisma.PrismaClientValidationError();
       });
 
       const res = await POST(requestBody);
@@ -63,7 +67,7 @@ describe('POST /v1/newsletter', () => {
 
       expect(res.status).toBe(422);
       expect(responseBody).toMatchObject({
-        message: 'Invalid params'
+        message: 'Invalid params',
       });
     });
   });

@@ -2,14 +2,16 @@
  * @jest-environment node
  */
 
+import * as nextAuthJwtModule from 'next-auth/jwt';
+
 import { dbClientMock } from '@test/database';
 import { userFactory } from '@test/factories/user.factory';
-import * as nextAuthJwtModule from 'next-auth/jwt';
+
 import baseHandler from './base.handler';
 
 describe('baseHandler', () => {
   const req = { json: jest.fn() };
-  const body = { key: 'value' }
+  const body = { key: 'value' };
   const callback = jest.fn();
   const userAttributes = { id: '1' };
 
@@ -25,10 +27,9 @@ describe('baseHandler', () => {
 
   const mock = () => {
     req.json.mockResolvedValue(body);
-    jest.spyOn(nextAuthJwtModule, 'getToken')
-        .mockImplementation(mockGetToken);
+    jest.spyOn(nextAuthJwtModule, 'getToken').mockImplementation(mockGetToken);
     dbClientMock.user.findUnique.mockResolvedValue(user);
-  }
+  };
 
   afterEach(() => {
     jest.resetAllMocks();
@@ -37,12 +38,12 @@ describe('baseHandler', () => {
   describe('given token is valid', () => {
     describe('given user exists', () => {
       beforeEach(() => {
-        mock()
+        mock();
       });
 
       it('calls callback with user and body', async () => {
-        await baseHandler(req, callback)
-        expect(callback).toBeCalledWith(user, body);
+        await baseHandler(req, callback);
+        expect(callback).toHaveBeenCalledWith(user, body);
       });
     });
 
@@ -50,11 +51,11 @@ describe('baseHandler', () => {
       beforeEach(() => {
         user = undefined;
 
-        mock()
+        mock();
       });
 
       it('returns invalid token error', async () => {
-        const res = await baseHandler(req, callback)
+        const res = await baseHandler(req, callback);
         expect(res.status).toBe(401);
       });
     });
@@ -69,11 +70,11 @@ describe('baseHandler', () => {
           })
       );
 
-      mock()
+      mock();
     });
 
     it('returns invalid token error', async () => {
-      const res = await baseHandler(req, callback)
+      const res = await baseHandler(req, callback);
       expect(res.status).toBe(401);
     });
   });
