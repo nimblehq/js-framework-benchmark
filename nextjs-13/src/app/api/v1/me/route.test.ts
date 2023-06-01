@@ -10,6 +10,7 @@ import { userFactory } from '@test/factories/user.factory';
 import baseHandler from 'lib/handler/base.handler';
 
 import { GET } from './route';
+
 jest.mock('lib/handler/base.handler');
 
 describe('GET /v1/me', () => {

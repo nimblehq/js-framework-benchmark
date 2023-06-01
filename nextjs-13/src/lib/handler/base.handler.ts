@@ -28,7 +28,7 @@ export default async function baseHandler(
 
     return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
   } catch (err) {
-    console.log('========>err : ', err);
+    console.error('========>err : ', err);
     return NextResponse.json(
       { message: (err as Error).message },
       { status: 500 }
