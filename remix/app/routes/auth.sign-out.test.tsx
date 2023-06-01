@@ -9,6 +9,7 @@ import { Authenticator } from 'remix-auth';
 
 import { action } from './auth.sign-out';
 import { sessionFactory } from '../tests/factories/session.factory';
+import { makeRequest } from '../tests/helpers/request';
 
 jest.mock('./auth.sign-out', () => ({
   action: jest.fn(),
@@ -30,9 +31,7 @@ describe('Auth sign-out', () => {
 
   describe('POST /auth/sign-out', () => {
     it('returns to /auth/sign-in', async () => {
-      const request = new Request('http://localhost:3400/auth/sign-out', {
-        method: 'POST',
-      });
+      const request = makeRequest({ url: '/auth/sign-out', method: 'POST' });
 
       const result: any = await action({
         request,
@@ -53,9 +52,12 @@ describe('Auth sign-out', () => {
 
       session.set('user', user);
 
-      const request = new Request('http://localhost:3400/auth/sign-out', {
+      const request = makeRequest({
+        url: '/auth/sign',
         method: 'POST',
-        headers: { Cookie: await sessionStorage.commitSession(session) },
+        headers: {
+          Cookie: await sessionStorage.commitSession(session),
+        },
       });
 
       new Authenticator(sessionStorage, {
