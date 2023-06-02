@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
 
-import dbClient from 'config/database';
 import baseHandler from 'lib/handler/base.handler';
 import {
   createNewsletter,
