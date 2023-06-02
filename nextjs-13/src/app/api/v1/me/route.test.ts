@@ -3,13 +3,15 @@
  */
 
 import { User } from '@prisma/client';
+import { StatusCodes } from 'http-status-codes';
 
 import { dbClientMock } from '@test/database';
 import { userFactory } from '@test/factories/user.factory';
-import baseHandler from 'lib/handler/base.handler';
+import appHandler from 'lib/handler/app.handler';
 
 import { GET } from './route';
-jest.mock('lib/handler/base.handler');
+
+jest.mock('lib/handler/app.handler');
 
 describe('GET /v1/me', () => {
   afterEach(() => {
@@ -20,13 +22,13 @@ describe('GET /v1/me', () => {
     const userAttributes = { id: '1' };
     const user = { ...userFactory, ...userAttributes };
 
-    baseHandler.mockImplementation((req, callback) => callback(user));
+    appHandler.mockImplementation((req, callback) => callback(user));
     dbClientMock.user.findUnique.mockResolvedValue(user);
 
     const res = await GET({});
     const body = await res.json();
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(StatusCodes.OK);
     expect(body.user).toMatchObject<User>({
       id: '1',
       name: expect.any(String),
