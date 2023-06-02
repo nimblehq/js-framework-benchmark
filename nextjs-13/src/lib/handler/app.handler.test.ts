@@ -2,14 +2,15 @@
  * @jest-environment node
  */
 
+import { StatusCodes } from 'http-status-codes';
 import * as nextAuthJwtModule from 'next-auth/jwt';
 
 import { dbClientMock } from '@test/database';
 import { userFactory } from '@test/factories/user.factory';
 
-import baseHandler from './base.handler';
+import appHandler from './app.handler';
 
-describe('baseHandler', () => {
+describe('appHandler', () => {
   const req = { json: jest.fn() };
   const body = { key: 'value' };
   const callback = jest.fn();
@@ -42,8 +43,8 @@ describe('baseHandler', () => {
       });
 
       it('calls callback with user and body', async () => {
-        await baseHandler(req, callback);
-        expect(callback).toHaveBeenCalledWith(user, body);
+        await appHandler(req, callback);
+        expect(callback).toHaveBeenCalledWith(user, req);
       });
     });
 
@@ -55,8 +56,8 @@ describe('baseHandler', () => {
       });
 
       it('returns invalid token error', async () => {
-        const res = await baseHandler(req, callback);
-        expect(res.status).toBe(401);
+        const res = await appHandler(req, callback);
+        expect(res.status).toBe(StatusCodes.UNAUTHORIZED);
       });
     });
   });
@@ -74,8 +75,8 @@ describe('baseHandler', () => {
     });
 
     it('returns invalid token error', async () => {
-      const res = await baseHandler(req, callback);
-      expect(res.status).toBe(401);
+      const res = await appHandler(req, callback);
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED);
     });
   });
 });
