@@ -10,6 +10,8 @@
     "lint": "eslint ./ --ext .ts,.tsx"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.14",
+    "@heroicons/react": "^2.0.18",
     "@nimblehq/eslint-config-nimble": "^2.4.0",
     "@nimblehq/eslint-config-nimble-react": "^1.2.0",
     "@nimblehq/stylelint-config-nimble": "^1.0.2",
