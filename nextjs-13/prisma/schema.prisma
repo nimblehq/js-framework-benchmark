@@ -8,12 +8,12 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(uuid())
-  name        String       @db.VarChar(100)
-  email       String       @db.VarChar(50)
-  avatarUrl   String?      @map("avatar_url")
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @default(now()) @map("updated_at")
+  id         String       @id @default(uuid())
+  name       String       @db.VarChar(100)
+  email      String       @db.VarChar(50)
+  avatarUrl  String?      @map("avatar_url")
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @default(now()) @map("updated_at") @updatedAt
   newsletters Newsletter[]
 
   @@unique([email])
@@ -28,7 +28,7 @@ model Newsletter {
   user      User     @relation(fields: [userId], references: [id])
   userId    String   @map("user_id")
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
+  updatedAt DateTime @default(now()) @map("updated_at") @updatedAt
 
   @@index([userId])
   @@map("newsletters")

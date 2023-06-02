@@ -1,16 +1,13 @@
+import { StatusCodes } from 'http-status-codes';
 import { NextResponse, NextRequest } from 'next/server';
 
-import dbClient from 'config/database';
-import baseHandler from 'lib/handler/base.handler';
-import {
-  createNewsletter,
-  queryNewsletterByUserId,
-} from 'repositories/newsletter.repository';
+import appHandler from 'lib/handler/app.handler';
+import { createNewsletter } from 'repositories/newsletter.repository';
 
 export async function POST(req: NextRequest) {
-  return baseHandler(req, async (currentUser, body) => {
+  return appHandler(req, async (currentUser) => {
     try {
-      const { name, content } = body;
+      const { name, content } = await req.json();
 
       const attributes = {
         name: name,
@@ -20,15 +17,21 @@ export async function POST(req: NextRequest) {
 
       const record = await createNewsletter(attributes);
 
-      return NextResponse.json({ newsletter: record }, { status: 200 });
+      return NextResponse.json(
+        { newsletter: record },
+        { status: StatusCodes.OK }
+      );
     } catch (err) {
-      return NextResponse.json({ message: 'Invalid params' }, { status: 422 });
+      return NextResponse.json(
+        { message: 'Invalid params' },
+        { status: StatusCodes.UNPROCESSABLE_ENTITY }
+      );
     }
   });
 }
 
 export async function GET(req: NextRequest) {
-  return baseHandler(req, async (currentUser, _) => {
+  return appHandler(req, async (currentUser, _) => {
     const records = await queryNewsletterByUserId(currentUser.id);
 
     return NextResponse.json({ records: records }, { status: 200 });

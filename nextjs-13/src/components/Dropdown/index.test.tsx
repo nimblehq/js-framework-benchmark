@@ -19,6 +19,7 @@ describe('Dropdown', () => {
 
       expect(screen.getByText('Sign out')).toBeInTheDocument();
     });
+
     it('calls signOut on button click', async () => {
       render(<Dropdown />);
       await userEvent.click(screen.getByTestId('dropdown-toggle'));
