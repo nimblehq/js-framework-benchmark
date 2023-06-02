@@ -1,0 +1,42 @@
+{
+  "name": "nextjs-13",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3300",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.0.1",
+    "@nimblehq/eslint-config-nimble-react": "^1.2.0",
+    "@prisma/client": "^4.14.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/node": "20.2.1",
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.4",
+    "axios": "^1.4.0",
+    "eslint": "8.40.0",
+    "eslint-config-next": "13.4.3",
+    "http-status-codes": "^2.2.0",
+    "iron-session": "^6.3.1",
+    "isomorphic-fetch": "^3.0.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "jest-mock-extended": "^3.0.4",
+    "next": "13.4.3",
+    "next-auth": "^4.22.1",
+    "open-props": "1.4.14",
+    "prisma": "^4.14.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "sass": "^1.62.1",
+    "typescript": "5.0.4"
+  }
+}

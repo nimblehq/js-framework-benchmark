@@ -1,19 +1,23 @@
-name: Test
+name: Test Remix
 
-on: 
+on:
   pull_request:
-    paths: 
-      - nextjs-12/**
+    paths:
+      - remix/**
 
 jobs:
-  test:
-    name: Run linters and tests Next.js 12
+  test-remix:
+    name: Run linters and tests Remix
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: remix
+
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
         with:
-          access_token: ${{ github.token }}
+          access_token: ${{github.token}}
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -21,8 +25,9 @@ jobs:
       - name: Setup node and restore cached dependencies
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: "remix/package-lock.json"
 
       - name: Install dependencies
         run: npm ci
@@ -31,4 +36,4 @@ jobs:
         run: npm run lint
 
       - name: Run unit tests
-        run: npm run test:coverage
+        run: npm test -- --coverage
