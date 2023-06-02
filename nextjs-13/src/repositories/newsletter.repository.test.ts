@@ -3,6 +3,7 @@ import { newsletterFactory } from '@test/factories/newsletter.factory';
 
 import {
   createNewsletter,
+  deleteNewsletter,
   queryNewsletterByUserId,
 } from './newsletter.repository';
 
@@ -47,6 +48,22 @@ describe('Newsletter Respository', () => {
 
       await expect(queryNewsletterByUserId(userId)).resolves.toEqual(
         newsletters
+      );
+    });
+  });
+
+  describe('deleteNewsletter', () => {
+    it('deletes a newsletter', async () => {
+      const newsletterAttributes = {
+        id: '1',
+        userId: '1',
+      };
+
+      const result = { count: 1 };
+      dbClientMock.newsletter.deleteMany.mockResolvedValue(result);
+
+      await expect(deleteNewsletter(newsletterAttributes)).resolves.toEqual(
+        result
       );
     });
   });
