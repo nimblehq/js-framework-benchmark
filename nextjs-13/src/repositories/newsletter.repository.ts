@@ -1,7 +1,9 @@
-import dbClient from '../config/database';
-import { Newsletter } from '../models/newsletter.model';
+import { Prisma } from '@prisma/client';
 
-const createNewsletter = async (newsletterAttributes: Newsletter) =>
-  dbClient.newsletter.create({ data: newsletterAttributes });
+import dbClient from '../config/database';
+
+const createNewsletter = async (
+  newsletterAttributes: Prisma.NewsletterCreateInput
+) => dbClient.newsletter.create({ data: newsletterAttributes });
 
 export { createNewsletter };
