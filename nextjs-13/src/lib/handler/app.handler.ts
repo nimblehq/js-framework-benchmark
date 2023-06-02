@@ -1,37 +1,30 @@
 import { User } from '@prisma/client';
+import { StatusCodes } from 'http-status-codes';
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 import { findUserById } from 'repositories/user.repository';
 
-export default async function baseHandler(
+export default async function appHandler(
   req: NextRequest,
   callback: (currentUser: User, body: unknown) => Promise<NextResponse>
 ) {
   try {
     const token = await getToken({ req });
+    const currentUser = await findUserById(token?.userId as string);
 
-    if (token && token.userId) {
-      const currentUser = await findUserById(token.userId as string);
+    if (!currentUser)
+      return NextResponse.json(
+        { message: 'Invalid token' },
+        { status: StatusCodes.UNAUTHORIZED }
+      );
 
-      if (currentUser) {
-        let body = {};
-
-        try {
-          body = await req.json();
-        } catch (err) {}
-
-        console.log('========>body : ', body);
-        return await callback(currentUser, body);
-      }
-    }
-
-    return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
+    return await callback(currentUser, req);
   } catch (err) {
     console.error('========>err : ', err);
     return NextResponse.json(
       { message: (err as Error).message },
-      { status: 500 }
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
     );
   }
 }
