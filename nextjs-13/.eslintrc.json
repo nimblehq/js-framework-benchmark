@@ -1,6 +1,7 @@
 {
   "extends": [
     "next/core-web-vitals",
+    "@nimblehq/eslint-config-nimble",
     "@nimblehq/eslint-config-nimble-react"
   ],
   "rules": {

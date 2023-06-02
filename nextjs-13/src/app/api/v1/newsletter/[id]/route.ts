@@ -1,13 +1,13 @@
 import { NextResponse, NextRequest } from 'next/server';
 
-import baseHandler from 'lib/handler/base.handler';
+import appHandler from 'lib/handler/app.handler';
 import { deleteNewsletter } from 'repositories/newsletter.repository';
 
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  return baseHandler(req, async (currentUser) => {
+  return appHandler(req, async (currentUser) => {
     try {
       const result = await deleteNewsletter(params.id, currentUser.id);
 
