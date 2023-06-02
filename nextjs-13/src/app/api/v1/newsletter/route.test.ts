@@ -55,8 +55,12 @@ describe('POST /v1/newsletter', () => {
     it('return invalid data error', async () => {
       const user = { id: '1' };
       const requestBody = {
-        name: null,
-        content: newsletterFactory.content,
+        json: () => {
+          return {
+            name: null,
+            content: newsletterFactory.content,
+          };
+        },
       };
 
       appHandler.mockImplementation((req, callback) =>
