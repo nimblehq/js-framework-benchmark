@@ -24,7 +24,6 @@ describe('Home', () => {
     it('redirects to home page', () => {
       useSession.mockReturnValue({ status: 'unauthenticated' });
       render(<Home />);
-
       expect(redirect).toHaveBeenCalledWith('/auth/sign-in');
     });
   });
