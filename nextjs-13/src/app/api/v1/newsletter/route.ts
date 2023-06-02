@@ -2,7 +2,10 @@ import { StatusCodes } from 'http-status-codes';
 import { NextResponse, NextRequest } from 'next/server';
 
 import appHandler from 'lib/handler/app.handler';
-import { createNewsletter } from 'repositories/newsletter.repository';
+import {
+  createNewsletter,
+  queryNewsletterByUserId,
+} from 'repositories/newsletter.repository';
 
 export async function POST(req: NextRequest) {
   return appHandler(req, async (currentUser) => {

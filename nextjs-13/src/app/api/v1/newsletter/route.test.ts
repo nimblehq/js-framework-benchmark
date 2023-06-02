@@ -55,8 +55,12 @@ describe('POST /v1/newsletter', () => {
     it('return invalid data error', async () => {
       const user = { id: '1' };
       const requestBody = {
-        name: null,
-        content: newsletterFactory.content,
+        json: () => {
+          return {
+            name: null,
+            content: newsletterFactory.content,
+          };
+        },
       };
 
       appHandler.mockImplementation((req, callback) =>
@@ -72,34 +76,6 @@ describe('POST /v1/newsletter', () => {
       expect(res.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
         message: 'Invalid params',
-      });
-    });
-  });
-});
-
-describe('POST /v1/newsletter', () => {
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
-
-  describe('given valid params', () => {
-    it('returns a list of newsletter', async () => {
-      const user = { id: '1' };
-
-      baseHandler.mockImplementation((req, callback) => callback(user, {}));
-      // dbClientMock.newsletter.create.mockResolvedValue(newsletter);
-
-      const res = await POST(requestBody);
-      const responseBody = await res.json();
-
-      expect(res.status).toBe(200);
-      expect(responseBody.newsletter).toMatchObject<Newsletter>({
-        id: newsletterAttributes.id,
-        name: expect.any(String),
-        content: expect.any(String),
-        userId: newsletterAttributes.userId,
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
       });
     });
   });
