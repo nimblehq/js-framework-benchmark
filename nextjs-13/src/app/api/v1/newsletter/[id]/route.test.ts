@@ -12,13 +12,10 @@ jest.mock('lib/handler/app.handler');
 jest.mock('repositories/newsletter.repository');
 
 describe('DELETE /v1/newsletter/:id', () => {
-  let user: { id: string };
-  let newsletter: { id: string };
+  const user = { id: '1' };
+  const newsletter = { id: '2' };
 
   beforeEach(() => {
-    user = { id: '1' };
-    newsletter = { id: '2' };
-
     appHandler.mockImplementation((_, callback) => callback(user, {}));
     deleteNewsletter.mockResolvedValue({ count: 1 });
   });
