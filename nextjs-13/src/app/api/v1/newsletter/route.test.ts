@@ -4,7 +4,6 @@
 import { Newsletter, Prisma } from '@prisma/client';
 import { StatusCodes } from 'http-status-codes';
 
-import { dbClientMock } from '@test/database';
 import { newsletterFactory } from '@test/factories/newsletter.factory';
 import appHandler from 'lib/handler/app.handler';
 import {
@@ -94,7 +93,6 @@ describe('GET /v1/newsletter', () => {
     const newsletter = { ...newsletterFactory, ...newsletterAttributes };
     appHandler.mockImplementation((req, callback) => callback(user, {}));
     queryNewsletterByUserId.mockResolvedValue([newsletter]);
-    dbClientMock.newsletter.create.mockResolvedValue(newsletter);
 
     const res = await GET({});
     const responseBody = await res.json();
