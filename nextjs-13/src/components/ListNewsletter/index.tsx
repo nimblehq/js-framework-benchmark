@@ -1,3 +1,5 @@
+import NewsletterItem from '@components/NewsletterItem';
+
 interface Record {
   id: string;
   name: string;
@@ -5,20 +7,17 @@ interface Record {
 
 interface Props {
   records: Record[];
+  getData: () => undefined;
 }
 
-const ListNewsletter = ({ records }: Props) => {
+const ListNewsletter = ({ records, getData }: Props) => {
   return (
     <div className="list-newsletter" data-testid="list-newsletter">
       <div>
         <ul className="newsletter-wrapper">
-          {records.map((item) => {
-            return (
-              <li className="newsletter-item" key={item.id}>
-                <span>{item.name}</span>
-              </li>
-            );
-          })}
+          {records.map((item) => (
+            <NewsletterItem key={item.id} item={item} getData={getData} />
+          ))}
         </ul>
       </div>
     </div>
