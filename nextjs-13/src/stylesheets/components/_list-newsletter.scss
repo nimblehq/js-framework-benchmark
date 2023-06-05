@@ -16,11 +16,17 @@
       padding: var(--size-2);
 
       color: black;
-
       cursor: pointer;
+      justify-content: space-between;
       background: var(--gray-0);
       border-radius: var(--radius-conditional-2);
       box-shadow: var(--shadow-2);
+
+      span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 }
