@@ -98,7 +98,7 @@ describe('POST /v1/newsletter', () => {
 });
 
 describe('GET /v1/newsletter', () => {
-  it.only('returns a list of newsletters', async () => {
+  it('returns a list of newsletters', async () => {
     const user = { id: '1' };
     const newsletterAttributes = { id: '1', userId: user.id };
     const newsletter = { ...newsletterFactory, ...newsletterAttributes };
