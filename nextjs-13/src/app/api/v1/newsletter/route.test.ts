@@ -44,6 +44,11 @@ describe('POST /v1/newsletter', () => {
       const res = await POST(requestBody);
       const responseBody = await res.json();
 
+      expect(createNewsletter).toHaveBeenCalledWith({
+        name: newsletter.name,
+        content: newsletter.content,
+        user: { connect: { id: user.id } },
+      });
       expect(res.status).toBe(StatusCodes.OK);
       expect(responseBody.newsletter).toMatchObject<Newsletter>({
         id: newsletterAttributes.id,
@@ -59,11 +64,12 @@ describe('POST /v1/newsletter', () => {
   describe('given invalid params', () => {
     it('return invalid data error', async () => {
       const user = { id: '1' };
+      const content = newsletterFactory.content;
       const requestBody = {
         json: () => {
           return {
             name: null,
-            content: newsletterFactory.content,
+            content: content,
           };
         },
       };
@@ -78,6 +84,11 @@ describe('POST /v1/newsletter', () => {
       const res = await POST(requestBody);
       const responseBody = await res.json();
 
+      expect(createNewsletter).toHaveBeenCalledWith({
+        name: null,
+        content: content,
+        user: { connect: { id: user.id } },
+      });
       expect(res.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
         message: 'Invalid params',
@@ -97,6 +108,7 @@ describe('GET /v1/newsletter', () => {
     const res = await GET({});
     const responseBody = await res.json();
 
+    expect(queryNewsletterByUserId).toHaveBeenCalledWith(user.id);
     expect(res.status).toBe(StatusCodes.OK);
     expect(responseBody.records[0]).toMatchObject<Newsletter>({
       id: newsletterAttributes.id,
