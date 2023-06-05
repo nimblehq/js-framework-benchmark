@@ -3,10 +3,14 @@
  */
 import { StatusCodes } from 'http-status-codes';
 
+import { userFactory } from '@test/factories/user.factory';
 import appHandler from 'lib/handler/app.handler';
-import { deleteNewsletter } from 'repositories/newsletter.repository';
+import {
+  deleteNewsletter,
+  updateNewsletter,
+} from 'repositories/newsletter.repository';
 
-import { DELETE } from './route';
+import { DELETE, PUT } from './route';
 
 jest.mock('lib/handler/app.handler');
 jest.mock('repositories/newsletter.repository');
@@ -45,6 +49,52 @@ describe('DELETE /v1/newsletter/:id', () => {
       expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
         message: 'Newsletter could not be deleted',
+      });
+    });
+  });
+});
+
+describe('PUT /v1/newsletter/:id', () => {
+  const user = { ...userFactory, id: '1' };
+  const newsletter = { id: '2' };
+  const data = {
+    name: 'New name',
+    content: 'New content',
+  };
+  const where = {
+    id: newsletter.id,
+    user: user,
+  };
+  const requestBody = { json: () => data };
+  const args = { where, data };
+
+  beforeEach(() => {
+    appHandler.mockImplementation((_, callback) => callback(user, {}));
+    updateNewsletter.mockResolvedValue({ count: 1 });
+  });
+
+  describe('newsletter exists', () => {
+    it('delete the newsletter', async () => {
+      const res = await PUT(requestBody, { params: { id: newsletter.id } });
+
+      expect(updateNewsletter).toHaveBeenCalledWith(args);
+      expect(res.status).toBe(StatusCodes.OK);
+    });
+  });
+
+  describe('newsletter NOT exists', () => {
+    beforeEach(() => {
+      updateNewsletter.mockResolvedValue({ count: 0 });
+    });
+
+    it('returns error', async () => {
+      const res = await PUT(requestBody, { params: { id: newsletter.id } });
+      const responseBody = await res.json();
+
+      expect(updateNewsletter).toHaveBeenCalledWith(args);
+      expect(res.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
+      expect(responseBody).toMatchObject({
+        message: 'Newsletter not exists',
       });
     });
   });
