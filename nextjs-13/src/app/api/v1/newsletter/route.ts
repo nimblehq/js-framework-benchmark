@@ -37,6 +37,6 @@ export async function GET(req: NextRequest) {
   return appHandler(req, async (currentUser, _) => {
     const records = await queryNewsletterByUserId(currentUser.id);
 
-    return NextResponse.json({ records: records }, { status: 200 });
+    return NextResponse.json({ records: records }, { status: StatusCodes.OK });
   });
 }
