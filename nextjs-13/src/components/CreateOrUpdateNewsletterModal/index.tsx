@@ -20,10 +20,10 @@ const customStyles = {
 type Props = {
   modalIsOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  onAfterCloseCallback: () => undefined;
+  onAfterCloseCallback: () => void;
 };
 
-const CreateNewsletterModal = ({
+const CreateOrUpdateNewsletterModal = ({
   modalIsOpen,
   setIsOpen,
   onAfterCloseCallback,
@@ -123,4 +123,4 @@ const CreateNewsletterModal = ({
   );
 };
 
-export default CreateNewsletterModal;
+export default CreateOrUpdateNewsletterModal;

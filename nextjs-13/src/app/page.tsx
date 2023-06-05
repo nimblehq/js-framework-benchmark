@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-import CreateNewsletterModal from '@components/CreateNewsletterModal';
+import CreateOrUpdateNewsletterModal from '@components/CreateOrUpdateNewsletterModal';
 import ListNewsletter from '@components/ListNewsletter';
 import requestManager from 'lib/request/manager';
 import toast from 'lib/toast/makeToast';
@@ -67,7 +67,7 @@ const Home = () => {
           >
             Create newsletter
           </button>
-          <CreateNewsletterModal
+          <CreateOrUpdateNewsletterModal
             modalIsOpen={modalIsOpen}
             setIsOpen={setIsOpen}
             onAfterCloseCallback={getNewletters}

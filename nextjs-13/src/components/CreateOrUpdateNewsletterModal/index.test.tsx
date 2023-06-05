@@ -6,7 +6,7 @@ import { act } from 'react-dom/test-utils';
 
 import requestManager from 'lib/request/manager';
 
-import CreateNewsletterModal from './index';
+import CreateOrUpdateNewsletterModal from './index';
 
 jest.mock('react-toastify', () => ({
   toast: {
@@ -33,10 +33,10 @@ jest.mock('react-textarea-autosize', () => {
   return TextareaAutosizeMock;
 });
 
-describe('CreateNewsletterModal', () => {
+describe('CreateOrUpdateNewsletterModal', () => {
   it('renders without modal initially', () => {
     render(
-      <CreateNewsletterModal
+      <CreateOrUpdateNewsletterModal
         modalIsOpen={false}
         onAfterCloseCallback={() => undefined}
         setIsOpen={() => undefined}
@@ -50,7 +50,7 @@ describe('CreateNewsletterModal', () => {
 
   it('renders with modal when open', () => {
     render(
-      <CreateNewsletterModal
+      <CreateOrUpdateNewsletterModal
         modalIsOpen={true}
         onAfterCloseCallback={() => undefined}
         setIsOpen={() => undefined}
@@ -66,7 +66,7 @@ describe('CreateNewsletterModal', () => {
     const setIsOpenMock = jest.fn();
 
     render(
-      <CreateNewsletterModal
+      <CreateOrUpdateNewsletterModal
         modalIsOpen={true}
         onAfterCloseCallback={setIsOpenMock}
         setIsOpen={setIsOpenMock}
@@ -81,7 +81,7 @@ describe('CreateNewsletterModal', () => {
 
   it('sets the name field when entering name', () => {
     render(
-      <CreateNewsletterModal
+      <CreateOrUpdateNewsletterModal
         modalIsOpen={true}
         onAfterCloseCallback={() => undefined}
         setIsOpen={() => undefined}
@@ -96,7 +96,7 @@ describe('CreateNewsletterModal', () => {
 
   it('sets the content field when entering content', () => {
     render(
-      <CreateNewsletterModal
+      <CreateOrUpdateNewsletterModal
         modalIsOpen={true}
         onAfterCloseCallback={() => undefined}
         setIsOpen={() => undefined}
@@ -111,7 +111,7 @@ describe('CreateNewsletterModal', () => {
 
   it('submits the form successfully', async () => {
     render(
-      <CreateNewsletterModal
+      <CreateOrUpdateNewsletterModal
         modalIsOpen={true}
         onAfterCloseCallback={() => undefined}
         setIsOpen={() => undefined}
@@ -147,7 +147,7 @@ describe('CreateNewsletterModal', () => {
     requestManager.mockRejectedValue(new Error('Invalid params'));
 
     render(
-      <CreateNewsletterModal
+      <CreateOrUpdateNewsletterModal
         modalIsOpen={true}
         onAfterCloseCallback={() => undefined}
         setIsOpen={() => undefined}
