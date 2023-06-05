@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import { NextResponse, NextRequest } from 'next/server';
 
 import appHandler from 'lib/handler/app.handler';
@@ -14,13 +15,19 @@ export async function DELETE(
       if (result.count === 0) {
         return NextResponse.json(
           { message: 'Newsletter not exists' },
-          { status: 422 }
+          { status: StatusCodes.UNAUTHORIZED }
         );
       }
 
-      return NextResponse.json({ status: 'success' }, { status: 200 });
+      return NextResponse.json(
+        { status: 'success' },
+        { status: StatusCodes.OK }
+      );
     } catch (err) {
-      return NextResponse.json({ message: 'Invalid params' }, { status: 422 });
+      return NextResponse.json(
+        { message: 'Invalid params' },
+        { status: StatusCodes.UNAUTHORIZED }
+      );
     }
   });
 }

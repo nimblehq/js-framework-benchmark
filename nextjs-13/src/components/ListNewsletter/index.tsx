@@ -22,7 +22,6 @@ const ListNewsletter = () => {
   }, []);
 
   const records = promise ? promise.read() : [];
-  console.log('========>records : ', records);
 
   return (
     <>
