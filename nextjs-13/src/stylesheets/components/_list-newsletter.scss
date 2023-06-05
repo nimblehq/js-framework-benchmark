@@ -10,6 +10,7 @@
     li {
       display: flex;
       flex-direction: row;
+      justify-content: space-between;
       background: var(--gray-0);
       border-radius: var(--radius-conditional-2);
       padding: var(--size-2);
@@ -18,6 +19,11 @@
       --_size: var(--font-size-1);
       margin-bottom: var(--size-3);
       box-shadow: var(--shadow-2);
+      span: {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 }
