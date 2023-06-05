@@ -15,7 +15,7 @@ export async function DELETE(
       if (result.count === 0) {
         return NextResponse.json(
           { message: 'Newsletter not exists' },
-          { status: StatusCodes.UNAUTHORIZED }
+          { status: StatusCodes.UNPROCESSABLE_ENTITY }
         );
       }
 
@@ -26,7 +26,7 @@ export async function DELETE(
     } catch (err) {
       return NextResponse.json(
         { message: 'Invalid params' },
-        { status: StatusCodes.UNAUTHORIZED }
+        { status: StatusCodes.UNPROCESSABLE_ENTITY }
       );
     }
   });
