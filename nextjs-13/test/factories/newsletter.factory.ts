@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker';
-import { User } from '@prisma/client';
+import { Newsletter } from '@prisma/client';
 
-export const userFactory: User = {
+export const newsletterFactory: Newsletter = {
   id: faker.datatype.uuid(),
   name: faker.lorem.word(2),
-  email: faker.internet.email(),
-  avatarUrl: faker.image.avatar(),
+  content: faker.lorem.paragraph(),
+  userId: faker.datatype.uuid(),
   createdAt: faker.datatype.datetime(),
   updatedAt: faker.datatype.datetime(),
 };
