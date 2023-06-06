@@ -44,7 +44,6 @@ export default function Index() {
     <>
       <h1>Create Newsletter page </h1>
       <Form method="POST">
-        <input type="hidden" value={''} />
         <label>Name</label>
         <br />
         <input type="text" name="name" placeholder="name" />
