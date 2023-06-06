@@ -82,7 +82,7 @@ const CreateOrUpdateNewsletterModal = ({
 
       onRequestClose();
       setIsLoading(false);
-      toast('Created newsletter success!', 'success');
+      toast(`${action} newsletter success!`, 'success');
     } catch (error) {
       setIsLoading(false);
       toast(error.message, 'error');
@@ -111,7 +111,7 @@ const CreateOrUpdateNewsletterModal = ({
           />
         ) : (
           <div data-testid="modal-content">
-            <h3>{`${action} your newsletter`}</h3>
+            <h3 data-testid="title">{`${action} your newsletter`}</h3>
 
             <form onSubmit={handleSubmit}>
               <label htmlFor="name">Name</label>
@@ -140,7 +140,11 @@ const CreateOrUpdateNewsletterModal = ({
 
               <div className="ReactModalPortal__modal-footer">
                 <div></div>
-                <button type="submit" className="ReactModalPortal__btn-submit">
+                <button
+                  type="submit"
+                  className="ReactModalPortal__btn-submit"
+                  data-testid="btn-submit"
+                >
                   {action}
                 </button>
               </div>

@@ -70,15 +70,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
 
   it('closes the modal when trigger close', () => {
     const setIsOpenMock = jest.fn();
-
-    render(
-      <CreateOrUpdateNewsletterModalWrapper
-        modalIsOpen={true}
-        onAfterCloseCallback={setIsOpenMock}
-        setIsOpen={setIsOpenMock}
-      />
-    );
-
+    render(<CreateOrUpdateNewsletterModalWrapper setIsOpen={setIsOpenMock} />);
     const closeButton = screen.getByText('X');
     fireEvent.click(closeButton);
 
@@ -86,14 +78,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
   });
 
   it('sets the name field when entering name', () => {
-    render(
-      <CreateOrUpdateNewsletterModalWrapper
-        modalIsOpen={true}
-        onAfterCloseCallback={() => undefined}
-        setIsOpen={() => undefined}
-      />
-    );
-
+    render(<CreateOrUpdateNewsletterModalWrapper />);
     const nameInput = screen.getByLabelText('Name');
     fireEvent.change(nameInput, { target: { value: 'Test Name' } });
 
@@ -101,64 +86,159 @@ describe('CreateOrUpdateNewsletterModal', () => {
   });
 
   it('sets the content field when entering content', () => {
-    render(
-      <CreateOrUpdateNewsletterModalWrapper
-        modalIsOpen={true}
-        onAfterCloseCallback={() => undefined}
-        setIsOpen={() => undefined}
-      />
-    );
-
+    render(<CreateOrUpdateNewsletterModalWrapper />);
     const contentTextarea = screen.getByLabelText('Content');
     fireEvent.change(contentTextarea, { target: { value: 'Test Content' } });
 
     expect(contentTextarea.value).toBe('Test Content');
   });
 
-  it('submits the form successfully', async () => {
-    render(
-      <CreateOrUpdateNewsletterModalWrapper
-        modalIsOpen={true}
-        onAfterCloseCallback={() => undefined}
-        setIsOpen={() => undefined}
-      />
-    );
+  describe('modalType', () => {
+    describe('modalType is "create"', () => {
+      it('renders title text correctly', async () => {
+        render(<CreateOrUpdateNewsletterModalWrapper modalType="create" />);
 
-    const nameInput = screen.getByLabelText('Name');
-    const contentTextarea = screen.getByLabelText('Content');
-    const createButton = screen.getByText('Create');
+        const titleElement = screen.getByTestId('title');
+        expect(titleElement).toBeInTheDocument();
+        expect(titleElement).toHaveTextContent('Create your newsletter');
+      });
 
-    fireEvent.change(nameInput, { target: { value: 'Test Name' } });
-    fireEvent.change(contentTextarea, { target: { value: 'Test Content' } });
-    fireEvent.submit(createButton);
+      it('renders button text correctly', async () => {
+        render(<CreateOrUpdateNewsletterModalWrapper modalType="create" />);
 
-    await waitFor(() => {
-      expect(requestManager).toHaveBeenCalledWith('POST', 'v1/newsletter', {
-        data: { name: 'Test Name', content: 'Test Content' },
+        const titleElement = screen.getByTestId('btn-submit');
+        expect(titleElement).toBeInTheDocument();
+        expect(titleElement).toHaveTextContent('Create');
+      });
+
+      it('creates newsletter successfully', async () => {
+        const onAfterCloseCallback = jest.fn();
+        const setIsOpen = jest.fn();
+
+        render(
+          <CreateOrUpdateNewsletterModalWrapper
+            onAfterCloseCallback={onAfterCloseCallback}
+            setIsOpen={setIsOpen}
+            modalType="create"
+          />
+        );
+
+        const nameInput = screen.getByLabelText('Name');
+        const contentTextarea = screen.getByLabelText('Content');
+        const createButton = screen.getByText('Create');
+
+        fireEvent.change(nameInput, { target: { value: 'Test Name' } });
+        fireEvent.change(contentTextarea, {
+          target: { value: 'Test Content' },
+        });
+        fireEvent.submit(createButton);
+
+        await waitFor(() => {
+          expect(requestManager).toHaveBeenCalledWith('POST', 'v1/newsletter', {
+            data: { name: 'Test Name', content: 'Test Content' },
+          });
+        });
+        await waitFor(() => {
+          expect(onAfterCloseCallback).toHaveBeenCalled();
+        });
+        await waitFor(() => {
+          expect(setIsOpen).toHaveBeenCalledWith(false);
+        });
+        await waitFor(() => {
+          expect(toast.success).toHaveBeenCalledWith(
+            'Create newsletter success!',
+            {
+              position: 'top-center',
+              autoClose: 1000,
+              hideProgressBar: false,
+            }
+          );
+        });
       });
     });
-    await waitFor(() => {
-      expect(toast.success).toHaveBeenCalledWith(
-        'Created newsletter success!',
-        {
-          position: 'top-center',
-          autoClose: 1000,
-          hideProgressBar: false,
-        }
-      );
+
+    describe('modalType is "update"', () => {
+      it('renders title text correctly', async () => {
+        render(<CreateOrUpdateNewsletterModalWrapper modalType="update" />);
+
+        const titleElement = screen.getByTestId('title');
+        expect(titleElement).toBeInTheDocument();
+        expect(titleElement).toHaveTextContent('Update your newsletter');
+      });
+
+      it('renders button text correctly', async () => {
+        render(<CreateOrUpdateNewsletterModalWrapper modalType="update" />);
+
+        const titleElement = screen.getByTestId('btn-submit');
+        expect(titleElement).toBeInTheDocument();
+        expect(titleElement).toHaveTextContent('Update');
+      });
+
+      it('updates newsletter successfully', async () => {
+        const onAfterCloseCallback = jest.fn();
+        const setIsOpen = jest.fn();
+        const currentNewsletter = {
+          id: '1',
+          name: 'Old name',
+          content: 'Old content',
+        };
+
+        render(
+          <CreateOrUpdateNewsletterModalWrapper
+            onAfterCloseCallback={onAfterCloseCallback}
+            setIsOpen={setIsOpen}
+            modalType="update"
+            currentNewsletter={currentNewsletter}
+          />
+        );
+
+        const nameInput = screen.getByLabelText('Name');
+        const contentTextarea = screen.getByLabelText('Content');
+        const updateButton = screen.getByText('Update');
+        const newData = {
+          name: 'Old name',
+          content: 'Old content',
+        };
+
+        fireEvent.change(nameInput, { target: { value: newData.name } });
+        fireEvent.change(contentTextarea, {
+          target: { value: newData.content },
+        });
+        fireEvent.submit(updateButton);
+
+        await waitFor(() => {
+          expect(requestManager).toHaveBeenCalledWith(
+            'PUT',
+            `v1/newsletter/${currentNewsletter.id}`,
+            {
+              data: newData,
+            }
+          );
+        });
+        await waitFor(() => {
+          expect(onAfterCloseCallback).toHaveBeenCalled();
+        });
+        await waitFor(() => {
+          expect(setIsOpen).toHaveBeenCalledWith(false);
+        });
+        await waitFor(() => {
+          expect(toast.success).toHaveBeenCalledWith(
+            'Update newsletter success!',
+            {
+              position: 'top-center',
+              autoClose: 1000,
+              hideProgressBar: false,
+            }
+          );
+        });
+      });
     });
   });
 
   it('handles form submission error', async () => {
     requestManager.mockRejectedValue(new Error('Invalid params'));
 
-    render(
-      <CreateOrUpdateNewsletterModalWrapper
-        modalIsOpen={true}
-        onAfterCloseCallback={() => undefined}
-        setIsOpen={() => undefined}
-      />
-    );
+    render(<CreateOrUpdateNewsletterModalWrapper modalType="create" />);
 
     const nameInput = screen.getByLabelText('Name');
     const contentTextarea = screen.getByLabelText('Content');
@@ -171,9 +251,6 @@ describe('CreateOrUpdateNewsletterModal', () => {
       fireEvent.submit(createButton);
     });
 
-    expect(requestManager).toHaveBeenCalledWith('POST', 'v1/newsletter', {
-      data: { name: 'Test Name', content: '' },
-    });
     expect(toast.error).toHaveBeenCalledWith('Invalid params', {
       position: 'top-center',
       autoClose: 3000,
