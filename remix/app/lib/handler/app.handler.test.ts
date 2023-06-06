@@ -8,6 +8,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import appHandler from './app.handler';
 import { authenticator } from '../../config/auth.server';
+import { getSession } from '../../config/session.server';
 import { prismaMock } from '../../tests/database';
 import { userFactory } from '../../tests/factories/user.factory';
 
@@ -17,8 +18,18 @@ jest.mock('../../config/auth.server', () => ({
   },
 }));
 
-const mockRequest = {};
+jest.mock('../../config/session.server', () => ({
+  getSession: jest.fn(),
+}));
+
+const mockRequest: any = {
+  headers: {
+    get: jest.fn(() => 'Cookie Value'),
+  },
+};
+
 const mockCallback = jest.fn();
+const mockCookie = 'test-cookie';
 
 describe('appHandler', () => {
   beforeEach(() => {
@@ -31,11 +42,12 @@ describe('appHandler', () => {
 
       prismaMock.user.findUnique.mockResolvedValue(user);
       (authenticator.isAuthenticated as jest.Mock).mockResolvedValue(user);
+      (getSession as jest.Mock).mockResolvedValueOnce(mockCookie);
 
       await appHandler(mockRequest as any, mockCallback);
 
       expect(authenticator.isAuthenticated).toHaveBeenCalledWith(mockRequest);
-      expect(mockCallback).toHaveBeenCalledWith(user);
+      expect(mockCallback).toHaveBeenCalledWith(user, mockCookie);
     });
   });
 

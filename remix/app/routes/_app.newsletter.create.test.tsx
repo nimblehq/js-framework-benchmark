@@ -4,8 +4,6 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Newsletter } from '@prisma/client';
-
 import { action } from './_app.newsletter.create';
 import { authenticator } from '../config/auth.server';
 import { prismaMock } from '../tests/database';
@@ -50,14 +48,7 @@ describe('POST /newsletter/create', () => {
         context: {},
       });
 
-      expect(await result.json()).toMatchObject<Newsletter>({
-        id: newsletter.id,
-        name: expect.any(String),
-        content: expect.any(String),
-        userId: newsletter.userId,
-        createAt: expect.any(String),
-        updateAt: expect.any(String),
-      });
+      expect(await result.status).toBe(201);
     });
   });
 

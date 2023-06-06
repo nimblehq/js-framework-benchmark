@@ -1,9 +1,12 @@
-import { ActionArgs, json } from '@remix-run/node';
-import { Form } from '@remix-run/react';
+import { ActionArgs, redirect } from '@remix-run/node';
 import { withZod } from '@remix-validated-form/with-zod';
-import { validationError } from 'remix-validated-form';
+import { ValidatedForm, validationError } from 'remix-validated-form';
 import { z } from 'zod';
 
+import FormInput from '../components/FormInput';
+import FormTextarea from '../components/FormTextarea';
+import SubmitButton from '../components/SubmitButton';
+import { commitSession } from '../config/session.server';
 import appHandler from '../lib/handler/app.handler';
 import NewsletterRepository from '../repositories/newsletter.server';
 
@@ -15,7 +18,7 @@ const validator = withZod(
 );
 
 export async function action({ request }: ActionArgs) {
-  return appHandler(request, async (user) => {
+  return appHandler(request, async (user, session) => {
     const result = await validator.validate(await request.formData());
 
     if (result.error) {
@@ -31,26 +34,41 @@ export async function action({ request }: ActionArgs) {
       data: newsletterData,
     });
 
-    return json({ ...newsletter });
+    session.flash(
+      'toastMessage',
+      `${newsletter.name} Newsletter created successfully`
+    );
+    session.flash('toastMode', 'success');
+
+    return redirect(`/`, {
+      headers: { 'Set-Cookie': await commitSession(session) },
+    });
   });
 }
 
 export default function Index() {
   return (
     <>
-      <h1>Create Newsletter page </h1>
-      <Form method="POST">
-        <div>
-          <label htmlFor="name">Name</label>
-          <input type="text" name="name" placeholder="name" />
-        </div>
-        <br />
-        <div>
-          <label htmlFor="content">Content</label>
-          <textarea name="content" placeholder="content" />
-        </div>
-        <button type="submit">Create</button>
-      </Form>
+      <section className="flex flex-col gap-4">
+        <header className="text-xl font-bold">
+          <h1>Create your Newsletter </h1>
+        </header>
+        <ValidatedForm
+          validator={validator}
+          method="POST"
+          resetAfterSubmit={true}
+        >
+          <div className="flex flex-col gap-6">
+            <FormInput label={'Name'} name={'name'} placeholder={'name'} />
+            <FormTextarea
+              label={'Content'}
+              name={'content'}
+              placeholder={'content'}
+            />
+            <SubmitButton name={'Create'} />
+          </div>
+        </ValidatedForm>
+      </section>
     </>
   );
 }

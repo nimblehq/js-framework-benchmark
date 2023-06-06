@@ -1,4 +1,7 @@
-import type { LinksFunction } from '@remix-run/node';
+import { useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+
+import { LinksFunction, LoaderArgs, json } from '@remix-run/node';
 import {
   Link,
   Links,
@@ -8,17 +11,49 @@ import {
   Scripts,
   ScrollRestoration,
   isRouteErrorResponse,
+  useLoaderData,
   useRouteError,
 } from '@remix-run/react';
 import { StatusCodes } from 'http-status-codes';
 
+import { commitSession, getSession } from './config/session.server';
 import stylesheet from '../app/stylesheets/tailwind.css';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet },
 ];
 
+export async function loader({ request }: LoaderArgs) {
+  const session = await getSession(request.headers.get('Cookie'));
+  const toastMessage = session.get('toastMessage') || null;
+  const toastMode = session.get('toastMode') || null;
+
+  return json(
+    { toastMessage, toastMode },
+    {
+      headers: {
+        'Set-Cookie': await commitSession(session),
+      },
+    }
+  );
+}
+
 export default function App() {
+  const { toastMessage, toastMode } = useLoaderData<typeof loader>();
+  useEffect(() => {
+    if (!toastMessage) {
+      return;
+    }
+
+    if (toastMode === 'success') {
+      toast.success(toastMessage);
+    } else if (toastMode === 'error') {
+      toast.error(toastMessage);
+    } else {
+      toast(toastMessage);
+    }
+  }, [toastMessage]);
+
   return (
     <html lang="en">
       <head>
@@ -33,6 +68,7 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        <Toaster />
       </body>
     </html>
   );
