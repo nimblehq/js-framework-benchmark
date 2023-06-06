@@ -6,7 +6,7 @@ import { act } from 'react-dom/test-utils';
 
 import requestManager from 'lib/request/manager';
 
-import CreateOrUpdateNewsletterModal from './index';
+import CreateOrUpdateNewsletterModal, { Props } from './index';
 
 jest.mock('react-toastify', () => ({
   toast: {
@@ -33,40 +33,46 @@ jest.mock('react-textarea-autosize', () => {
   return TextareaAutosizeMock;
 });
 
+type OmittableProps = Partial<Props>;
+
+const CreateOrUpdateNewsletterModalWrapper = ({
+  modalIsOpen,
+  setIsOpen,
+  onAfterCloseCallback,
+  modalType,
+  currentNewsletter,
+}: OmittableProps) => {
+  return (
+    <CreateOrUpdateNewsletterModal
+      modalIsOpen={modalIsOpen ?? true}
+      setIsOpen={setIsOpen ?? (() => undefined)}
+      onAfterCloseCallback={onAfterCloseCallback ?? (() => undefined)}
+      modalType={modalType ?? 'create'}
+      currentNewsletter={currentNewsletter ?? undefined}
+    />
+  );
+};
+
 describe('CreateOrUpdateNewsletterModal', () => {
   it('renders without modal initially', () => {
-    render(
-      <CreateOrUpdateNewsletterModal
-        modalIsOpen={false}
-        onAfterCloseCallback={() => undefined}
-        setIsOpen={() => undefined}
-      />
-    );
-
+    render(<CreateOrUpdateNewsletterModalWrapper modalIsOpen={false} />);
     const modalElement = screen.queryByTestId('modal-content');
 
     expect(modalElement).toBeNull();
   });
 
   it('renders with modal when open', () => {
-    render(
-      <CreateOrUpdateNewsletterModal
-        modalIsOpen={true}
-        onAfterCloseCallback={() => undefined}
-        setIsOpen={() => undefined}
-      />
-    );
-
+    render(<CreateOrUpdateNewsletterModalWrapper modalIsOpen={true} />);
     const modalElement = screen.queryByTestId('modal-content');
 
     expect(modalElement).toBeInTheDocument();
   });
 
-  it('closes the modal', () => {
+  it('closes the modal when trigger close', () => {
     const setIsOpenMock = jest.fn();
 
     render(
-      <CreateOrUpdateNewsletterModal
+      <CreateOrUpdateNewsletterModalWrapper
         modalIsOpen={true}
         onAfterCloseCallback={setIsOpenMock}
         setIsOpen={setIsOpenMock}
@@ -81,7 +87,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
 
   it('sets the name field when entering name', () => {
     render(
-      <CreateOrUpdateNewsletterModal
+      <CreateOrUpdateNewsletterModalWrapper
         modalIsOpen={true}
         onAfterCloseCallback={() => undefined}
         setIsOpen={() => undefined}
@@ -96,7 +102,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
 
   it('sets the content field when entering content', () => {
     render(
-      <CreateOrUpdateNewsletterModal
+      <CreateOrUpdateNewsletterModalWrapper
         modalIsOpen={true}
         onAfterCloseCallback={() => undefined}
         setIsOpen={() => undefined}
@@ -111,7 +117,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
 
   it('submits the form successfully', async () => {
     render(
-      <CreateOrUpdateNewsletterModal
+      <CreateOrUpdateNewsletterModalWrapper
         modalIsOpen={true}
         onAfterCloseCallback={() => undefined}
         setIsOpen={() => undefined}
@@ -147,7 +153,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
     requestManager.mockRejectedValue(new Error('Invalid params'));
 
     render(
-      <CreateOrUpdateNewsletterModal
+      <CreateOrUpdateNewsletterModalWrapper
         modalIsOpen={true}
         onAfterCloseCallback={() => undefined}
         setIsOpen={() => undefined}

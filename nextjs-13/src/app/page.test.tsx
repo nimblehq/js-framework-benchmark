@@ -82,11 +82,21 @@ describe('Home', () => {
         });
       });
 
-      it('renders ListNewsletter', async () => {
-        render(<Home />);
+      describe('giving NOT fetching data', () => {
+        it('NOT renders ClipLoader', async () => {
+          render(<Home />);
 
-        await waitFor(() => {
-          expect(screen.getByTestId('list-newsletter')).toBeVisible();
+          await waitFor(() => {
+            expect(screen.queryByTestId('clip-loader')).not.toBeInTheDocument();
+          });
+        });
+
+        it('renders ListNewsletter', async () => {
+          render(<Home />);
+
+          await waitFor(() => {
+            expect(screen.getByTestId('list-newsletter')).toBeVisible();
+          });
         });
       });
     });

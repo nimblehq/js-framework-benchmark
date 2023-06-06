@@ -1,8 +1,9 @@
 'use client';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import TextareaAutosize from 'react-textarea-autosize';
 
+import 'react-toastify/dist/ReactToastify.css';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 import requestManager from 'lib/request/manager';
@@ -17,20 +18,40 @@ const customStyles = {
   },
 };
 
-type Props = {
+export type ModalType = 'create' | 'update';
+export type Newsletter =
+  | {
+      id: string;
+      name: string;
+      content: string;
+    }
+  | undefined;
+
+export type Props = {
   modalIsOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   onAfterCloseCallback: () => void;
+  modalType: ModalType;
+  currentNewsletter: Newsletter;
 };
 
 const CreateOrUpdateNewsletterModal = ({
   modalIsOpen,
   setIsOpen,
   onAfterCloseCallback,
+  modalType,
+  currentNewsletter,
 }: Props) => {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (currentNewsletter) {
+      setName(currentNewsletter.name);
+      setContent(currentNewsletter.content);
+    }
+  }, [currentNewsletter]);
 
   const onRequestClose = () => {
     setIsOpen(false);
@@ -39,12 +60,20 @@ const CreateOrUpdateNewsletterModal = ({
     onAfterCloseCallback();
   };
 
+  const action = `${modalType === 'create' ? 'Create' : 'Update'}`;
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
 
     try {
-      await requestManager('POST', 'v1/newsletter', {
+      const method = modalType === 'create' ? 'POST' : 'PUT';
+      const url =
+        modalType === 'create'
+          ? 'v1/newsletter'
+          : `v1/newsletter/${currentNewsletter?.id}`;
+
+      await requestManager(method, url, {
         data: {
           name,
           content,
@@ -61,7 +90,7 @@ const CreateOrUpdateNewsletterModal = ({
   };
 
   return (
-    <div data-testid="create-newsletter-modal">
+    <div data-testid="create-or-update-newsletter-modal">
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={onRequestClose}
@@ -82,7 +111,7 @@ const CreateOrUpdateNewsletterModal = ({
           />
         ) : (
           <div data-testid="modal-content">
-            <h3>Create your newsletter</h3>
+            <h3>{`${action} your newsletter`}</h3>
 
             <form onSubmit={handleSubmit}>
               <label htmlFor="name">Name</label>
@@ -112,7 +141,7 @@ const CreateOrUpdateNewsletterModal = ({
               <div className="ReactModalPortal__modal-footer">
                 <div></div>
                 <button type="submit" className="ReactModalPortal__btn-submit">
-                  Create
+                  {action}
                 </button>
               </div>
             </form>

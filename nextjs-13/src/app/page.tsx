@@ -6,7 +6,10 @@ import Head from 'next/head';
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-import CreateOrUpdateNewsletterModal from '@components/CreateOrUpdateNewsletterModal';
+import CreateOrUpdateNewsletterModal, {
+  ModalType,
+  Newsletter,
+} from '@components/CreateOrUpdateNewsletterModal';
 import ListNewsletter from '@components/ListNewsletter';
 import requestManager from 'lib/request/manager';
 import toast from 'lib/toast/makeToast';
@@ -16,6 +19,9 @@ const Home = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [records, setRecords] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [modalType, setModalType] = useState<ModalType>('create');
+  const [currentNewsletter, setCurrentNewsletter] =
+    useState<Newsletter>(undefined);
 
   const getNewletters = async () => {
     setIsLoading(true);
@@ -35,6 +41,23 @@ const Home = () => {
     getNewletters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  async function openCreateModal() {
+    setModalType('create');
+    setIsOpen(true);
+  }
+
+  async function openUpdateModal(item) {
+    setModalType('update');
+    setIsOpen(true);
+    setCurrentNewsletter({
+      ...{
+        id: item.id,
+        name: item.name,
+        content: item.content,
+      },
+    });
+  }
 
   if (status === 'unauthenticated') {
     redirect('/auth/sign-in');
@@ -57,20 +80,20 @@ const Home = () => {
             <ListNewsletter
               records={records}
               refreshRecordListCallback={getNewletters}
+              openUpdateModal={openUpdateModal}
             />
           )}
         </div>
         <div>
-          <button
-            onClick={() => setIsOpen(true)}
-            className="home__create-button"
-          >
+          <button onClick={openCreateModal} className="home__create-button">
             Create newsletter
           </button>
           <CreateOrUpdateNewsletterModal
             modalIsOpen={modalIsOpen}
             setIsOpen={setIsOpen}
             onAfterCloseCallback={getNewletters}
+            currentNewsletter={currentNewsletter}
+            modalType={modalType}
           />
         </div>
       </div>
