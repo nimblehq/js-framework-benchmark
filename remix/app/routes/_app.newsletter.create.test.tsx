@@ -48,7 +48,7 @@ describe('POST /newsletter/create', () => {
         context: {},
       });
 
-      expect(await result.status).toBe(201);
+      expect(await result.status).toBe(302);
     });
   });
 
