@@ -27,15 +27,11 @@ export async function action({ request }: ActionArgs) {
       userId: user.id,
     };
 
-    try {
-      const newsletter = await NewsletterRepository.create({
-        data: newsletterData,
-      });
+    const newsletter = await NewsletterRepository.create({
+      data: newsletterData,
+    });
 
-      return json({ ...newsletter });
-    } catch (error) {
-      throw error;
-    }
+    return json({ ...newsletter });
   });
 }
 
