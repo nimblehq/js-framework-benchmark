@@ -28,7 +28,7 @@ const Home = () => {
         <div className="home__tab">Newsletter</div>
       </div>
       <div className="home__dashboard">
-        <div></div>
+        <div />
         <div>
           <button
             onClick={() => setIsOpen(true)}
