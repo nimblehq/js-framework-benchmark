@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 import { LinksFunction, LoaderArgs, json } from '@remix-run/node';
 import {
@@ -17,6 +17,7 @@ import {
 import { StatusCodes } from 'http-status-codes';
 
 import { commitSession, getSession } from './config/session.server';
+import makeToast from './lib/toast/makeToast';
 import stylesheet from '../app/stylesheets/tailwind.css';
 
 export const links: LinksFunction = () => [
@@ -45,13 +46,7 @@ export default function App() {
       return;
     }
 
-    if (toastMode === 'success') {
-      toast.success(toastMessage);
-    } else if (toastMode === 'error') {
-      toast.error(toastMessage);
-    } else {
-      toast(toastMessage);
-    }
+    makeToast(toastMode, toastMessage);
   }, [toastMessage]);
 
   return (
