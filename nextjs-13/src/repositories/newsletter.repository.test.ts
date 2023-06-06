@@ -40,12 +40,7 @@ describe('Newsletter Respository', () => {
       const newsletter = { ...newsletterFactory, ...newsletterAttributes };
       const newsletters = [newsletter, newsletter];
 
-      const user = {
-        id: userId,
-        newsletters,
-      };
-
-      dbClientMock.user.findUnique.mockResolvedValue(user);
+      dbClientMock.newsletter.findMany.mockResolvedValue(newsletters);
 
       await expect(queryNewsletterByUserId(userId)).resolves.toEqual(
         newsletters

@@ -12,14 +12,13 @@ const deleteNewsletter = async (id: string, userId: string) =>
 const updateNewsletter = async (args: Prisma.NewsletterUpdateManyArgs) =>
   dbClient.newsletter.updateMany(args);
 
-const queryNewsletterByUserId = async (id: string) => {
-  const user = await dbClient.user.findUnique({
-    where: { id: id },
-    include: { newsletters: true },
+const queryNewsletterByUserId = async (id: string) =>
+  dbClient.newsletter.findMany({
+    where: { userId: id },
+    orderBy: {
+      createdAt: 'asc',
+    },
   });
-
-  return user?.newsletters;
-};
 
 export {
   createNewsletter,
