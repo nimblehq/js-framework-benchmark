@@ -10,6 +10,7 @@ import {
   isRouteErrorResponse,
   useRouteError,
 } from '@remix-run/react';
+import { StatusCodes } from 'http-status-codes';
 
 import stylesheet from '../app/stylesheets/tailwind.css';
 
@@ -40,7 +41,10 @@ export default function App() {
 export function ErrorBoundary() {
   const error = useRouteError();
 
-  if (isRouteErrorResponse(error) && error.status === 401) {
+  if (
+    isRouteErrorResponse(error) &&
+    error.status === StatusCodes.UNAUTHORIZED
+  ) {
     return (
       <div>
         <h3>You must be logged.</h3>

@@ -4,6 +4,8 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { StatusCodes } from 'http-status-codes';
+
 import appHandler from './app.handler';
 import { authenticator } from '../../config/auth.server';
 import { prismaMock } from '../../tests/database';
@@ -44,7 +46,7 @@ describe('appHandler', () => {
       try {
         (await appHandler(mockRequest as any, mockCallback)) as Response;
       } catch (error: any) {
-        expect(error.status).toBe(401);
+        expect(error.status).toBe(StatusCodes.UNAUTHORIZED);
       }
     });
   });
