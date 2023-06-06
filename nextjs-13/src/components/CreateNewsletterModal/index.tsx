@@ -2,12 +2,11 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import Modal from 'react-modal';
 import TextareaAutosize from 'react-textarea-autosize';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 import ClipLoader from 'react-spinners/ClipLoader';
 
 import requestManager from 'lib/request/manager';
+import toast from 'lib/toast/makeToast';
 
 const customStyles = {
   content: {
@@ -48,24 +47,15 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
 
       closeModal();
       setLoading(false);
-      toast.success('Created newsletter success!', {
-        position: 'top-center',
-        autoClose: 1000,
-        hideProgressBar: false,
-      });
+      toast('Created newsletter success!', 'success');
     } catch (error) {
       setLoading(false);
-      toast.error(error.message, {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-      });
+      toast(error.message, 'error');
     }
   };
 
   return (
     <div data-testid="create-newsletter-modal">
-      <ToastContainer />
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
