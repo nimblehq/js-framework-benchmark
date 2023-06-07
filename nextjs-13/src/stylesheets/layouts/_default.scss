@@ -8,4 +8,35 @@
     padding-top: var(--size-5);
     padding-bottom: var(--size-5);
   }
+  .dashboard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100vh;
+
+    &__nav {
+      width: 300px;
+      background: #001529;
+      padding: var(--size-3);
+
+    }
+
+    &__tab {
+      display: flex;
+      background: #ADD8E6;
+      border-radius: var(--radius-conditional-2);
+      padding: var(--size-2);
+      color: black;
+      cursor: pointer;
+      --_size: var(--font-size-1);
+      margin-bottom: var(--size-3);
+      // align-items: flex-end;
+      text-align: end;
+      text-decoration:none;
+
+      &--selected {
+        background: #1E90FF;
+      }
+    }
+  }
 }
