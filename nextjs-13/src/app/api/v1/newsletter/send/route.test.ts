@@ -2,19 +2,20 @@
  * @jest-environment node
  */
 import { StatusCodes } from 'http-status-codes';
-import nodemailer from 'nodemailer';
 
 import appHandler from 'lib/handler/app.handler';
-import { queryNewsletters } from 'repositories/newsletter.repository';
+import { countNewsletters } from 'repositories/newsletter.repository';
+import { sendMailQueue } from 'workers/sample.worker';
 
 import { POST } from './route';
 
 jest.mock('lib/handler/app.handler');
 jest.mock('repositories/newsletter.repository');
-jest.mock('nodemailer', () => ({
-  createTransport: jest.fn().mockReturnValue({
-    sendMail: jest.fn(),
-  }),
+jest.mock('workers/sample.worker', () => ({}));
+jest.mock('workers/sample.worker', () => ({
+  sendMailQueue: {
+    add: jest.fn(),
+  },
 }));
 
 describe('POST /v1/newsletter/send', () => {
@@ -86,7 +87,7 @@ describe('POST /v1/newsletter/send', () => {
             callback(user, requestBody)
           );
 
-          queryNewsletters.mockResolvedValue([]);
+          countNewsletters.mockResolvedValue(0);
 
           const res = await POST(requestBody);
           const responseBody = await res.json();
@@ -105,33 +106,22 @@ describe('POST /v1/newsletter/send', () => {
             email: 'dev@nimblehq.co',
             ids: ['1'],
           };
-          const newsLetterName = 'Vision Pro release';
           const requestBody = { json: () => data };
 
           appHandler.mockImplementation((_, callback) =>
             callback(user, requestBody)
           );
 
-          const newsletters = [
-            {
-              id: data.ids[0],
-              name: newsLetterName,
-            },
-          ];
-
-          queryNewsletters.mockResolvedValue(newsletters);
-          process.env.NEXTAUTH_URL = 'http://localhost:3300';
-          process.env.MAILGUN_DOMAIN = 'nimble.mailgun.org';
+          countNewsletters.mockResolvedValue(data.ids.length);
 
           const res = await POST(requestBody);
 
           expect(res.status).toBe(StatusCodes.OK);
-          expect(nodemailer.createTransport).toHaveBeenCalled();
-          expect(nodemailer.createTransport().sendMail).toHaveBeenCalledWith({
-            from: `Nimble Newsletter <mailgun@${process.env.MAILGUN_DOMAIN}`,
+          expect(sendMailQueue.add).toHaveBeenCalledWith('sendMail', {
+            ids: data.ids,
             to: data.email,
-            subject: `${user.name} just invited you to view newsletters`,
-            html: `<p>Nimble Newsletter just invited you to view these newsletters:</p><ul><li><a href="${process.env.NEXTAUTH_URL}/newsletter/${data.ids[0]}">${newsLetterName}</a></li></ul>`,
+            senderId: user.id,
+            senderName: user.name,
           });
         });
       });

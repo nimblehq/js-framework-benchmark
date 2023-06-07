@@ -1,12 +1,11 @@
-import * as Handlebars from 'handlebars';
 import { StatusCodes } from 'http-status-codes';
 import { NextResponse, NextRequest } from 'next/server';
-import nodemailer from 'nodemailer';
 
 import appHandler from 'lib/handler/app.handler';
 import getError from 'lib/request/getError';
 import getInvalidParamsError from 'lib/request/getInvalidParamsError';
-import { queryNewsletters } from 'repositories/newsletter.repository';
+import { countNewsletters } from 'repositories/newsletter.repository';
+import { sendMailQueue } from 'workers/sample.worker';
 
 const validateEmail = (email) => {
   return String(email)
@@ -14,51 +13,6 @@ const validateEmail = (email) => {
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
-};
-
-export const sendMail = (newsletters, email, currentUser) => {
-  const items = newsletters.map((newsletter) => {
-    return {
-      id: newsletter.id,
-      name: newsletter.name,
-    };
-  });
-
-  const source =
-    '<p>Nimble Newsletter just invited you to view these newsletters:</p>' +
-    '<ul>' +
-    '{{#each items}}' +
-    `<li><a href="${process.env.NEXTAUTH_URL}/newsletter/{{this.id}}">{{this.name}}</a></li>` +
-    '{{/each}}' +
-    '</ul>';
-
-  const template = Handlebars.compile(source);
-  const html = template({ items });
-
-  const transporter = nodemailer.createTransport({
-    host: process.env.MAILGUN_SMTP_HOST,
-    port: process.env.MAILGUN_SMTP_PORT,
-
-    // change host and port envs to this to use maildev mail catcher
-    // host: '0.0.0.0',
-    // port: 1026,
-
-    secure: false,
-    tls: {
-      rejectUnauthorized: false,
-    },
-    auth: {
-      user: process.env.MAILGUN_SMTP_USERNAME,
-      pass: process.env.MAILGUN_SMTP_PASSWORD,
-    },
-  });
-
-  transporter.sendMail({
-    from: `Nimble Newsletter <mailgun@${process.env.MAILGUN_DOMAIN}`,
-    to: email,
-    subject: `${currentUser.name} just invited you to view newsletters`,
-    html: html,
-  });
 };
 
 export async function POST(req: NextRequest) {
@@ -76,19 +30,25 @@ export async function POST(req: NextRequest) {
         return getError('Invalid newsletters');
       }
 
-      const newsletters = await queryNewsletters(currentUser.id, ids);
-      const allIdsAreValid = newsletters.length === ids.length;
+      const newslettersCount = await countNewsletters(currentUser.id, ids);
+      const allIdsAreValid = newslettersCount === ids.length;
       if (!allIdsAreValid) {
         return getError('Invalid newsletters');
       }
 
-      sendMail(newsletters, email, currentUser);
+      sendMailQueue.add('sendMail', {
+        ids,
+        to: email,
+        senderId: currentUser.id,
+        senderName: currentUser.name,
+      });
 
       return NextResponse.json(
         { status: 'success' },
         { status: StatusCodes.OK }
       );
     } catch (err) {
+      console.log('========>err : ', err);
       return getInvalidParamsError();
     }
   });
