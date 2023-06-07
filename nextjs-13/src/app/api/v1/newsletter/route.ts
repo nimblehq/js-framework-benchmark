@@ -1,3 +1,4 @@
+'use server';
 import { StatusCodes } from 'http-status-codes';
 import { NextResponse, NextRequest } from 'next/server';
 
@@ -5,26 +6,25 @@ import appHandler from 'lib/handler/app.handler';
 import { createNewsletter } from 'repositories/newsletter.repository';
 
 export async function POST(req: NextRequest) {
+
   return appHandler(req, async (currentUser) => {
     try {
       const { name, content } = await req.json();
-
       const attributes = {
         name: name,
         content: content,
         user: { connect: { id: currentUser.id } },
       };
       const record = await createNewsletter(attributes);
-
-      return NextResponse.json(
-        { newsletter: record },
-        { status: StatusCodes.OK }
-      );
+      // return NextResponse.json(
+      //   { newsletter: record },
+      //   { status: StatusCodes.OK }
+      // );
     } catch (err) {
-      return NextResponse.json(
-        { message: 'Invalid params' },
-        { status: StatusCodes.UNPROCESSABLE_ENTITY }
-      );
+      // return NextResponse.json(
+      //   { message: 'Invalid params' },
+      //   { status: StatusCodes.UNPROCESSABLE_ENTITY }
+      // );
     }
   });
 }

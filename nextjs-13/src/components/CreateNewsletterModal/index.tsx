@@ -8,6 +8,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 import requestManager from 'lib/request/manager';
+<<<<<<< Updated upstream
+=======
+import toast from 'lib/toast/makeToast';
+import { POST } from 'app/api/v1/newsletter/route';
+>>>>>>> Stashed changes
 
 const customStyles = {
   content: {
@@ -24,28 +29,29 @@ type Props = {
 };
 
 const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
-  const [name, setName] = useState('');
-  const [content, setContent] = useState('');
+  // const [name, setName] = useState('');
+  // const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
 
   const closeModal = () => {
     setIsOpen(false);
-    setName('');
-    setContent('');
+    // setName('');
+    // setContent('');
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   setLoading(true);
 
-    try {
-      await requestManager('POST', 'v1/newsletter', {
-        data: {
-          name,
-          content,
-        },
-      });
+  //   try {
+  //     await requestManager('POST', 'v1/newsletter', {
+  //       data: {
+  //         name,
+  //         content,
+  //       },
+  //     });
 
+<<<<<<< Updated upstream
       closeModal();
       setLoading(false);
       toast.success('Created newsletter success!', {
@@ -62,6 +68,16 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
       });
     }
   };
+=======
+  //     closeModal();
+  //     setLoading(false);
+  //     toast('Created newsletter success!', 'success');
+  //   } catch (error) {
+  //     setLoading(false);
+  //     toast(error.message, 'error');
+  //   }
+  // };
+>>>>>>> Stashed changes
 
   return (
     <div data-testid="create-newsletter-modal">
@@ -85,7 +101,7 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
           <div data-testid="modal-content">
             <h3>Create your newsletter</h3>
 
-            <form onSubmit={handleSubmit}>
+            <form action={POST}>
               <label htmlFor="name">Name</label>
               <br />
 
@@ -93,8 +109,8 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
                 type="text"
                 id="name"
                 required
-                value={name}
-                onChange={(event) => setName(event.target.value)}
+                // value={name}
+                // onChange={(event) => setName(event.target.value)}
               />
               <br />
 
@@ -105,8 +121,8 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
                 minRows={5}
                 id="content"
                 required
-                value={content}
-                onChange={(event) => setContent(event.target.value)}
+                // value={content}
+                // onChange={(event) => setContent(event.target.value)}
               />
               <br />
 
