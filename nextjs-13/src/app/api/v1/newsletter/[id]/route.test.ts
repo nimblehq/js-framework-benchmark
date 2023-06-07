@@ -39,7 +39,7 @@ describe('DELETE /v1/newsletter/:id', () => {
       const responseBody = await res.json();
 
       expect(deleteNewsletter).toHaveBeenCalledWith(newsletter.id, user.id);
-      expect(res.status).toBe(StatusCodes.UNAUTHORIZED);
+      expect(res.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
         message: 'Newsletter not exists',
       });
