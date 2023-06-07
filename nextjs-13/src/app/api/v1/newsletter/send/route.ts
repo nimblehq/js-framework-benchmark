@@ -5,7 +5,7 @@ import appHandler from 'lib/handler/app.handler';
 import getError from 'lib/request/getError';
 import getInvalidParamsError from 'lib/request/getInvalidParamsError';
 import { countNewsletters } from 'repositories/newsletter.repository';
-import { sendMailQueue } from 'workers/sample.worker';
+import { sendMailQueue } from 'workers/email.worker';
 
 const validateEmail = (email) => {
   return String(email)
@@ -48,7 +48,6 @@ export async function POST(req: NextRequest) {
         { status: StatusCodes.OK }
       );
     } catch (err) {
-      console.log('========>err : ', err);
       return getInvalidParamsError();
     }
   });

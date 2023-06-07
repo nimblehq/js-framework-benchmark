@@ -5,14 +5,13 @@ import { StatusCodes } from 'http-status-codes';
 
 import appHandler from 'lib/handler/app.handler';
 import { countNewsletters } from 'repositories/newsletter.repository';
-import { sendMailQueue } from 'workers/sample.worker';
+import { sendMailQueue } from 'workers/email.worker';
 
 import { POST } from './route';
 
 jest.mock('lib/handler/app.handler');
 jest.mock('repositories/newsletter.repository');
-jest.mock('workers/sample.worker', () => ({}));
-jest.mock('workers/sample.worker', () => ({
+jest.mock('workers/email.worker', () => ({
   sendMailQueue: {
     add: jest.fn(),
   },
