@@ -40,14 +40,15 @@ export default function Index() {
     <>
       <h1>Create Newsletter page </h1>
       <Form method="POST">
-        <label>Name</label>
+        <div>
+          <label htmlFor="name">Name</label>
+          <input type="text" name="name" placeholder="name" />
+        </div>
         <br />
-        <input type="text" name="name" placeholder="name" />
-        <br />
-        <label>Content</label>
-        <br />
-        <textarea name="content" placeholder="content" />
-        <br />
+        <div>
+          <label htmlFor="content">Content</label>
+          <textarea name="content" placeholder="content" />
+        </div>
         <button type="submit">Create</button>
       </Form>
     </>
