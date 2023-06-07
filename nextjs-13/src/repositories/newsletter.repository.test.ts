@@ -4,7 +4,7 @@ import { newsletterFactory } from '@test/factories/newsletter.factory';
 import {
   createNewsletter,
   deleteNewsletter,
-  queryNewsletterByUserId,
+  queryNewsletters,
   updateNewsletter,
 } from './newsletter.repository';
 
@@ -27,7 +27,7 @@ describe('Newsletter Respository', () => {
     });
   });
 
-  describe('queryNewsletterByUserId', () => {
+  describe('queryNewsletters', () => {
     it('returns newsletters', async () => {
       const userId = '1';
 
@@ -42,9 +42,7 @@ describe('Newsletter Respository', () => {
 
       dbClientMock.newsletter.findMany.mockResolvedValue(newsletters);
 
-      await expect(queryNewsletterByUserId(userId)).resolves.toEqual(
-        newsletters
-      );
+      await expect(queryNewsletters(userId)).resolves.toEqual(newsletters);
     });
   });
 
