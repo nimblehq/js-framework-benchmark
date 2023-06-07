@@ -1,5 +1,3 @@
-'use client';
-
 import 'stylesheets/application.scss';
 import Header from '@components/Header';
 

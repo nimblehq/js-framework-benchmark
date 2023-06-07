@@ -1,0 +1,40 @@
+.home {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100vh;
+
+  &__nav {
+    width: 300px;
+    background: #001529;
+    padding: var(--size-3);
+
+  }
+
+  &__tab {
+    display: flex;
+    background: linear-gradient(var(--indigo-5), var(--indigo-7));
+    border-radius: var(--radius-conditional-2);
+    padding: var(--size-2);
+    color: white;
+    cursor: pointer;
+    --_size: var(--font-size-1);
+  }
+
+  &__dashboard {
+    flex-grow: 2;
+    background: var(--gray-2);
+    padding: var(--size-3);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  &__create-button {
+    --_bg: linear-gradient(var(--indigo-5), var(--indigo-7));
+    --_border: var(--indigo-6);
+    --_text: var(--indigo-0);
+    --_ink-shadow: 0 1px 0 var(--indigo-9);
+    --_size: var(--font-size-0);
+  }
+}
