@@ -63,7 +63,7 @@ describe('POST /v1/newsletter', () => {
   });
 
   describe('given invalid params', () => {
-    it('return invalid data error', async () => {
+    it('returns invalid params error', async () => {
       const user = { id: '1' };
       const content = newsletterFactory.content;
       const requestBody = {

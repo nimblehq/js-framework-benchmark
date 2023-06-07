@@ -4,9 +4,9 @@ import { NextResponse, NextRequest } from 'next/server';
 import nodemailer from 'nodemailer';
 
 import appHandler from 'lib/handler/app.handler';
+import getError from 'lib/request/getError';
 import getInvalidParamsError from 'lib/request/getInvalidParamsError';
 import { queryNewsletters } from 'repositories/newsletter.repository';
-import getError from 'lib/request/getError';
 
 const validateEmail = (email) => {
   return String(email)
@@ -16,13 +16,24 @@ const validateEmail = (email) => {
     );
 };
 
-const sendMail = (newsletters, email, currentUser) => {
+export const sendMail = (newsletters, email, currentUser) => {
   const items = newsletters.map((newsletter) => {
     return {
       id: newsletter.id,
       name: newsletter.name,
     };
   });
+
+  const source =
+    '<p>Nimble Newsletter just invited you to view these newsletters:</p>' +
+    '<ul>' +
+    '{{#each items}}' +
+    `<li><a href="${process.env.NEXTAUTH_URL}/newsletter/{{this.id}}">{{this.name}}</a></li>` +
+    '{{/each}}' +
+    '</ul>';
+
+  const template = Handlebars.compile(source);
+  const html = template({ items });
 
   const transporter = nodemailer.createTransport({
     host: process.env.MAILGUN_SMTP_HOST,
@@ -38,23 +49,8 @@ const sendMail = (newsletters, email, currentUser) => {
     },
     auth: {
       user: process.env.MAILGUN_SMTP_USERNAME,
-      pass: process.env.MAILGUN_SMTP_PASSWORD
+      pass: process.env.MAILGUN_SMTP_PASSWORD,
     },
-  });
-
-  const source =
-    '<p>Nimble Newsletter just invited you to view these newsletters:</p>' +
-    '<ul>' +
-    '{{#each items}}' +
-    '<li><a href="{{baseUrl}}/{{this.id}}">{{this.name}}</a></li>' +
-    '{{/each}}' +
-    '</ul>';
-
-  const template = Handlebars.compile(source);
-
-  const html = template({
-    items,
-    baseUrl: `${process.env.NEXTAUTH_URL}/newsletter`,
   });
 
   transporter.sendMail({
@@ -76,14 +72,17 @@ export async function POST(req: NextRequest) {
       }
 
       const ids = [...new Set(body.ids)];
+      if (ids.length === 0) {
+        return getError('Invalid newsletters');
+      }
+
       const newsletters = await queryNewsletters(currentUser.id, ids);
       const allIdsAreValid = newsletters.length === ids.length;
-
       if (!allIdsAreValid) {
         return getError('Invalid newsletters');
       }
 
-      sendMail(newsletters, email, currentUser)
+      sendMail(newsletters, email, currentUser);
 
       return NextResponse.json(
         { status: 'success' },
