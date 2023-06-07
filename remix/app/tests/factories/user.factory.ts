@@ -7,4 +7,5 @@ export const userFactory: User = {
   email: faker.internet.email(),
   avatarUrl: faker.image.avatar(),
   createdAt: faker.date.anytime(),
+  updateAt: faker.date.anytime(),
 };

@@ -20,11 +20,14 @@
     "@remix-run/node": "^1.16.1",
     "@remix-run/react": "^1.16.1",
     "@remix-run/serve": "^1.16.1",
+    "@remix-validated-form/with-zod": "^2.0.5",
+    "http-status-codes": "^2.2.0",
     "isbot": "^3.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remix-auth": "^3.4.0",
-    "remix-auth-socials": "^2.0.5"
+    "remix-auth-socials": "^2.0.5",
+    "remix-validated-form": "^4.6.11"
   },
   "devDependencies": {
     "@babel/core": "^7.21.8",
