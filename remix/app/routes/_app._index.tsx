@@ -5,6 +5,7 @@ import NewsletterRepository from '../repositories/newsletter.server';
 
 export async function loader() {
   const newsletters = await NewsletterRepository.findMany({});
+
   return { newsletters };
 }
 
