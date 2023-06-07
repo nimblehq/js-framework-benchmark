@@ -23,9 +23,14 @@ describe('ListNewsletter', () => {
       { id: 1, name: 'Newsletter 1' },
       { id: 2, name: 'Newsletter 2' },
     ];
-    requestManager.mockResolvedValue({ records });
 
-    render(<ListNewsletter />);
+    const promise = {
+      read() {
+        return records;
+      },
+    };
+
+    render(<ListNewsletter promise={promise} />);
     const list = screen.getByTestId('list-newsletter');
 
     await waitFor(() => expect(list).toHaveTextContent('Newsletter 1'));

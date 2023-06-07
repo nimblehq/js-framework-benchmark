@@ -13,17 +13,19 @@ const promiseWrapper = (promise) => {
     }
   );
 
-  return () => {
-    switch (status) {
-      case 'pending':
-        throw s;
-      case 'success':
-        return result;
-      case 'error':
-        throw result;
-      default:
-        throw new Error('Unknown status');
-    }
+  return {
+    read() {
+      switch (status) {
+        case 'pending':
+          throw s;
+        case 'success':
+          return result;
+        case 'error':
+          throw result;
+        default:
+          throw new Error('Unknown status');
+      }
+    },
   };
 };
 
