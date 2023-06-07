@@ -2,9 +2,10 @@ import { StatusCodes } from 'http-status-codes';
 import { NextResponse, NextRequest } from 'next/server';
 
 import appHandler from 'lib/handler/app.handler';
+import getInvalidParamsError from 'lib/request/getInvalidParamsError';
 import {
   createNewsletter,
-  queryNewsletterByUserId,
+  queryNewsletters,
 } from 'repositories/newsletter.repository';
 
 export async function POST(req: NextRequest) {
@@ -25,17 +26,14 @@ export async function POST(req: NextRequest) {
         { status: StatusCodes.OK }
       );
     } catch (err) {
-      return NextResponse.json(
-        { message: 'Invalid params' },
-        { status: StatusCodes.UNPROCESSABLE_ENTITY }
-      );
+      return getInvalidParamsError();
     }
   });
 }
 
 export async function GET(req: NextRequest) {
   return appHandler(req, async (currentUser, _) => {
-    const records = await queryNewsletterByUserId(currentUser.id);
+    const records = await queryNewsletters(currentUser.id);
 
     return NextResponse.json({ records: records }, { status: StatusCodes.OK });
   });
