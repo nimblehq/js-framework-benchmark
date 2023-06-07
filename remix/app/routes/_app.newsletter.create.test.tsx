@@ -24,13 +24,12 @@ describe('POST /newsletter/create', () => {
     jest.clearAllMocks();
   });
 
-  const user = { ...userFactory };
-  const newsletter = { ...newsletterFactory };
-
-  (authenticator.isAuthenticated as jest.Mock).mockResolvedValue(user);
-
-  describe('givens a newsletter data', () => {
+  describe('given valid newsletter params', () => {
     it('creates a newsletter', async () => {
+      const user = { ...userFactory };
+      const newsletter = { ...newsletterFactory };
+
+      (authenticator.isAuthenticated as jest.Mock).mockResolvedValue(user);
       prismaMock.user.findUnique.mockResolvedValue(user);
       prismaMock.newsletter.create.mockResolvedValue(newsletter);
 
@@ -62,8 +61,12 @@ describe('POST /newsletter/create', () => {
     });
   });
 
-  describe('givens a newsletter data WITHOUT content value', () => {
+  describe('given a newsletter WITHOUT content params', () => {
     it('returns required content value', async () => {
+      const user = { ...userFactory };
+      const newsletter = { ...newsletterFactory };
+
+      (authenticator.isAuthenticated as jest.Mock).mockResolvedValue(user);
       prismaMock.user.findUnique.mockResolvedValue(user);
       prismaMock.newsletter.create.mockResolvedValue(newsletter);
 

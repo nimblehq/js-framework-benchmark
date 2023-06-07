@@ -25,7 +25,7 @@ describe('appHandler', () => {
     jest.clearAllMocks();
   });
 
-  describe('givens a valid user authentication', () => {
+  describe('given an authenticated user', () => {
     it('calls callback return a user information', async () => {
       const user = { ...userFactory };
 
@@ -39,7 +39,7 @@ describe('appHandler', () => {
     });
   });
 
-  describe('givens a invalid user authentication', () => {
+  describe('given a non-authenticated user', () => {
     it('throws a Response with 401 status', async () => {
       (authenticator.isAuthenticated as jest.Mock).mockResolvedValue(null);
 
