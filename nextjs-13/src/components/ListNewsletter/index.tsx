@@ -1,21 +1,7 @@
-import { useState, useEffect } from 'react';
+import NewsletterItem from '@components/NewsletterItem';
 
-import requestManager from 'lib/request/manager';
-import promiseWrapper from 'lib/request/promiseWrapper';
-
-const ListNewsletter = () => {
-  const [records, setRecords] = useState([]);
-
-  useEffect(() => {
-    const getData = () => {
-      const promise = requestManager('GET', 'v1/newsletter').then(
-        (res) => res.records
-      );
-      setRecords(promiseWrapper(promise));
-    };
-
-    getData();
-  }, []);
+const ListNewsletter = ({ promise }) => {
+  const records = promise ? promise.read() : [];
 
   return (
     <div className="list-newsletter" data-testid="list-newsletter">

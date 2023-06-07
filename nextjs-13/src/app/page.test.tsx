@@ -1,31 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-import ListNewsletter from '@components/ListNewsletter';
-import promiseWrapper from 'lib/request/promiseWrapper';
+import requestManager from 'lib/request/manager';
 
 import Home from './page';
 
 jest.mock('next-auth/react');
 jest.mock('next/navigation');
-
-jest.mock('@components/ListNewsletter');
+jest.mock('lib/request/manager');
 
 jest.mock('react-spinners', () => ({
   ClipLoader: () => <div data-testid="clip-loader">Loading...</div>,
 }));
 
 describe('Home', () => {
+  beforeEach(() => {
+    requestManager.mockResolvedValue({ records: [] });
+  });
+
   describe('Session status is "unauthenticated', () => {
-    it('redirects to home page', () => {
+    it('redirects to home page', async () => {
       useSession.mockReturnValue({ status: 'unauthenticated' });
+
       render(<Home />);
 
-      expect(redirect).toHaveBeenCalledWith('/auth/sign-in');
+      await waitFor(() => {
+        expect(redirect).toHaveBeenCalledWith('/auth/sign-in');
+      });
     });
   });
 
@@ -34,33 +39,26 @@ describe('Home', () => {
       useSession.mockReturnValue({ status: 'authenticated' });
     });
 
-    it('renders navigation bar', () => {
+    it('renders navigation bar', async () => {
       render(<Home />);
 
-      expect(screen.getByText('Newsletter')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('Newsletter')).toBeInTheDocument();
+      });
     });
 
-    it('renders title', () => {
+    it('renders title', async () => {
       render(<Home />);
 
-      expect(screen.getByText('Your Newsletters')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('Your Newsletters')).toBeInTheDocument();
+      });
     });
 
     describe('Suspense', () => {
       describe('giving fetching data', () => {
         beforeEach(() => {
-          ListNewsletter.mockImplementation(() =>
-            jest.fn(() => {
-              const [records, setRecords] = useState([]);
-
-              useEffect(() => {
-                const promise = new Promise(() => []);
-                setRecords(promiseWrapper(promise));
-              }, []);
-
-              return <div data-testid="list-newsletter">{records}</div>;
-            })()
-          );
+          requestManager.mockImplementation(() => new Promise(() => []));
         });
 
         it('renders ClipLoader', async () => {
@@ -77,32 +75,30 @@ describe('Home', () => {
       });
 
       describe('giving NOT fetching data', () => {
-        beforeEach(() => {
-          ListNewsletter.mockImplementation(() =>
-            jest.fn(() => {
-              return <div data-testid="list-newsletter" />;
-            })()
-          );
-        });
-
         it('NOT renders ClipLoader', async () => {
           render(<Home />);
 
-          expect(screen.queryByTestId('clip-loader')).not.toBeInTheDocument();
+          await waitFor(() => {
+            expect(screen.queryByTestId('clip-loader')).not.toBeInTheDocument();
+          });
         });
 
         it('renders ListNewsletter', async () => {
           render(<Home />);
 
-          expect(screen.getByTestId('list-newsletter')).toBeVisible();
+          await waitFor(() => {
+            expect(screen.getByTestId('list-newsletter')).toBeVisible();
+          });
         });
       });
     });
 
-    it('renders create newsletter button', () => {
+    it('renders create newsletter button', async () => {
       render(<Home />);
 
-      expect(screen.getByText('Create newsletter')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('Create newsletter')).toBeInTheDocument();
+      });
     });
 
     it('renders a modal to create newsletter when click create newsletter button', async () => {
