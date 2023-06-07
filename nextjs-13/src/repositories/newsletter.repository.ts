@@ -24,9 +24,16 @@ const queryNewsletters = async (userId: string, ids = []) => {
   });
 };
 
+const countNewsletters = async (userId: string, ids = []) => {
+  return dbClient.newsletter.count({
+    where: { userId: userId, id: { in: ids } },
+  });
+};
+
 export {
   createNewsletter,
   queryNewsletters,
   deleteNewsletter,
   updateNewsletter,
+  countNewsletters,
 };
