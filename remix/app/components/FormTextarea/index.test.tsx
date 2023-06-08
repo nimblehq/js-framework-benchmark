@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import FormInput from './';
+import FormTextarea from './';
 
 jest.mock('remix-validated-form', () => ({
   useField: jest.fn().mockReturnValue({
@@ -17,7 +17,9 @@ describe('FormInput', () => {
       const placeholder = 'Test Placeholder';
       const error = 'Test error';
 
-      render(<FormInput label={label} name={name} placeholder={placeholder} />);
+      render(
+        <FormTextarea label={label} name={name} placeholder={placeholder} />
+      );
 
       const labelElement = screen.getByText(label);
       const inputElement = screen.getByPlaceholderText(placeholder);
@@ -31,7 +33,7 @@ describe('FormInput', () => {
 
   it('enter value', () => {
     render(
-      <FormInput
+      <FormTextarea
         label="Test Label"
         name="testName"
         placeholder="Test Placeholder"

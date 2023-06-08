@@ -4,7 +4,11 @@ interface LabelProps {
 }
 export default function Label({ htmlFor, label }: LabelProps) {
   return (
-    <label htmlFor={htmlFor} className="font-semibold">
+    <label
+      htmlFor={htmlFor}
+      className="font-semibold"
+      data-testid="form-input-label"
+    >
       {label}
     </label>
   );
