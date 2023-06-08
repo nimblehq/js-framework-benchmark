@@ -9,6 +9,7 @@ interface InputProps {
   placeholder: string;
   error?: string;
 }
+
 export default function FormInput({ label, name, placeholder }: InputProps) {
   const { error, getInputProps } = useField(name);
 

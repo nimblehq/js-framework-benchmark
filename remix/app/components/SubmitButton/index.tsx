@@ -8,6 +8,7 @@ interface SubButtonProps {
 
 export default function SubmitButton({ name }: SubButtonProps) {
   const isSubmitting = useIsSubmitting();
+
   return (
     <button
       className="text-center px-4 py-2 font-semibold text-white bg-slate-900 hover:bg-slate-700 shadow rounded-lg"

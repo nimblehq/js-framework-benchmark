@@ -1,4 +1,5 @@
 import ArrowPathIcon from '@heroicons/react/24/outline/ArrowPathIcon';
+
 export default function Loading() {
   return (
     <div

@@ -9,9 +9,9 @@ jest.mock('remix-validated-form', () => ({
   }),
 }));
 
-describe('FormInput', () => {
-  describe('givens FormInput attribute', () => {
-    it('renders the label, input, and error message', () => {
+describe('FormTextarea', () => {
+  describe('givens FormTextarea attribute', () => {
+    it('renders the label, textarea, and error message', () => {
       const label = 'Test Label';
       const name = 'testName';
       const placeholder = 'Test Placeholder';
@@ -22,11 +22,11 @@ describe('FormInput', () => {
       );
 
       const labelElement = screen.getByText(label);
-      const inputElement = screen.getByPlaceholderText(placeholder);
+      const textareaElement = screen.getByPlaceholderText(placeholder);
       const errorElement = screen.getByText(error);
 
       expect(labelElement).toBeInTheDocument();
-      expect(inputElement).toBeInTheDocument();
+      expect(textareaElement).toBeInTheDocument();
       expect(errorElement).toBeInTheDocument();
     });
   });
@@ -40,9 +40,9 @@ describe('FormInput', () => {
       />
     );
 
-    const inputElement = screen.getByPlaceholderText('Test Placeholder');
-    fireEvent.change(inputElement, { target: { value: 'test' } });
+    const textareaElement = screen.getByPlaceholderText('Test Placeholder');
+    fireEvent.change(textareaElement, { target: { value: 'test' } });
 
-    expect(inputElement).toHaveValue('test');
+    expect(textareaElement).toHaveValue('test');
   });
 });

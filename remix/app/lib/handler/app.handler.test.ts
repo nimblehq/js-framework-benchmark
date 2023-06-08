@@ -28,7 +28,6 @@ describe('appHandler', () => {
       get: jest.fn(() => 'Cookie Value'),
     },
   };
-
   const mockCallback = jest.fn();
   const mockCookie = 'test-cookie';
 

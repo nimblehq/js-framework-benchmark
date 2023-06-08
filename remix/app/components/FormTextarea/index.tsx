@@ -9,6 +9,7 @@ interface InputProps {
   placeholder: string;
   error?: string;
 }
+
 export default function FormTextarea({ label, name, placeholder }: InputProps) {
   const { error, getInputProps } = useField(name);
 

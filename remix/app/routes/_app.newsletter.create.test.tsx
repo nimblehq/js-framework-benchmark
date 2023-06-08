@@ -23,7 +23,7 @@ describe('POST /newsletter/create', () => {
   });
 
   describe('given valid newsletter params', () => {
-    it('creates a newsletter', async () => {
+    it('redirect to main page, when a newsletter is sucessfully created', async () => {
       const user = { ...userFactory };
       const newsletter = { ...newsletterFactory };
 
@@ -49,6 +49,7 @@ describe('POST /newsletter/create', () => {
       });
 
       expect(await result.status).toBe(302);
+      expect(await result.headers.get('Location')).toBe('/');
     });
   });
 

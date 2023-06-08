@@ -41,6 +41,7 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function App() {
   const { toastMessage, toastMode } = useLoaderData<typeof loader>();
+
   useEffect(() => {
     if (!toastMessage) {
       return;

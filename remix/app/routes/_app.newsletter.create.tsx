@@ -29,7 +29,6 @@ export async function action({ request }: ActionArgs) {
       ...result.data,
       userId: user.id,
     };
-
     const newsletter = await NewsletterRepository.create({
       data: newsletterData,
     });
