@@ -2,15 +2,10 @@ import React from 'react';
 
 import { render, waitFor, screen } from '@testing-library/react';
 
-import requestManager from 'lib/request/manager';
-
 import ListNewsletter from './index';
-
-jest.mock('lib/request/manager');
 
 describe('ListNewsletter', () => {
   it('renders the component', async () => {
-    requestManager.mockResolvedValue({ records: [] });
     render(<ListNewsletter />);
 
     await waitFor(() =>
