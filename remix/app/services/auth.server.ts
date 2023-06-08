@@ -1,3 +1,5 @@
+import { StatusCodes } from 'http-status-codes';
+
 import UserRepository from '../repositories/user.server';
 import type { UserProfile } from '../types';
 
@@ -12,7 +14,7 @@ export async function handleSocialAuthCallBack({ profile }: Profile) {
     await UserRepository.updateOrCreate(userProfile);
   } else {
     throw new Response('You must be authenticated to access this page', {
-      status: 401,
+      status: StatusCodes.UNAUTHORIZED,
     });
   }
 

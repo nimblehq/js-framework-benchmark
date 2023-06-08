@@ -11,13 +11,28 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String   @db.VarChar(100)
-  email     String   @db.VarChar(50)
-  avatarUrl String?  @map("avatar_url")
-  createdAt DateTime @default(now()) @map("created_at")
+  id         String       @id @default(uuid())
+  name       String       @db.VarChar(100)
+  email      String       @db.VarChar(50)
+  avatarUrl  String?      @map("avatar_url")
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updateAt   DateTime     @default(now()) @updatedAt @map("update_at")
+  Newsletter Newsletter[]
 
   @@unique([email])
   @@index([email])
   @@map("users")
+}
+
+model Newsletter {
+  id       String   @id @default(uuid())
+  name     String   @db.VarChar(255)
+  content  String   @db.Text()
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String   @map("user_id")
+  createAt DateTime @default(now()) @map("created_at")
+  updateAt DateTime @default(now()) @updatedAt @map("update_at")
+
+  @@index([userId])
+  @@map("newsletters")
 }

@@ -29,6 +29,7 @@ jest.mock('react-textarea-autosize', () => {
       value={props.value}
     />
   ));
+
   return TextareaAutosizeMock;
 });
 
@@ -37,7 +38,9 @@ describe('CreateNewsletterModal', () => {
     render(
       <CreateNewsletterModal modalIsOpen={false} setIsOpen={() => undefined} />
     );
+
     const modalElement = screen.queryByTestId('modal-content');
+
     expect(modalElement).toBeNull();
   });
 
@@ -45,17 +48,22 @@ describe('CreateNewsletterModal', () => {
     render(
       <CreateNewsletterModal modalIsOpen={true} setIsOpen={() => undefined} />
     );
+
     const modalElement = screen.queryByTestId('modal-content');
+
     expect(modalElement).toBeInTheDocument();
   });
 
   it('closes the modal', () => {
     const setIsOpenMock = jest.fn();
+
     render(
       <CreateNewsletterModal modalIsOpen={true} setIsOpen={setIsOpenMock} />
     );
+
     const closeButton = screen.getByText('X');
     fireEvent.click(closeButton);
+
     expect(setIsOpenMock).toHaveBeenCalledWith(false);
   });
 
@@ -63,8 +71,10 @@ describe('CreateNewsletterModal', () => {
     render(
       <CreateNewsletterModal modalIsOpen={true} setIsOpen={() => undefined} />
     );
+
     const nameInput = screen.getByLabelText('Name');
     fireEvent.change(nameInput, { target: { value: 'Test Name' } });
+
     expect(nameInput.value).toBe('Test Name');
   });
 
@@ -72,8 +82,10 @@ describe('CreateNewsletterModal', () => {
     render(
       <CreateNewsletterModal modalIsOpen={true} setIsOpen={() => undefined} />
     );
+
     const contentTextarea = screen.getByLabelText('Content');
     fireEvent.change(contentTextarea, { target: { value: 'Test Content' } });
+
     expect(contentTextarea.value).toBe('Test Content');
   });
 
@@ -81,6 +93,7 @@ describe('CreateNewsletterModal', () => {
     render(
       <CreateNewsletterModal modalIsOpen={true} setIsOpen={() => undefined} />
     );
+
     const nameInput = screen.getByLabelText('Name');
     const contentTextarea = screen.getByLabelText('Content');
     const createButton = screen.getByText('Create');
@@ -112,6 +125,7 @@ describe('CreateNewsletterModal', () => {
     render(
       <CreateNewsletterModal modalIsOpen={true} setIsOpen={() => undefined} />
     );
+
     const nameInput = screen.getByLabelText('Name');
     const contentTextarea = screen.getByLabelText('Content');
     const createButton = screen.getByText('Create');

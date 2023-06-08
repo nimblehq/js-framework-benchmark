@@ -1,3 +1,5 @@
+import Dropdown from '../Dropdown';
+
 interface HeaderUserProfileProps {
   name: string;
   avatarUrl: string | null;
@@ -12,7 +14,9 @@ export default function HeaderUserProfile({
       {avatarUrl ? (
         <img
           data-testid="headerUserImage"
+          alt="user profile"
           src={avatarUrl}
+          referrerPolicy="no-referrer"
           className="h-7 w-7 object-cover rounded-full"
         />
       ) : (
@@ -22,6 +26,7 @@ export default function HeaderUserProfile({
         />
       )}
       <p>{name}</p>
+      <Dropdown />
     </div>
   );
 }
