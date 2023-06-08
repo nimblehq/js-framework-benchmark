@@ -1,5 +1,3 @@
-'use client';
-
 import App from './app';
 import { NextAuthProvider } from './session-providers';
 import 'react-toastify/dist/ReactToastify.css';

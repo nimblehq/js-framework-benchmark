@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { redirect } from 'next/navigation';
-import { useSession, signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 import SignInPage from './page';
 
@@ -9,32 +8,23 @@ jest.mock('next-auth/react');
 jest.mock('next/navigation');
 
 describe('SignInPage', () => {
-  describe('Session status is "authenticated', () => {
-    it('redirects to home page', () => {
-      useSession.mockReturnValue({ status: 'authenticated' });
-      render(<SignInPage />);
-      expect(redirect).toHaveBeenCalledWith('/');
-    });
+  it('renders h4', () => {
+    render(<SignInPage />);
+
+    expect(screen.getByText('NextNewsletter 🚀')).toBeInTheDocument();
   });
 
-  describe('Session status is "unauthenticated', () => {
-    it('renders h4', () => {
-      useSession.mockReturnValue({ status: 'authenticated' });
-      render(<SignInPage />);
-      expect(screen.getByText('NextNewsletter 🚀')).toBeInTheDocument();
-    });
+  it('renders sign in button', () => {
+    render(<SignInPage />);
 
-    it('renders sign in button', () => {
-      useSession.mockReturnValue({ status: 'unauthenticated' });
-      render(<SignInPage />);
-      expect(screen.getByTestId('loginButton')).toBeInTheDocument();
-    });
+    expect(screen.getByTestId('loginButton')).toBeInTheDocument();
+  });
 
-    it('calls signIn on button click', async () => {
-      useSession.mockReturnValue({ status: 'unauthenticated' });
-      render(<SignInPage />);
-      await userEvent.click(screen.getByTestId('loginButton'));
-      expect(signIn).toHaveBeenCalledWith('google');
-    });
+  it('calls signIn on button click', async () => {
+    render(<SignInPage />);
+
+    await userEvent.click(screen.getByTestId('loginButton'));
+
+    expect(signIn).toHaveBeenCalledWith('google');
   });
 });

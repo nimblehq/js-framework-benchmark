@@ -5,39 +5,47 @@ import { ClipLoader } from 'react-spinners';
 
 import MultiSelectWrapper from '@components/MultiSelectWrapper';
 import requestManager from 'lib/request/manager';
-import promiseWrapper from 'lib/request/promiseWrapper';
 import makeToast from 'lib/toast/makeToast';
 
 const SendNewsletter = () => {
   const [selected, setSelected] = useState([]);
-  const [promise, setPromise] = useState();
-  const [loading, setLoading] = useState(false);
+  const [records, setRecords] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
 
-  async function fetchRecords() {
-    const res = await requestManager('GET', 'v1/newsletter');
+  const getNewletters = async () => {
+    setIsLoading(true);
 
-    return res.records;
-  }
+    try {
+      const response = await requestManager('GET', 'v1/newsletter');
 
-  async function getData() {
-    setPromise(promiseWrapper(fetchRecords()));
-  }
+      setIsLoading(false);
+      setRecords(response.records);
+    } catch (error) {
+      makeToast(error.message, 'error');
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    getData();
+    getNewletters();
   }, []);
 
   const afterSubmit = () => {
-    setLoading(false);
+    setIsLoading(false);
     setSelected([]);
     setEmail('');
-    getData();
+    getNewletters();
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
+
+    if (selected.length === 0) {
+      return makeToast('Please select atleast one newsletter', 'error');
+    }
+
+    setIsLoading(true);
 
     try {
       await requestManager('POST', 'v1/newsletter/send', {
@@ -47,7 +55,7 @@ const SendNewsletter = () => {
         },
       });
 
-      makeToast(`Send newsletter success!`, 'success');
+      makeToast('Send newsletter success!', 'success');
       afterSubmit();
     } catch (error) {
       makeToast(error.message, 'error');
@@ -58,9 +66,9 @@ const SendNewsletter = () => {
   return (
     <div className="send-newsletter" data-testid="send-newsletter">
       <div>
-        <h3>Your Newsletters</h3>
-        {loading ? (
-          <ClipLoader loading={loading} size={150} />
+        <h3 data-testid="title">Your Newsletters</h3>
+        {isLoading ? (
+          <ClipLoader isLoading={isLoading} size={150} />
         ) : (
           <form onSubmit={handleSubmit}>
             <label htmlFor="email">Email</label>
@@ -79,15 +87,19 @@ const SendNewsletter = () => {
             <label htmlFor="newsletters">Newsletters</label>
             <br />
 
-            <Suspense fallback={<ClipLoader loading={true} size={150} />}>
+            <Suspense fallback={<ClipLoader isLoading={true} size={150} />}>
               <MultiSelectWrapper
-                promise={promise}
+                records={records}
                 selected={selected}
                 setSelected={setSelected}
               />
             </Suspense>
             <div className="send-newsletter__footer">
-              <button type="submit" className="send-newsletter__btn-submit">
+              <button
+                type="submit"
+                className="send-newsletter__btn-submit"
+                data-testid="btn-submit"
+              >
                 Send
               </button>
             </div>

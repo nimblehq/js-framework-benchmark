@@ -1,7 +1,7 @@
 import { MultiSelect } from 'react-multi-select-component';
 
-const MultiSelectWrapper = ({ promise, selected, setSelected }) => {
-  const records = (promise ? promise.read() : []).map((r) => {
+const MultiSelectWrapper = ({ records, selected, setSelected }) => {
+  const options = records.map((r) => {
     return {
       label: r.name,
       value: r.id,
@@ -12,7 +12,7 @@ const MultiSelectWrapper = ({ promise, selected, setSelected }) => {
     <div className="multi-select-wrapper" data-testid="multi-select-wrapper">
       <ul>
         <MultiSelect
-          options={records}
+          options={options}
           value={selected}
           onChange={setSelected}
           ClearSelectedIcon={null}

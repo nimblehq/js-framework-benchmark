@@ -2,9 +2,9 @@ import React from 'react';
 import { toast } from 'react-toastify';
 
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import { StatusCodes } from 'http-status-codes';
 
-import { invalidParamsMessage } from 'lib/request/getInvalidParamsError';
+import { errorMessageList } from 'lib/request/error';
 import requestManager from 'lib/request/manager';
 
 import NewsletterModal, { Props } from './index';
@@ -242,7 +242,9 @@ describe('NewsletterModal', () => {
   });
 
   it('handles form submission error', async () => {
-    requestManager.mockRejectedValue(new Error(invalidParamsMessage));
+    requestManager.mockRejectedValue(
+      new Error(errorMessageList[StatusCodes.UNPROCESSABLE_ENTITY])
+    );
 
     render(<NewsletterModalWrapper formAction="create" />);
 
@@ -255,11 +257,14 @@ describe('NewsletterModal', () => {
     fireEvent.submit(createButton);
 
     await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith(invalidParamsMessage, {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-      });
+      expect(toast.error).toHaveBeenCalledWith(
+        errorMessageList[StatusCodes.UNPROCESSABLE_ENTITY],
+        {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: false,
+        }
+      );
     });
   });
 });

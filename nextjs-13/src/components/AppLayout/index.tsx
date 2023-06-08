@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Header />
       <main className="app-content">
         <div className="dashboard">
-          <nav className="dashboard__nav">
+          <nav className="dashboard__nav" data-testid="dashboard__nav">
             <Link
               className={classNames('dashboard__tab', {
                 'dashboard__tab--selected': isRoot,
@@ -35,6 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               className={classNames('dashboard__tab', {
                 'dashboard__tab--selected': !isRoot,
               })}
+              data-testid="send-newsletter-tab"
             >
               Send Newsletter
             </Link>

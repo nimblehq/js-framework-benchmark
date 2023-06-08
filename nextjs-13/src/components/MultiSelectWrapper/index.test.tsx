@@ -12,15 +12,9 @@ jest.mock('react-multi-select-component');
 
 describe('MultiSelectWrapper', () => {
   it('renders the component', async () => {
-    const promise = {
-      read() {
-        return [];
-      },
-    };
-
     render(
       <MultiSelectWrapper
-        promise={promise}
+        records={[]}
         selected={[]}
         setSelected={() => undefined}
       />
@@ -35,12 +29,6 @@ describe('MultiSelectWrapper', () => {
       { id: 2, name: 'Newsletter 2' },
     ];
 
-    const promise = {
-      read() {
-        return records;
-      },
-    };
-
     const selected = [records[0]];
     const setSelected = () => undefined;
 
@@ -48,7 +36,7 @@ describe('MultiSelectWrapper', () => {
 
     render(
       <MultiSelectWrapper
-        promise={promise}
+        records={records}
         selected={selected}
         setSelected={setSelected}
       />

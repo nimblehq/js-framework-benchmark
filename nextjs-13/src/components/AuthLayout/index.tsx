@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 import Card from 'components/Card';
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { status } = useSession();
 
