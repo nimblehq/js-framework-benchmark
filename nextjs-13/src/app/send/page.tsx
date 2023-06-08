@@ -3,16 +3,12 @@
 import { Suspense, useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 
-import { redirect } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-
 import MultiSelectWrapper from '@components/MultiSelectWrapper';
 import requestManager from 'lib/request/manager';
 import promiseWrapper from 'lib/request/promiseWrapper';
 import makeToast from 'lib/toast/makeToast';
 
-const Home = () => {
-  const { status } = useSession();
+const SendNewsletter = () => {
   const [selected, setSelected] = useState([]);
   const [promise, setPromise] = useState();
   const [loading, setLoading] = useState(false);
@@ -31,10 +27,6 @@ const Home = () => {
   useEffect(() => {
     getData();
   }, []);
-
-  if (status === 'unauthenticated') {
-    redirect('/auth/sign-in');
-  }
 
   const afterSubmit = () => {
     setLoading(false);
@@ -64,7 +56,7 @@ const Home = () => {
   };
 
   return (
-    <div className="send-newsletter">
+    <div className="send-newsletter" data-testid="send-newsletter">
       <div>
         <h3>Your Newsletters</h3>
         {loading ? (
@@ -106,4 +98,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default SendNewsletter;

@@ -1,6 +1,4 @@
 'use client';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 import App from './app';
 import { NextAuthProvider } from './session-providers';
@@ -12,41 +10,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const classNames = require('classnames');
-  const isRoot = !pathname.includes('/send');
-
   return (
     <html lang="en">
       <body>
         <ToastContainerWrapper />
         <NextAuthProvider>
-          <App>
-            <div className="dashboard">
-              <nav className="dashboard__nav">
-                <Link
-                  className={classNames('dashboard__tab', {
-                    'dashboard__tab--selected': isRoot,
-                  })}
-                  href="/"
-                >
-                  Manage Newsletter
-                </Link>
-                {/* <div className="dashboard__tab dashboard__tab--selected">
-                Manage Newsletter
-              </div> */}
-                <Link
-                  href="/send"
-                  className={classNames('dashboard__tab', {
-                    'dashboard__tab--selected': !isRoot,
-                  })}
-                >
-                  Send Newsletter
-                </Link>
-              </nav>
-              {children}
-            </div>
-          </App>
+          <App>{children}</App>
         </NextAuthProvider>
       </body>
     </html>

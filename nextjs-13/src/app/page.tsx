@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 
 import Head from 'next/head';
-import { redirect } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 
 import ListNewsletter from '@components/ListNewsletter';
 import NewsletterModal, {
@@ -15,7 +13,6 @@ import requestManager from 'lib/request/manager';
 import toast from 'lib/toast/makeToast';
 
 const Home = () => {
-  const { status } = useSession();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [records, setRecords] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,10 +54,6 @@ const Home = () => {
         content: item.content,
       },
     });
-  }
-
-  if (status === 'unauthenticated') {
-    redirect('/auth/sign-in');
   }
 
   return (

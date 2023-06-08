@@ -1,15 +1,9 @@
 'use client';
+
 import Head from 'next/head';
-import { redirect } from 'next/navigation';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 const AuthSignInPage = () => {
-  const { status } = useSession();
-
-  if (status === 'authenticated') {
-    redirect('/');
-  }
-
   return (
     <>
       <Head>
