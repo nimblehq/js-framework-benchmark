@@ -22,16 +22,16 @@ jest.mock('../../config/session.server', () => ({
   getSession: jest.fn(),
 }));
 
-const mockRequest: any = {
-  headers: {
-    get: jest.fn(() => 'Cookie Value'),
-  },
-};
-
-const mockCallback = jest.fn();
-const mockCookie = 'test-cookie';
-
 describe('appHandler', () => {
+  const mockRequest: any = {
+    headers: {
+      get: jest.fn(() => 'Cookie Value'),
+    },
+  };
+
+  const mockCallback = jest.fn();
+  const mockCookie = 'test-cookie';
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
