@@ -1,4 +1,5 @@
 module.exports = {
+  verbose: true,
   preset: 'ts-jest',
   setupFilesAfterEnv: [
     '<rootDir>/app/tests/jest.ts',
@@ -18,4 +19,5 @@ module.exports = {
     '^.+\\.(ts|tsx)?$': 'ts-jest',
     '^.+\\.(js|jsx)$': 'babel-jest',
   },
+  setupFiles: ['dotenv/config'],
 };

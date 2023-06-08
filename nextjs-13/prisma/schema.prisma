@@ -8,12 +8,12 @@ datasource db {
 }
 
 model User {
-  id         String       @id @default(uuid())
-  name       String       @db.VarChar(100)
-  email      String       @db.VarChar(50)
-  avatarUrl  String?      @map("avatar_url")
-  createdAt  DateTime     @default(now()) @map("created_at")
-  updatedAt  DateTime     @default(now()) @map("updated_at") @updatedAt
+  id          String       @id @default(uuid())
+  name        String       @db.VarChar(100)
+  email       String       @db.VarChar(50)
+  avatarUrl   String?      @map("avatar_url")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @default(now()) @map("updated_at") @updatedAt
   newsletters Newsletter[]
 
   @@unique([email])
