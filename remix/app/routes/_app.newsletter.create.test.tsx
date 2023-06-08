@@ -25,7 +25,7 @@ describe('POST /newsletter/create', () => {
   });
 
   describe('given valid newsletter params', () => {
-    it('redirect to main page, when a newsletter is sucessfully created', async () => {
+    it('redirect to main page, when a newsletter is successfully created', async () => {
       const user = { ...userFactory };
       const newsletter = { ...newsletterFactory };
 
