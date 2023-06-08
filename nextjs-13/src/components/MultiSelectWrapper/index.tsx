@@ -9,20 +9,18 @@ const MultiSelectWrapper = ({ promise, selected, setSelected }) => {
   });
 
   return (
-    <>
-      <div className="list-newsletter" data-testid="list-newsletter">
-        <div>
-          <ul className="">
-            <MultiSelect
-              options={records}
-              value={selected}
-              onChange={setSelected}
-              labelledBy="Select"
-            />
-          </ul>
-        </div>
-      </div>
-    </>
+    <div className="multi-select-wrapper" data-testid="multi-select-wrapper">
+      <ul>
+        <MultiSelect
+          options={records}
+          value={selected}
+          onChange={setSelected}
+          ClearSelectedIcon={null}
+          className="react-multi-select"
+          labelledBy="Select"
+        />
+      </ul>
+    </div>
   );
 };
 
