@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import MultiSelectWrapper from '@components/MultiSelectWrapper';
 import requestManager from 'lib/request/manager';
 import promiseWrapper from 'lib/request/promiseWrapper';
+import makeToast from 'lib/toast/makeToast';
 
 const Home = () => {
   const { status } = useSession();
@@ -35,6 +36,13 @@ const Home = () => {
     redirect('/auth/sign-in');
   }
 
+  const afterSubmit = () => {
+    setLoading(false);
+    setSelected([]);
+    setEmail('');
+    getData();
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -47,24 +55,11 @@ const Home = () => {
         },
       });
 
-      setLoading(false);
-      getData();
-      console.log('========>done : ');
-
-      // toast.success(`${action} newsletter success!`, {
-      //   position: 'top-center',
-      //   autoClose: 1000,
-      //   hideProgressBar: false,
-      // });
+      makeToast(`Send newsletter success!`, 'success');
+      afterSubmit();
     } catch (error) {
-      console.log('========>error : ', error);
-      setLoading(false);
-
-      // toast.error(error.message, {
-      //   position: 'top-center',
-      //   autoClose: 3000,
-      //   hideProgressBar: false,
-      // });
+      makeToast(error.message, 'error');
+      afterSubmit();
     }
   };
 
@@ -72,36 +67,40 @@ const Home = () => {
     <div className="send-newsletter">
       <div>
         <h3>Your Newsletters</h3>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email</label>
-          <br />
+        {loading ? (
+          <ClipLoader loading={loading} size={150} />
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="email">Email</label>
+            <br />
 
-          <input
-            type="text"
-            id="email"
-            required
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder={'Enter email'}
-          />
-          <br />
-
-          <label htmlFor="newsletters">Newsletters</label>
-          <br />
-
-          <Suspense fallback={<ClipLoader loading={true} size={150} />}>
-            <MultiSelectWrapper
-              promise={promise}
-              selected={selected}
-              setSelected={setSelected}
+            <input
+              type="text"
+              id="email"
+              required
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder={'Enter email'}
             />
-          </Suspense>
-          <div className="send-newsletter__footer">
-            <button type="submit" className="send-newsletter__btn-submit">
-              Send
-            </button>
-          </div>
-        </form>
+            <br />
+
+            <label htmlFor="newsletters">Newsletters</label>
+            <br />
+
+            <Suspense fallback={<ClipLoader loading={true} size={150} />}>
+              <MultiSelectWrapper
+                promise={promise}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            </Suspense>
+            <div className="send-newsletter__footer">
+              <button type="submit" className="send-newsletter__btn-submit">
+                Send
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );
