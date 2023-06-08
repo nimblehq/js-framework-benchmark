@@ -4,7 +4,15 @@ import withReactContent from 'sweetalert2-react-content';
 
 import requestManager from 'lib/request/manager';
 
-const NewsletterItem = ({ item, getData }) => {
+interface Props {
+  item: {
+    id: string;
+    name: string;
+  };
+  getData: () => undefined;
+}
+
+const NewsletterItem = ({ item, getData }: Props) => {
   const MySwal = withReactContent(Swal);
 
   const handleDelete = async () => {
