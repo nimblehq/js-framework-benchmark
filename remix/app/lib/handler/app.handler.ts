@@ -13,10 +13,10 @@ export default async function appHandler(
   let userInfo: User;
 
   const userSession = (await authenticator.isAuthenticated(request)) as User;
-  const cookie = await getSession(request.headers.get('Cookie'));
 
   if (userSession?.email) {
     userInfo = await UserRepository.findBy({ email: userSession.email });
+    const cookie = await getSession(request.headers.get('Cookie'));
 
     return callback(userInfo, cookie);
   } else {

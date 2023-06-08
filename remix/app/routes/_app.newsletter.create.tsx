@@ -47,27 +47,25 @@ export async function action({ request }: ActionArgs) {
 
 export default function Index() {
   return (
-    <>
-      <section className="flex flex-col gap-4">
-        <header className="text-xl font-bold">
-          <h1>Create your Newsletter </h1>
-        </header>
-        <ValidatedForm
-          validator={validator}
-          method="POST"
-          resetAfterSubmit={true}
-        >
-          <div className="flex flex-col gap-6">
-            <FormInput label={'Name'} name={'name'} placeholder={'name'} />
-            <FormTextarea
-              label={'Content'}
-              name={'content'}
-              placeholder={'content'}
-            />
-            <SubmitButton name={'Create'} />
-          </div>
-        </ValidatedForm>
-      </section>
-    </>
+    <section className="flex flex-col gap-4">
+      <header className="text-xl font-bold">
+        <h1>Create your Newsletter </h1>
+      </header>
+      <ValidatedForm
+        validator={validator}
+        method="POST"
+        resetAfterSubmit={true}
+      >
+        <div className="flex flex-col gap-6">
+          <FormInput label={'Name'} name={'name'} placeholder={'name'} />
+          <FormTextarea
+            label={'Content'}
+            name={'content'}
+            placeholder={'content'}
+          />
+          <SubmitButton name={'Create'} />
+        </div>
+      </ValidatedForm>
+    </section>
   );
 }

@@ -4,6 +4,8 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { StatusCodes } from 'http-status-codes';
+
 import { action } from './_app.newsletter.create';
 import { authenticator } from '../config/auth.server';
 import { prismaMock } from '../tests/database';
@@ -48,7 +50,7 @@ describe('POST /newsletter/create', () => {
         context: {},
       });
 
-      expect(await result.status).toBe(302);
+      expect(await result.status).toBe(StatusCodes.MOVED_TEMPORARILY);
       expect(await result.headers.get('Location')).toBe('/');
     });
   });
