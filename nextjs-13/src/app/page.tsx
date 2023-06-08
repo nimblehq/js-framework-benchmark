@@ -6,10 +6,10 @@ import Head from 'next/head';
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
+import CreateNewsletterModal from '@components/CreateNewsletterModal';
 import ListNewsletter from '@components/ListNewsletter';
 import requestManager from 'lib/request/manager';
 import promiseWrapper from 'lib/request/promiseWrapper';
-import CreateNewsletterModal from '@components/CreateNewsletterModal';
 
 const Home = () => {
   const { status } = useSession();
@@ -28,6 +28,7 @@ const Home = () => {
 
   useEffect(() => {
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (status === 'unauthenticated') {
@@ -46,14 +47,14 @@ const Home = () => {
         <div>
           <h3>Your Newsletters</h3>
           <Suspense fallback={<ClipLoader loading={true} size={150} />}>
-            <ListNewsletter
-              promise={promise}
-              getData={getData}
-            />
+            <ListNewsletter promise={promise} getData={getData} />
           </Suspense>
         </div>
         <div>
-          <button onClick={() => setIsOpen(true)} className="home__create-button">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="home__create-button"
+          >
             Create newsletter
           </button>
           <CreateNewsletterModal

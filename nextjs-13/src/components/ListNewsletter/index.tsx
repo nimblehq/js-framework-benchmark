@@ -1,6 +1,20 @@
 import NewsletterItem from '@components/NewsletterItem';
 
-const ListNewsletter = ({ promise, getData }) => {
+interface Record {
+  id: string;
+  name: string;
+}
+
+interface PromiseWrapper {
+  read: () => Record[];
+}
+
+interface Props {
+  promise: PromiseWrapper;
+  getData: () => undefined;
+}
+
+const ListNewsletter = ({ promise, getData }: Props) => {
   const records = promise ? promise.read() : [];
 
   return (
