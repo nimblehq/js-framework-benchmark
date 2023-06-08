@@ -35,7 +35,7 @@ export async function action({ request, params }: ActionArgs) {
       });
     }
 
-    if (newsletterExists.userId === user.id) {
+    if (newsletterExists.userId !== user.id) {
       return validationError({
         fieldErrors: {
           Error: 'You are not allowed to update this newsletter',
@@ -63,7 +63,7 @@ export async function action({ request, params }: ActionArgs) {
 export default function Index() {
   return (
     <div>
-      <Form method="PUT">
+      <Form method="POST">
         <div>
           <label htmlFor="name">Name</label>
           <input type="text" name="name" placeholder="name" />
