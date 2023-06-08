@@ -1,5 +1,6 @@
 'use client';
 
+import classNames from 'classnames';
 import Link from 'next/link';
 import { redirect, usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -8,7 +9,6 @@ import Header from '@components/Header';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const classNames = require('classnames');
   const isRoot = !pathname.includes('/send');
   const { status } = useSession();
 

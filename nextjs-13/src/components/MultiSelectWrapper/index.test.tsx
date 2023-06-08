@@ -1,13 +1,10 @@
 import React from 'react';
 import { MultiSelect } from 'react-multi-select-component';
 
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import MultiSelectWrapper from './index';
 
-// jest.mock('MultiSelect', () => {
-//   return jest.fn(() => null);
-// });
 jest.mock('react-multi-select-component');
 
 describe('MultiSelectWrapper', () => {
