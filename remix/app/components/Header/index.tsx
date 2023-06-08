@@ -9,7 +9,10 @@ interface HeaderProps {
 
 export default function Header({ user }: HeaderProps) {
   return (
-    <header data-testid="appHeader" className="bg-white drop-shadow-xl">
+    <header
+      data-testid="appHeader"
+      className="bg-white drop-shadow-xl sticky top-0"
+    >
       <nav className="px-6 py-4 flex justify-between items-center w-full">
         <Link
           to={'/'}
