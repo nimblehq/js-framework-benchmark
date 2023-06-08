@@ -1,7 +1,6 @@
 /**
  * @jest-environment node
  */
-import { Newsletter } from '@prisma/client';
 import { StatusCodes } from 'http-status-codes';
 
 import { newsletterFactory } from '@test/factories/newsletter.factory';
