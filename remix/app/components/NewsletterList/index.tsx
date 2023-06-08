@@ -20,6 +20,6 @@ export default function NewsletterList({ newsletters }: NewsletterListProps) {
       ))}
     </ul>
   ) : (
-    <p>No newsletters found.</p>
+    <small>No newsletters found.</small>
   );
 }
