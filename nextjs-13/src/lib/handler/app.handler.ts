@@ -21,7 +21,6 @@ export default async function appHandler(
 
     return await callback(currentUser, req);
   } catch (err) {
-    console.error('========>err : ', err);
     return NextResponse.json(
       { message: (err as Error).message },
       { status: StatusCodes.INTERNAL_SERVER_ERROR }

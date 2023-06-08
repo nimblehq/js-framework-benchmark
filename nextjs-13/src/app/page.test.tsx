@@ -25,7 +25,9 @@ describe('Home', () => {
   describe('Session status is "unauthenticated', () => {
     it('redirects to home page', async () => {
       useSession.mockReturnValue({ status: 'unauthenticated' });
+
       render(<Home />);
+      
       await waitFor(() => {
         expect(redirect).toHaveBeenCalledWith('/auth/sign-in');
       });
