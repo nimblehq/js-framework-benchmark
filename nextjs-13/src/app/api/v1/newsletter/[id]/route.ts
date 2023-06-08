@@ -5,6 +5,7 @@ import appHandler from 'lib/handler/app.handler';
 import { invalidParamsResponseError } from 'lib/request/error';
 import {
   deleteNewsletter,
+  findNewsletter,
   updateNewsletter,
 } from 'repositories/newsletter.repository';
 
@@ -68,4 +69,23 @@ export async function PUT(
       return invalidParamsResponseError();
     }
   });
+}
+
+export async function GET(
+  _: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const record = await findNewsletter(params.id);
+
+    if (!record)
+      return NextResponse.json(
+        { message: 'Newsletter not exists' },
+        { status: StatusCodes.UNPROCESSABLE_ENTITY }
+      );
+
+    return NextResponse.json({ record }, { status: StatusCodes.OK });
+  } catch (err) {
+    return getInvalidParamsError();
+  }
 }

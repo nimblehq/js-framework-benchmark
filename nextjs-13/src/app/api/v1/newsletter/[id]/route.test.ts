@@ -1,16 +1,19 @@
 /**
  * @jest-environment node
  */
+import { Newsletter } from '@prisma/client';
 import { StatusCodes } from 'http-status-codes';
 
+import { newsletterFactory } from '@test/factories/newsletter.factory';
 import { userFactory } from '@test/factories/user.factory';
 import appHandler from 'lib/handler/app.handler';
 import {
   deleteNewsletter,
+  findNewsletter,
   updateNewsletter,
 } from 'repositories/newsletter.repository';
 
-import { DELETE, PUT } from './route';
+import { DELETE, PUT, GET } from './route';
 
 jest.mock('lib/handler/app.handler');
 jest.mock('repositories/newsletter.repository');
@@ -107,6 +110,43 @@ describe('PUT /v1/newsletter/:id', () => {
       expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
         message: 'Newsletter could not be updated',
+      });
+    });
+  });
+});
+
+describe('GET /v1/newsletter/:id', () => {
+  describe('newsletter exists', () => {
+    it('returns the newsletter', async () => {
+      const newsletter = newsletterFactory;
+      findNewsletter.mockResolvedValue(newsletter);
+
+      const res = await GET({}, { params: { id: newsletter.id } });
+      const responseBody = await res.json();
+
+      expect(findNewsletter).toHaveBeenCalledWith(newsletter.id);
+      expect(res.status).toBe(StatusCodes.OK);
+      expect(responseBody.record).toMatchObject({
+        id: newsletter.id,
+        name: expect.any(String),
+        content: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      });
+    });
+  });
+
+  describe('newsletter NOT exists', () => {
+    it('returns error', async () => {
+      findNewsletter.mockResolvedValue(null);
+
+      const res = await GET({}, { params: { id: '1' } });
+      const responseBody = await res.json();
+
+      expect(findNewsletter).toHaveBeenCalledWith('1');
+      expect(res.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
+      expect(responseBody).toMatchObject({
+        message: 'Newsletter not exists',
       });
     });
   });
