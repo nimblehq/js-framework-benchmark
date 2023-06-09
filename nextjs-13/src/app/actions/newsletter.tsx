@@ -1,13 +1,16 @@
 'use server';
 
 import RequestError from 'lib/request/error';
+import getError from 'lib/request/getError';
 import { invalidParamsMessage } from 'lib/request/getInvalidParamsError';
 import withAuth from 'lib/withAuth/withAuth';
 import {
   deleteNewsletter as deleteRecord,
   updateNewsletter as updateRecord,
   createNewsletter as createRecord,
+  countNewsletters as countRecords,
 } from 'repositories/newsletter.repository';
+import { sendMailQueue } from 'workers/email.worker';
 
 export async function deleteNewsletter(id: string) {
   return withAuth(async (currentUser) => {
@@ -63,6 +66,49 @@ export async function createNewsletter({
       };
 
       await createRecord(attributes);
+    } catch (err) {
+      throw new RequestError({ message: invalidParamsMessage });
+    }
+  });
+}
+
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
+export async function sendNewsletter({
+  email,
+  ids,
+}: {
+  email: string;
+  ids: string[];
+}) {
+  return withAuth(async (currentUser) => {
+    try {
+      if (!validateEmail(email)) {
+        return getError('Invalid email');
+      }
+
+      if (ids.length === 0) {
+        return getError('Invalid newsletters');
+      }
+
+      const newslettersCount = await countRecords(currentUser.id, ids);
+      const allIdsAreValid = newslettersCount === ids.length;
+      if (!allIdsAreValid) {
+        return getError('Invalid newsletters');
+      }
+
+      sendMailQueue.add('sendMail', {
+        ids,
+        to: email,
+        senderId: currentUser.id,
+        senderName: currentUser.name,
+      });
     } catch (err) {
       throw new RequestError({ message: invalidParamsMessage });
     }

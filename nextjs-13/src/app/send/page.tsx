@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { ClipLoader } from 'react-spinners';
 
 import MultiSelectWrapper from '@components/MultiSelectWrapper';
+import { sendNewsletter } from 'app/actions/newsletter';
 import requestManager from 'lib/request/manager';
 import makeToast from 'lib/toast/makeToast';
 
@@ -12,6 +13,7 @@ const SendNewsletter = () => {
   const [records, setRecords] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
+  const startTransition = useTransition()[1];
 
   const getNewletters = async () => {
     setIsLoading(true);
@@ -45,22 +47,18 @@ const SendNewsletter = () => {
       return makeToast('Please select at least one newsletter', 'error');
     }
 
-    setIsLoading(true);
+    startTransition(async () => {
+      try {
+        const ids = [...new Set(selected.map((r) => r.value))];
+        await sendNewsletter({ email, ids });
 
-    try {
-      await requestManager('POST', 'v1/newsletter/send', {
-        data: {
-          email,
-          ids: selected.map((r) => r.value),
-        },
-      });
-
-      makeToast('Send newsletter success!', 'success');
-      afterSubmit();
-    } catch (error) {
-      makeToast(error.message, 'error');
-      afterSubmit();
-    }
+        makeToast('Send newsletter success!', 'success');
+        afterSubmit();
+      } catch (error) {
+        makeToast(error.message, 'error');
+        afterSubmit();
+      }
+    });
   };
 
   return (
@@ -68,7 +66,7 @@ const SendNewsletter = () => {
       <div>
         <h3 data-testid="title">Your Newsletters</h3>
         {isLoading ? (
-          <ClipLoader isLoading={isLoading} size={75} />
+          <ClipLoader loading={isLoading} size={75} />
         ) : (
           <form className="send-newsletter__form" onSubmit={resetState}>
             <label className="send-newsletter__label" htmlFor="email">
