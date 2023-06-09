@@ -1,11 +1,14 @@
-import { ActionArgs, redirect } from '@remix-run/node';
+import { useEffect } from 'react';
+
+import { ActionArgs, json } from '@remix-run/node';
+import { useActionData, useNavigate } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
 import { ValidatedForm, validationError } from 'remix-validated-form';
 import { z } from 'zod';
 
 import FormInput from '../components/FormInput';
 import SubmitButton from '../components/SubmitButton';
-import { commitSession } from '../config/session.server';
+import { setToastItems } from '../helpers/localStorage.helper';
 import appHandler from '../lib/handler/app.handler';
 import NewsletterRepository from '../repositories/newsletter.server';
 
@@ -17,7 +20,7 @@ const validator = withZod(
 );
 
 export async function action({ request }: ActionArgs) {
-  return appHandler(request, async (user, session) => {
+  return appHandler(request, async (user) => {
     const result = await validator.validate(await request.formData());
 
     if (result.error) {
@@ -32,29 +35,31 @@ export async function action({ request }: ActionArgs) {
       data: newsletterData,
     });
 
-    session.flash(
-      'toastMessage',
-      `${newsletter.name} Newsletter created successfully`
-    );
-    session.flash('toastMode', 'success');
-
-    return redirect(`/`, {
-      headers: { 'Set-Cookie': await commitSession(session) },
-    });
+    return json({ ...newsletter });
   });
 }
 
 export default function Index() {
+  const newsletter = useActionData();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (newsletter) {
+      setToastItems(
+        'success',
+        `${newsletter.name} Newsletter created successfully`
+      );
+
+      navigate('/');
+    }
+  }, [newsletter]);
+
   return (
     <section className="flex flex-col gap-4">
       <header className="text-xl font-bold">
         <h1>Create your Newsletter </h1>
       </header>
-      <ValidatedForm
-        validator={validator}
-        method="POST"
-        resetAfterSubmit={true}
-      >
+      <ValidatedForm validator={validator} method="POST">
         <div className="flex flex-col gap-6">
           <FormInput
             label={'Name'}

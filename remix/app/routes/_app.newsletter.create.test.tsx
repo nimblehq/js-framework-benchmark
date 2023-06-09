@@ -4,7 +4,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { StatusCodes } from 'http-status-codes';
+import { Newsletter } from '@prisma/client';
 
 import { action } from './_app.newsletter.create';
 import { authenticator } from '../config/auth.server';
@@ -25,7 +25,7 @@ describe('POST /newsletter/create', () => {
   });
 
   describe('given valid newsletter params', () => {
-    it('redirect to main page, when a newsletter is successfully created', async () => {
+    it('creates a newsletter', async () => {
       const user = { ...userFactory };
       const newsletter = { ...newsletterFactory };
 
@@ -50,8 +50,14 @@ describe('POST /newsletter/create', () => {
         context: {},
       });
 
-      expect(await result.status).toBe(StatusCodes.MOVED_TEMPORARILY);
-      expect(await result.headers.get('Location')).toBe('/');
+      expect(await result.json()).toMatchObject<Newsletter>({
+        id: newsletter.id,
+        name: expect.any(String),
+        content: expect.any(String),
+        userId: newsletter.userId,
+        createAt: expect.any(String),
+        updateAt: expect.any(String),
+      });
     });
   });
 

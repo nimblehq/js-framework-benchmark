@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import { LinksFunction, LoaderArgs, json } from '@remix-run/node';
+import { LinksFunction } from '@remix-run/node';
 import {
   Link,
   Links,
@@ -11,36 +11,26 @@ import {
   Scripts,
   ScrollRestoration,
   isRouteErrorResponse,
-  useLoaderData,
   useRouteError,
 } from '@remix-run/react';
 import { StatusCodes } from 'http-status-codes';
 
-import { commitSession, getSession } from './config/session.server';
+import { getToastItems, removeToastItems } from './helpers/localStorage.helper';
 import makeToast from './lib/toast/makeToast';
 import stylesheet from '../app/stylesheets/tailwind.css';
+
+interface toastItems {
+  toastMode: string;
+  toastMessage: string;
+}
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet },
 ];
 
-export async function loader({ request }: LoaderArgs) {
-  const session = await getSession(request.headers.get('Cookie'));
-  const toastMessage = session.get('toastMessage') || null;
-  const toastMode = session.get('toastMode') || null;
-
-  return json(
-    { toastMessage, toastMode },
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    }
-  );
-}
-
 export default function App() {
-  const { toastMessage, toastMode } = useLoaderData<typeof loader>();
+  const { toastMode, toastMessage } =
+    typeof window !== 'undefined' ? getToastItems() : ({} as toastItems);
 
   useEffect(() => {
     if (!toastMessage) {
@@ -48,6 +38,8 @@ export default function App() {
     }
 
     makeToast(toastMode, toastMessage);
+
+    removeToastItems();
   }, [toastMessage]);
 
   return (
