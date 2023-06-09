@@ -4,11 +4,15 @@ import { toast } from 'react-toastify';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { StatusCodes } from 'http-status-codes';
 
-import { errorMessageList } from 'lib/request/error';
+import { sendNewsletter } from 'app/actions/newsletter';
+import RequestError, { errorMessageList } from 'lib/request/error';
 import requestManager from 'lib/request/manager';
 
 import SendNewsletter from './page';
 
+jest.mock('lib/request/getServerSession', () => ({
+  getServerSession: jest.fn(),
+}));
 jest.mock('lib/request/manager');
 
 jest.mock('react-toastify', () => ({
@@ -16,6 +20,9 @@ jest.mock('react-toastify', () => ({
     success: jest.fn(),
     error: jest.fn(),
   },
+}));
+jest.mock('app/actions/newsletter', () => ({
+  sendNewsletter: jest.fn(),
 }));
 
 describe('SendNewsletter', () => {
@@ -78,13 +85,10 @@ describe('SendNewsletter', () => {
     fireEvent.submit(sendButton);
 
     await waitFor(() => {
-      expect(requestManager).toHaveBeenCalledWith(
-        'POST',
-        'v1/newsletter/send',
-        {
-          data: { email: 'dev@nimblehq.co', ids: [1] },
-        }
-      );
+      expect(sendNewsletter).toHaveBeenCalledWith({
+        email: 'dev@nimblehq.co',
+        ids: [1],
+      });
     });
     await waitFor(() => {
       expect(toast.success).toHaveBeenCalledWith('Send newsletter success!', {
@@ -121,18 +125,18 @@ describe('SendNewsletter', () => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
       return useState([{ value: 1 }]);
     };
-
     jest.spyOn(React, 'useState').mockImplementationOnce(stateMock);
 
-    const mockRequest = (method) => {
-      if (method === 'GET') {
-        return { records: [] };
-      } else {
-        throw Error(errorMessageList[StatusCodes.UNPROCESSABLE_ENTITY]);
-      }
+    const mockRequest = (_) => {
+      return { records: [] };
     };
-
     requestManager.mockImplementation(mockRequest);
+
+    sendNewsletter.mockImplementation(() => {
+      throw new RequestError({
+        message: errorMessageList[StatusCodes.UNPROCESSABLE_ENTITY],
+      });
+    });
 
     render(<SendNewsletter />);
 
@@ -141,16 +145,6 @@ describe('SendNewsletter', () => {
 
     fireEvent.change(emailInput, { target: { value: 'dev@nimblehq.co' } });
     fireEvent.submit(sendButton);
-
-    await waitFor(() => {
-      expect(requestManager).toHaveBeenCalledWith(
-        'POST',
-        'v1/newsletter/send',
-        {
-          data: { email: 'dev@nimblehq.co', ids: [1] },
-        }
-      );
-    });
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith(

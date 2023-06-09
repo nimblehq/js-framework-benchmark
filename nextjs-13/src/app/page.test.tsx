@@ -14,6 +14,16 @@ jest.mock('lib/request/manager');
 jest.mock('react-spinners', () => ({
   ClipLoader: () => <div data-testid="clip-loader">Loading...</div>,
 }));
+jest.mock('@components/CreateOrUpdateNewsletterModal', () => {
+  return jest.fn(() => <div></div>);
+});
+jest.mock('@components/ListNewsletter', () => {
+  return jest.fn((props) => (
+    <div data-testid="list-newsletter">
+      {props.promise ? props.promise.read() : []}
+    </div>
+  ));
+});
 
 describe('Home', () => {
   beforeEach(() => {
