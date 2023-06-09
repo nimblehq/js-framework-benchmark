@@ -13,7 +13,11 @@ const middleware = async (req) => {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
-  if (user === null && !url.startsWith('/auth')) {
+  if (
+    user === null &&
+    !url.startsWith('/auth') &&
+    !url.startsWith('/newsletter')
+  ) {
     return NextResponse.redirect(new URL('/auth/sign-in', req.url));
   }
 };
