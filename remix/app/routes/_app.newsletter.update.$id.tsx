@@ -71,7 +71,7 @@ export default function Index() {
 
   return (
     <div>
-      <Form method="post">
+      <Form method="put">
         <div>
           <label htmlFor="name">Name</label>
           <input type="text" name="name" placeholder="name" />

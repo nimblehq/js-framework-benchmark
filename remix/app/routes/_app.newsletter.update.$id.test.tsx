@@ -19,7 +19,7 @@ jest.mock('../config/auth.server', () => ({
   },
 }));
 
-describe('POST /newsletter/update/:id', () => {
+describe('PUT /newsletter/update/:id', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -43,7 +43,7 @@ describe('POST /newsletter/update/:id', () => {
 
       const request = makeRequest({
         url: `/newsletter/update/${newsletter.id}`,
-        method: 'post',
+        method: 'put',
         body,
       });
 
@@ -79,7 +79,7 @@ describe('POST /newsletter/update/:id', () => {
 
       const request = makeRequest({
         url: `/newsletter/update/${newsletter.id}`,
-        method: 'post',
+        method: 'put',
         body,
       });
 
@@ -112,7 +112,7 @@ describe('POST /newsletter/update/:id', () => {
 
       const request = makeRequest({
         url: `/newsletter/update/${newsletter.id}`,
-        method: 'post',
+        method: 'put',
         body,
       });
 
