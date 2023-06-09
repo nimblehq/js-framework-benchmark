@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import Error from './error';
+import Error from '.';
 
 describe('FormInput Error', () => {
   it('renders the component', () => {

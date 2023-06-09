@@ -4,7 +4,6 @@ import { ValidatedForm, validationError } from 'remix-validated-form';
 import { z } from 'zod';
 
 import FormInput from '../components/FormInput';
-import FormTextarea from '../components/FormTextarea';
 import SubmitButton from '../components/SubmitButton';
 import { commitSession } from '../config/session.server';
 import appHandler from '../lib/handler/app.handler';
@@ -57,11 +56,17 @@ export default function Index() {
         resetAfterSubmit={true}
       >
         <div className="flex flex-col gap-6">
-          <FormInput label={'Name'} name={'name'} placeholder={'name'} />
-          <FormTextarea
+          <FormInput
+            label={'Name'}
+            name={'name'}
+            placeholder={'name'}
+            format="short"
+          />
+          <FormInput
             label={'Content'}
             name={'content'}
             placeholder={'content'}
+            format="long"
           />
           <SubmitButton name={'Create'} />
         </div>

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import Label from './label';
+import Label from '.';
 
 describe('FormInput Label', () => {
   it('renders the component', () => {

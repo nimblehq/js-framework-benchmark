@@ -10,7 +10,7 @@ jest.mock('remix-validated-form', () => ({
 }));
 
 describe('FormInput', () => {
-  describe('givens FormInput attribute', () => {
+  describe('givens vaild props', () => {
     it('renders the label, input, and error message', () => {
       const label = 'Test Label';
       const name = 'testName';
@@ -29,7 +29,7 @@ describe('FormInput', () => {
     });
   });
 
-  it('enter value', () => {
+  it('sets the text input value', () => {
     render(
       <FormInput
         label="Test Label"
