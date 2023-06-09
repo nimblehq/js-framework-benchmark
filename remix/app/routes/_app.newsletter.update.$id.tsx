@@ -58,6 +58,15 @@ export default function Index() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (Object.keys(newsletter).length === 0) {
+      addNotification({
+        text: 'Newsletter not found',
+        type: 'error',
+      });
+
+      navigate('/');
+    }
+
     if (result) {
       addNotification({
         text: `${result.name} Newsletter updated successfully`,
