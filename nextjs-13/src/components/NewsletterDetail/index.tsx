@@ -1,6 +1,20 @@
 'use client';
 
-const NewsletterDetail = ({ promise }) => {
+interface Record {
+  id: string;
+  name: string;
+  content: string;
+}
+
+interface PromiseWrapper {
+  read: () => Record;
+}
+
+interface Props {
+  promise: PromiseWrapper;
+}
+
+const NewsletterDetail = ({ promise }: Props) => {
   const newsletter = promise ? promise.read() : {};
 
   return (
