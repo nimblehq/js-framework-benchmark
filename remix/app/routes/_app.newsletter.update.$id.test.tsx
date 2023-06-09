@@ -4,7 +4,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { StatusCodes } from 'http-status-codes';
+import { Newsletter } from '@prisma/client';
 
 import { action } from './_app.newsletter.update.$id';
 import { authenticator } from '../config/auth.server';
@@ -25,7 +25,7 @@ describe('POST /newsletter/update/:id', () => {
   });
 
   describe('givens valid newsletter params with a creator user', () => {
-    it('redirect to main page, when a newsletter is successfully updated', async () => {
+    it('update a newsletter', async () => {
       const userAttributes = { id: '1' };
       const newsletterAttributes = { userId: '1' };
       const user = { ...userFactory, ...userAttributes };
@@ -43,7 +43,7 @@ describe('POST /newsletter/update/:id', () => {
 
       const request = makeRequest({
         url: `/newsletter/update/${newsletter.id}`,
-        method: 'POST',
+        method: 'post',
         body,
       });
 
@@ -53,8 +53,14 @@ describe('POST /newsletter/update/:id', () => {
         context: {},
       });
 
-      expect(await result.status).toBe(StatusCodes.MOVED_TEMPORARILY);
-      expect(await result.headers.get('Location')).toBe('/');
+      expect(await result.json()).toMatchObject<Newsletter>({
+        id: newsletter.id,
+        name: expect.any(String),
+        content: expect.any(String),
+        userId: newsletter.userId,
+        createAt: expect.any(String),
+        updateAt: expect.any(String),
+      });
     });
   });
 
@@ -73,7 +79,7 @@ describe('POST /newsletter/update/:id', () => {
 
       const request = makeRequest({
         url: `/newsletter/update/${newsletter.id}`,
-        method: 'POST',
+        method: 'post',
         body,
       });
 
@@ -89,7 +95,7 @@ describe('POST /newsletter/update/:id', () => {
     });
   });
 
-  describe('given valid newsletter params with a NOT creator user', () => {
+  describe('givens valid newsletter params with a NOT creator user', () => {
     it('returns error NO PERMISSION', async () => {
       const user = { ...userFactory };
       const newsletter = { ...newsletterFactory };
@@ -106,7 +112,7 @@ describe('POST /newsletter/update/:id', () => {
 
       const request = makeRequest({
         url: `/newsletter/update/${newsletter.id}`,
-        method: 'POST',
+        method: 'post',
         body,
       });
 
