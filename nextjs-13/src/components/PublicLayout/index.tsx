@@ -13,7 +13,7 @@ export default function PublicLayout({
   return (
     <div className="public" data-testid="public-newsletter">
       {status === 'unauthenticated' && (
-        <div className="banner">
+        <div className="banner" data-testid="banner">
           <Link href="auth/sign-in">Sign up now</Link> to create your own
           newsletters
         </div>

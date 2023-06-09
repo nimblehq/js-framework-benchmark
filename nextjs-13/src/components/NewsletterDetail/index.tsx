@@ -4,7 +4,7 @@ const NewsletterDetail = ({ promise }) => {
   const newsletter = promise ? promise.read() : {};
 
   return (
-    <div className="newsletter">
+    <div className="newsletter" data-testid="newsletter">
       <h3 className="name">{newsletter.name}</h3>
       <p className="content">{newsletter.content}</p>
       <br />

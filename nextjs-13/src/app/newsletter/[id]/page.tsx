@@ -30,7 +30,7 @@ const ViewNewsletter = () => {
   }, []);
 
   return (
-    <div className="view-newsletter">
+    <div className="view-newsletter" data-testid="view-newsletter">
       <Suspense fallback={<ClipLoader loading={true} size={150} />}>
         <NewsletterDetail promise={promise} />
       </Suspense>
