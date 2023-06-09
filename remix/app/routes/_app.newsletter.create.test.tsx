@@ -40,7 +40,7 @@ describe('POST /newsletter/create', () => {
 
       const request = makeRequest({
         url: '/newsletter/create',
-        method: 'POST',
+        method: 'post',
         body,
       });
 
@@ -76,7 +76,7 @@ describe('POST /newsletter/create', () => {
 
       const request = makeRequest({
         url: '/newsletter/create',
-        method: 'POST',
+        method: 'post',
         body,
       });
 

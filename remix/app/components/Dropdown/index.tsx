@@ -33,7 +33,7 @@ export default function Dropdown() {
         >
           <div className="py-1">
             <Menu.Item data-testid="dropdown-item">
-              <Form method="POST" action="/auth/sign-out">
+              <Form method="post" action="/auth/sign-out">
                 <button
                   type="submit"
                   className={

@@ -59,7 +59,7 @@ export default function Index() {
       <header className="text-xl font-bold">
         <h1>Create your Newsletter </h1>
       </header>
-      <ValidatedForm validator={validator} method="POST">
+      <ValidatedForm validator={validator} method="post">
         <div className="flex flex-col gap-6">
           <FormInput
             label={'Name'}
