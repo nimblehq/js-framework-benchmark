@@ -8,7 +8,10 @@ class NewsletterRepository {
   }
 
   static async findMany({ where }: Prisma.NewsletterFindManyArgs) {
-    return (await dbClient.newsletter.findMany({ where })) as Newsletter[];
+    return (await dbClient.newsletter.findMany({
+      where,
+      orderBy: { createAt: 'desc' },
+    })) as Newsletter[];
   }
 }
 
