@@ -1,8 +1,10 @@
+import { useTransition } from 'react';
+
 import Image from 'next/image';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-import requestManager from 'lib/request/manager';
+import { deleteNewsletter } from 'app/actions/actions';
 
 interface Props {
   item: {
@@ -14,6 +16,7 @@ interface Props {
 
 const NewsletterItem = ({ item, getData }: Props) => {
   const MySwal = withReactContent(Swal);
+  const [_, startTransition] = useTransition();
 
   const handleDelete = async () => {
     MySwal.fire(
@@ -22,15 +25,17 @@ const NewsletterItem = ({ item, getData }: Props) => {
       'warning'
     ).then(async (result) => {
       if (result.isConfirmed) {
-        try {
-          MySwal.fire('Deleting', 'Deleting...');
-          await requestManager('DELETE', `v1/newsletter/${item.id}`);
-          MySwal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        startTransition(async () => {
+          try {
+            MySwal.fire('Deleting', 'Deleting...');
+            await deleteNewsletter(item.id);
 
-          getData();
-        } catch (error) {
-          MySwal.fire('Something went wrong.', error.message, 'error');
-        }
+            MySwal.fire('Deleted!', 'Your file has been deleted.', 'success');
+            getData();
+          } catch (error) {
+            MySwal.fire('Something went wrong.', error.message, 'error');
+          }
+        });
       }
     });
   };
