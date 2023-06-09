@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 
 import { ActionArgs, json } from '@remix-run/node';
-import { Form, useActionData, useNavigate } from '@remix-run/react';
+import { useActionData, useLoaderData, useNavigate } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
 import { StatusCodes } from 'http-status-codes';
-import { validationError } from 'remix-validated-form';
+import { ValidatedForm, validationError } from 'remix-validated-form';
 import { z } from 'zod';
 
+import FormInput from '../components/FormInput';
+import SubmitButton from '../components/SubmitButton';
 import { addNotification } from '../helpers/localStorage.helper';
 import appHandler from '../lib/handler/app.handler';
 import NewsletterRepository from '../repositories/newsletter.server';
@@ -42,8 +44,17 @@ export async function action({ request, params }: ActionArgs) {
   });
 }
 
+export const loader = async ({ params }: ActionArgs) => {
+  const newsletter = await NewsletterRepository.findOne({
+    where: { id: params.id },
+  });
+
+  return json({ ...newsletter });
+};
+
 export default function Index() {
   const result = useActionData();
+  const newsletter = useLoaderData();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,19 +69,31 @@ export default function Index() {
   }, [result]);
 
   return (
-    <div>
-      <Form method="put">
-        <div>
-          <label htmlFor="name">Name</label>
-          <input type="text" name="name" placeholder="name" />
+    <section className="flex flex-col gap-4">
+      <header className="text-xl font-bold">
+        <h1>Update your Newsletter </h1>
+      </header>
+      <ValidatedForm
+        validator={validator}
+        defaultValues={newsletter}
+        method="put"
+      >
+        <div className="flex flex-col gap-6">
+          <FormInput
+            label={'Name'}
+            name={'name'}
+            placeholder={'name'}
+            format="short"
+          />
+          <FormInput
+            label={'Content'}
+            name={'content'}
+            placeholder={'content'}
+            format="long"
+          />
+          <SubmitButton name={'Update'} />
         </div>
-        <br />
-        <div>
-          <label htmlFor="content">Content</label>
-          <textarea name="content" placeholder="content" />
-        </div>
-        <button type="submit">Update</button>
-      </Form>
-    </div>
+      </ValidatedForm>
+    </section>
   );
 }
