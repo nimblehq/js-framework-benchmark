@@ -4,9 +4,10 @@ import { render, waitFor, screen } from '@testing-library/react';
 
 import ListNewsletter from './index';
 jest.mock('@components/NewsletterItem', () => {
-  return ({ item }) => {
+  const NewsletterItem = ({ item }: { item: { name: string } }) => {
     return <div>{item.name}</div>;
   };
+  return NewsletterItem;
 });
 
 describe('ListNewsletter', () => {

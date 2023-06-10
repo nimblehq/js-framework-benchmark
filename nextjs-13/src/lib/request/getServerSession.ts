@@ -12,6 +12,7 @@ export const getServerSession = async () => {
         .map((c) => [c.name, c.value])
     ),
   };
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const res = { getHeader() {}, setCookie() {}, setHeader() {} };
   const session = await originalGetServerSession(req, res, authOptions);
   return session;
