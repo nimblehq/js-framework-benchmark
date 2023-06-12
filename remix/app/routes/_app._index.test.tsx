@@ -7,6 +7,7 @@ import { authenticator } from '../config/auth.server';
 import { prismaMock } from '../tests/database';
 import { newsletterFactory } from '../tests/factories/newsletter.factory';
 import { userFactory } from '../tests/factories/user.factory';
+import { makeRequest } from '../tests/helpers/request';
 
 jest.mock('../config/auth.server', () => ({
   authenticator: {
@@ -17,13 +18,24 @@ jest.mock('../config/auth.server', () => ({
 describe('Root Page', () => {
   describe('loader', () => {
     it('returns a list of newsletters', async () => {
-      const user = { ...userFactory };
-      const newsletters = Array(5).fill(newsletterFactory);
+      const userAtttributes = { id: '1' };
+      const newsletterAttributes = { userId: '1' };
+
+      const user = { ...userFactory, ...userAtttributes };
+      const newsletter = { ...newsletterFactory, ...newsletterAttributes };
+
+      const newsletters = Array(5).fill(newsletter);
 
       (authenticator.isAuthenticated as jest.Mock).mockResolvedValue(user);
+      prismaMock.user.findUnique.mockResolvedValue(user);
       prismaMock.newsletter.findMany.mockResolvedValue(newsletters);
 
-      const response = await loader();
+      const request = makeRequest({
+        url: '/newsletter/create',
+        method: 'get',
+      });
+
+      const response = await loader({ request, params: {}, context: {} });
 
       expect(response).toEqual({ newsletters: newsletters });
     });
