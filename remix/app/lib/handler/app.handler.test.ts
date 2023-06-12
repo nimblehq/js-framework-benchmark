@@ -18,11 +18,7 @@ jest.mock('../../config/auth.server', () => ({
 }));
 
 describe('appHandler', () => {
-  const mockRequest: any = {
-    headers: {
-      get: jest.fn(() => 'Cookie Value'),
-    },
-  };
+  const mockRequest = jest.fn();
   const mockCallback = jest.fn();
 
   beforeEach(() => {

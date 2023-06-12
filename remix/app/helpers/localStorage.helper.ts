@@ -1,16 +1,21 @@
-export function setToastItems(toastMode: string, toastMessage: string) {
-  localStorage.setItem('toastMode', toastMode);
-  localStorage.setItem('toastMessage', toastMessage);
+import { Notification } from '../types';
+
+export function addNotification({ text, type }: Notification) {
+  const notification = { text: text, type: type };
+
+  localStorage.setItem('notification', JSON.stringify(notification));
 }
 
-export function getToastItems() {
-  const toastMode = localStorage.getItem('toastMode');
-  const toastMessage = localStorage.getItem('toastMessage');
+export function getNotification(): Notification {
+  const notification = localStorage.getItem('notification');
 
-  return { toastMode, toastMessage };
+  if (!notification) {
+    return { text: '', type: '' };
+  }
+
+  return JSON.parse(notification);
 }
 
-export function removeToastItems() {
-  localStorage.removeItem('toastMessage');
-  localStorage.removeItem('toastMode');
+export function removeNotification() {
+  localStorage.removeItem('notification');
 }

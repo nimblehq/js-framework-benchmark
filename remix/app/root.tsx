@@ -15,32 +15,31 @@ import {
 } from '@remix-run/react';
 import { StatusCodes } from 'http-status-codes';
 
-import { getToastItems, removeToastItems } from './helpers/localStorage.helper';
-import makeToast from './lib/toast/makeToast';
+import {
+  getNotification,
+  removeNotification,
+} from './helpers/localStorage.helper';
+import showNotification from './lib/notification/showNotification';
+import { Notification } from './types';
 import stylesheet from '../app/stylesheets/tailwind.css';
-
-interface toastItems {
-  toastMode: string;
-  toastMessage: string;
-}
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet },
 ];
 
 export default function App() {
-  const { toastMode, toastMessage } =
-    typeof window !== 'undefined' ? getToastItems() : ({} as toastItems);
+  const { type, text } =
+    typeof window !== 'undefined' ? getNotification() : ({} as Notification);
 
   useEffect(() => {
-    if (!toastMessage) {
+    if (!text) {
       return;
     }
 
-    makeToast(toastMode, toastMessage);
+    showNotification({ text: text as string, type: type as string });
 
-    removeToastItems();
-  }, [toastMessage]);
+    removeNotification();
+  }, [text]);
 
   return (
     <html lang="en">

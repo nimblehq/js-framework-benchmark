@@ -8,7 +8,7 @@ import { z } from 'zod';
 
 import FormInput from '../components/FormInput';
 import SubmitButton from '../components/SubmitButton';
-import { setToastItems } from '../helpers/localStorage.helper';
+import { addNotification } from '../helpers/localStorage.helper';
 import appHandler from '../lib/handler/app.handler';
 import NewsletterRepository from '../repositories/newsletter.server';
 
@@ -45,10 +45,10 @@ export default function Index() {
 
   useEffect(() => {
     if (newsletter) {
-      setToastItems(
-        'success',
-        `${newsletter.name} Newsletter created successfully`
-      );
+      addNotification({
+        text: `${newsletter.name} Newsletter created successfully`,
+        type: 'success',
+      });
 
       navigate('/');
     }
