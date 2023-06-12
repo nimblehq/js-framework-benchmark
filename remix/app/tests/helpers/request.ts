@@ -1,6 +1,6 @@
 interface MakeRequest {
   url: string;
-  method: 'POST' | 'GET' | 'DELETE' | 'PUT';
+  method: 'post' | 'get' | 'put' | 'delete';
   headers?: HeadersInit;
   body?: BodyInit;
 }

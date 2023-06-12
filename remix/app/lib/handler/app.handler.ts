@@ -11,10 +11,10 @@ export default async function appHandler(
 ) {
   let userInfo: User;
 
-  const session = (await authenticator.isAuthenticated(request)) as User;
+  const userSession = (await authenticator.isAuthenticated(request)) as User;
 
-  if (session?.email) {
-    userInfo = await UserRepository.findBy({ email: session.email });
+  if (userSession?.email) {
+    userInfo = await UserRepository.findBy({ email: userSession.email });
 
     return callback(userInfo);
   } else {

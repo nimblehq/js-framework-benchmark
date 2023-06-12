@@ -1,9 +1,14 @@
+import { useEffect } from 'react';
+
 import { ActionArgs, json } from '@remix-run/node';
-import { Form } from '@remix-run/react';
+import { useActionData, useNavigate } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
-import { validationError } from 'remix-validated-form';
+import { ValidatedForm, validationError } from 'remix-validated-form';
 import { z } from 'zod';
 
+import FormInput from '../components/FormInput';
+import SubmitButton from '../components/SubmitButton';
+import { addNotification } from '../helpers/localStorage.helper';
 import appHandler from '../lib/handler/app.handler';
 import NewsletterRepository from '../repositories/newsletter.server';
 
@@ -26,7 +31,6 @@ export async function action({ request }: ActionArgs) {
       ...result.data,
       userId: user.id,
     };
-
     const newsletter = await NewsletterRepository.create({
       data: newsletterData,
     });
@@ -36,21 +40,42 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default function Index() {
+  const newsletter = useActionData();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (newsletter) {
+      addNotification({
+        text: `${newsletter.name} Newsletter created successfully`,
+        type: 'success',
+      });
+
+      navigate('/');
+    }
+  }, [newsletter]);
+
   return (
-    <>
-      <h1>Create Newsletter page </h1>
-      <Form method="POST">
-        <div>
-          <label htmlFor="name">Name</label>
-          <input type="text" name="name" placeholder="name" />
+    <section className="flex flex-col gap-4">
+      <header className="text-xl font-bold">
+        <h1>Create your Newsletter </h1>
+      </header>
+      <ValidatedForm validator={validator} method="post">
+        <div className="flex flex-col gap-6">
+          <FormInput
+            label={'Name'}
+            name={'name'}
+            placeholder={'name'}
+            format="short"
+          />
+          <FormInput
+            label={'Content'}
+            name={'content'}
+            placeholder={'content'}
+            format="long"
+          />
+          <SubmitButton name={'Create'} />
         </div>
-        <br />
-        <div>
-          <label htmlFor="content">Content</label>
-          <textarea name="content" placeholder="content" />
-        </div>
-        <button type="submit">Create</button>
-      </Form>
-    </>
+      </ValidatedForm>
+    </section>
   );
 }

@@ -17,10 +17,10 @@ jest.mock('../../config/auth.server', () => ({
   },
 }));
 
-const mockRequest = {};
-const mockCallback = jest.fn();
-
 describe('appHandler', () => {
+  const mockRequest = jest.fn();
+  const mockCallback = jest.fn();
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
