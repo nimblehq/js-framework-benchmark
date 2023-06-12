@@ -2,7 +2,10 @@ import { StatusCodes } from 'http-status-codes';
 import { NextResponse, NextRequest } from 'next/server';
 
 import appHandler from 'lib/handler/app.handler';
-import { createNewsletter } from 'repositories/newsletter.repository';
+import {
+  createNewsletter,
+  queryNewsletterByUserId,
+} from 'repositories/newsletter.repository';
 
 export async function POST(req: NextRequest) {
   return appHandler(req, async (currentUser) => {
@@ -14,6 +17,7 @@ export async function POST(req: NextRequest) {
         content: content,
         user: { connect: { id: currentUser.id } },
       };
+
       const record = await createNewsletter(attributes);
 
       return NextResponse.json(
@@ -26,5 +30,13 @@ export async function POST(req: NextRequest) {
         { status: StatusCodes.UNPROCESSABLE_ENTITY }
       );
     }
+  });
+}
+
+export async function GET(req: NextRequest) {
+  return appHandler(req, async (currentUser, _) => {
+    const records = await queryNewsletterByUserId(currentUser.id);
+
+    return NextResponse.json({ records: records }, { status: StatusCodes.OK });
   });
 }

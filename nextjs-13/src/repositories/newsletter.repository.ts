@@ -6,4 +6,13 @@ const createNewsletter = async (
   newsletterAttributes: Prisma.NewsletterCreateInput
 ) => dbClient.newsletter.create({ data: newsletterAttributes });
 
-export { createNewsletter };
+const queryNewsletterByUserId = async (id: string) => {
+  const user = await dbClient.user.findUnique({
+    where: { id: id },
+    include: { newsletters: true },
+  });
+
+  return user?.newsletters;
+};
+
+export { createNewsletter, queryNewsletterByUserId };
