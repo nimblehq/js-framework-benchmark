@@ -3,7 +3,7 @@
  */
 
 import { loader } from './_app._index';
-import { authenticator } from '../config/auth.server';
+import appHandler from '../lib/handler/app.handler';
 import { prismaMock } from '../tests/database';
 import { newsletterFactory } from '../tests/factories/newsletter.factory';
 import { userFactory } from '../tests/factories/user.factory';
@@ -14,6 +14,8 @@ jest.mock('../config/auth.server', () => ({
     isAuthenticated: jest.fn(),
   },
 }));
+
+jest.mock('../lib/handler/app.handler');
 
 describe('Root Page', () => {
   describe('loader', () => {
@@ -26,8 +28,9 @@ describe('Root Page', () => {
 
       const newsletters = Array(5).fill(newsletter);
 
-      (authenticator.isAuthenticated as jest.Mock).mockResolvedValue(user);
-      prismaMock.user.findUnique.mockResolvedValue(user);
+      (appHandler as jest.Mock).mockImplementation((req, callback) =>
+        callback(user)
+      );
       prismaMock.newsletter.findMany.mockResolvedValue(newsletters);
 
       const request = makeRequest({
