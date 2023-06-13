@@ -24,7 +24,7 @@ describe('DELETE /v1/newsletter/:id', () => {
   });
 
   describe('newsletter exists', () => {
-    it('delete the newsletter', async () => {
+    it('deletes the newsletter', async () => {
       const res = await DELETE({}, { params: { id: newsletter.id } });
 
       expect(deleteNewsletter).toHaveBeenCalledWith(newsletter.id, user.id);
