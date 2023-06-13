@@ -25,10 +25,10 @@ describe('DELETE /v1/newsletter/:id', () => {
 
   describe('newsletter exists', () => {
     it('deletes the newsletter', async () => {
-      const res = await DELETE({}, { params: { id: newsletter.id } });
+      const response = await DELETE({}, { params: { id: newsletter.id } });
 
       expect(deleteNewsletter).toHaveBeenCalledWith(newsletter.id, user.id);
-      expect(res.status).toBe(StatusCodes.OK);
+      expect(response.status).toBe(StatusCodes.OK);
     });
   });
 
@@ -38,11 +38,11 @@ describe('DELETE /v1/newsletter/:id', () => {
     });
 
     it('returns error', async () => {
-      const res = await DELETE({}, { params: { id: newsletter.id } });
-      const responseBody = await res.json();
+      const response = await DELETE({}, { params: { id: newsletter.id } });
+      const responseBody = await response.json();
 
       expect(deleteNewsletter).toHaveBeenCalledWith(newsletter.id, user.id);
-      expect(res.status).toBe(StatusCodes.UNAUTHORIZED);
+      expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
         message: 'Newsletter not exists',
       });
