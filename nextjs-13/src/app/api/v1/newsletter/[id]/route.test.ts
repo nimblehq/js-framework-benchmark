@@ -75,10 +75,12 @@ describe('PUT /v1/newsletter/:id', () => {
 
   describe('newsletter exists', () => {
     it('updates the newsletter', async () => {
-      const res = await PUT(requestBody, { params: { id: newsletter.id } });
+      const response = await PUT(requestBody, {
+        params: { id: newsletter.id },
+      });
 
       expect(updateNewsletter).toHaveBeenCalledWith(args);
-      expect(res.status).toBe(StatusCodes.OK);
+      expect(response.status).toBe(StatusCodes.OK);
     });
   });
 
@@ -88,11 +90,13 @@ describe('PUT /v1/newsletter/:id', () => {
     });
 
     it('returns error', async () => {
-      const res = await PUT(requestBody, { params: { id: newsletter.id } });
-      const responseBody = await res.json();
+      const response = await PUT(requestBody, {
+        params: { id: newsletter.id },
+      });
+      const responseBody = await response.json();
 
       expect(updateNewsletter).toHaveBeenCalledWith(args);
-      expect(res.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
+      expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
         message: 'Newsletter not exists',
       });
