@@ -17,11 +17,11 @@ const ListNewsletter = ({ promise }: Props) => {
   return (
     <div className="list-newsletter" data-testid="list-newsletter">
       <div>
-        <ul className="">
+        <ul className="newsletter-wrapper">
           {records.map((item) => {
             return (
-              <li className="" key={item.id}>
-                <span className="">{item.name}</span>
+              <li className="newsletter-item" key={item.id}>
+                <span>{item.name}</span>
               </li>
             );
           })}
