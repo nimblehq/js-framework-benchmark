@@ -34,10 +34,10 @@ describe('POST /v1/newsletter/send', () => {
         callback(user, requestBody)
       );
 
-      const res = await POST(requestBody);
-      const responseBody = await res.json();
+      const response = await POST(requestBody);
+      const responseBody = await response.json();
 
-      expect(res.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
+      expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
         message: 'Invalid email',
       });
@@ -60,10 +60,10 @@ describe('POST /v1/newsletter/send', () => {
             callback(user, requestBody)
           );
 
-          const res = await POST(requestBody);
-          const responseBody = await res.json();
+          const response = await POST(requestBody);
+          const responseBody = await response.json();
 
-          expect(res.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
+          expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
           expect(responseBody).toMatchObject({
             message: 'Invalid newsletters',
           });
@@ -88,10 +88,10 @@ describe('POST /v1/newsletter/send', () => {
 
           countNewsletters.mockResolvedValue(0);
 
-          const res = await POST(requestBody);
-          const responseBody = await res.json();
+          const response = await POST(requestBody);
+          const responseBody = await response.json();
 
-          expect(res.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
+          expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
           expect(responseBody).toMatchObject({
             message: 'Invalid newsletters',
           });
@@ -113,9 +113,9 @@ describe('POST /v1/newsletter/send', () => {
 
           countNewsletters.mockResolvedValue(data.ids.length);
 
-          const res = await POST(requestBody);
+          const response = await POST(requestBody);
 
-          expect(res.status).toBe(StatusCodes.OK);
+          expect(response.status).toBe(StatusCodes.OK);
           expect(sendMailQueue.add).toHaveBeenCalledWith('sendMail', {
             ids: data.ids,
             to: data.email,
