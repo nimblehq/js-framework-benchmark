@@ -5,7 +5,11 @@ interface NewsletterListProps {
 }
 
 export default function NewsletterList({ newsletters }: NewsletterListProps) {
-  return newsletters.length > 0 ? (
+  if (!newsletters.length) {
+    return <small>No newsletters found.</small>;
+  }
+
+  return (
     <ul className="flex flex-col gap-4" data-testid="newsletters-list">
       {newsletters.map((newsletter) => (
         <li
@@ -19,7 +23,5 @@ export default function NewsletterList({ newsletters }: NewsletterListProps) {
         </li>
       ))}
     </ul>
-  ) : (
-    <small>No newsletters found.</small>
   );
 }
