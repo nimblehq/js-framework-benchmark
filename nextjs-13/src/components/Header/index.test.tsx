@@ -36,7 +36,7 @@ describe('Header', () => {
   });
 
   describe('given without a user', () => {
-    it('does NOT renders the user name', () => {
+    it('does NOT render the user name', () => {
       renderHeader({});
 
       const header = screen.getByTestId('appHeader');

@@ -20,7 +20,7 @@ describe('MultiSelectWrapper', () => {
     expect(screen.getByTestId('multi-select-wrapper')).toBeVisible();
   });
 
-  it('MultiSelect receives correct props', async () => {
+  it('receives correct props', async () => {
     const records = [
       { id: 1, name: 'Newsletter 1' },
       { id: 2, name: 'Newsletter 2' },

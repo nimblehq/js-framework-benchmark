@@ -70,8 +70,10 @@ const SendNewsletter = () => {
         {isLoading ? (
           <ClipLoader isLoading={isLoading} size={150} />
         ) : (
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="email">Email</label>
+          <form className="newsletter-form" onSubmit={handleSubmit}>
+            <label className="newsletter-label" htmlFor="email">
+              Email
+            </label>
             <br />
 
             <input
@@ -80,11 +82,14 @@ const SendNewsletter = () => {
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
+              className="text-input"
               placeholder={'Enter email'}
             />
             <br />
 
-            <label htmlFor="newsletters">Newsletters</label>
+            <label className="newsletter-label" htmlFor="newsletters">
+              Newsletters
+            </label>
             <br />
 
             <Suspense fallback={<ClipLoader isLoading={true} size={150} />}>

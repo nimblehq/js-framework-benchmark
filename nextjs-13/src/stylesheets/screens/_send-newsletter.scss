@@ -1,11 +1,10 @@
-
 .send-newsletter {
-  flex-grow: 2;
-  background: var(--gray-2);
-  padding: var(--size-3);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  flex-grow: 2;
+  padding: var(--size-3);
+  background: var(--gray-2);
 
   &__create-button {
     --_bg: linear-gradient(var(--indigo-5), var(--indigo-7));
@@ -15,32 +14,27 @@
     --_size: var(--font-size-0);
   }
 
-  input[type="text"] {
+  .text-input {
+    height: 38px;
+    width: 30rem;
     margin-top: var(--size-1);
     margin-bottom: var(--size-3);
-    width: 100%;
     background: white;
     border: 1px solid #ccc;
-    height: 38px;
-    width: 500px;
+
+    &::placeholder {
+      color: #AAAAAA;
+      font-weight: var(--font-weight-5);
+      font-size: 30;
+    }
   }
 
-  input::placeholder {
-    color: #AAAAAA;
-    font-weight: var(--font-weight-5);
-    font-size: 30;
-  }
-
-  ul {
-    margin-top: var(--size-1);
-  }
-
-  label {
-    font-weight: var(--font-weight-7);
-  }
-
-  form {
+  .newsletter-form {
     margin-top: var(--size-3);
+
+    .newsletter-label {
+      font-weight: var(--font-weight-7);
+    }
   }
 
   &__footer {
