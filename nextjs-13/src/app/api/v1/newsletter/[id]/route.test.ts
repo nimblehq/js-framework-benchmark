@@ -74,7 +74,7 @@ describe('PUT /v1/newsletter/:id', () => {
   });
 
   describe('newsletter exists', () => {
-    it('delete the newsletter', async () => {
+    it('updates the newsletter', async () => {
       const res = await PUT(requestBody, { params: { id: newsletter.id } });
 
       expect(updateNewsletter).toHaveBeenCalledWith(args);
