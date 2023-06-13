@@ -67,7 +67,7 @@ describe('Home', () => {
           expect(screen.getByTestId('clip-loader')).toBeInTheDocument();
         });
 
-        it('NOT renders ListNewsletter', async () => {
+        it('does NOT render the list of newsletter', async () => {
           render(<Home />);
 
           expect(screen.queryByTestId('list-newsletter')).not.toBeVisible();
@@ -75,7 +75,7 @@ describe('Home', () => {
       });
 
       describe('giving NOT fetching data', () => {
-        it('NOT renders ClipLoader', async () => {
+        it('does NOT render ClipLoader', async () => {
           render(<Home />);
 
           await waitFor(() => {

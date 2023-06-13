@@ -25,10 +25,10 @@ describe('GET /v1/me', () => {
     appHandler.mockImplementation((req, callback) => callback(user));
     dbClientMock.user.findUnique.mockResolvedValue(user);
 
-    const res = await GET({});
-    const body = await res.json();
+    const response = await GET({});
+    const body = await response.json();
 
-    expect(res.status).toBe(StatusCodes.OK);
+    expect(response.status).toBe(StatusCodes.OK);
     expect(body.user).toMatchObject<User>({
       id: '1',
       name: expect.any(String),

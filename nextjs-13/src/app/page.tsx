@@ -17,9 +17,9 @@ const Home = () => {
   const [promise, setPromise] = useState();
 
   async function fetchRecords() {
-    const res = await requestManager('GET', 'v1/newsletter');
+    const response = await requestManager('GET', 'v1/newsletter');
 
-    return res.records;
+    return response.records;
   }
 
   async function getData() {
@@ -46,7 +46,7 @@ const Home = () => {
       <div className="home__dashboard">
         <div>
           <h3>Your Newsletters</h3>
-          <Suspense fallback={<ClipLoader loading={true} size={150} />}>
+          <Suspense fallback={<ClipLoader loading={true} size={75} />}>
             <ListNewsletter promise={promise} />
           </Suspense>
         </div>

@@ -2,7 +2,7 @@ const promiseWrapper = (promise) => {
   let status = 'pending';
   let result;
 
-  const s = promise.then(
+  const suspender = promise.then(
     (value) => {
       status = 'success';
       result = value;
@@ -17,7 +17,7 @@ const promiseWrapper = (promise) => {
     read() {
       switch (status) {
         case 'pending':
-          throw s;
+          throw suspender;
         case 'success':
           return result;
         case 'error':

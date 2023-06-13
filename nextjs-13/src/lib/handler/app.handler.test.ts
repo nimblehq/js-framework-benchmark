@@ -56,8 +56,8 @@ describe('appHandler', () => {
       });
 
       it('returns invalid token error', async () => {
-        const res = await appHandler(req, callback);
-        expect(res.status).toBe(StatusCodes.UNAUTHORIZED);
+        const response = await appHandler(req, callback);
+        expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
       });
     });
   });
@@ -75,8 +75,8 @@ describe('appHandler', () => {
     });
 
     it('returns invalid token error', async () => {
-      const res = await appHandler(req, callback);
-      expect(res.status).toBe(StatusCodes.UNAUTHORIZED);
+      const response = await appHandler(req, callback);
+      expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
     });
   });
 });
