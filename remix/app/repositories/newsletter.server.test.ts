@@ -14,4 +14,16 @@ describe('Newsletter Repository', () => {
       ).resolves.toEqual(newsletter);
     });
   });
+
+  describe('findAll', () => {
+    it('returns all newsletters', async () => {
+      const newsletters = Array(5).fill(newsletterFactory);
+
+      prismaMock.newsletter.findMany.mockResolvedValue(newsletters);
+
+      await expect(NewsletterRepository.findMany({})).resolves.toEqual(
+        newsletters
+      );
+    });
+  });
 });
