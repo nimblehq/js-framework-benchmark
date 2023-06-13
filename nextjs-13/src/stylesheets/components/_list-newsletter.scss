@@ -8,15 +8,18 @@
     margin-top: var(--size-4);
 
     .newsletter-item {
+      --_size: var(--font-size-1);
+
       display: flex;
       flex-direction: row;
+      margin-bottom: var(--size-3);
+      padding: var(--size-2);
+
+      color: black;
+
+      cursor: pointer;
       background: var(--gray-0);
       border-radius: var(--radius-conditional-2);
-      padding: var(--size-2);
-      color: black;
-      cursor: pointer;
-      --_size: var(--font-size-1);
-      margin-bottom: var(--size-3);
       box-shadow: var(--shadow-2);
     }
   }
