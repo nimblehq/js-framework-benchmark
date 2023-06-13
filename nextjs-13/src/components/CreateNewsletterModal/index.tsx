@@ -67,8 +67,8 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
         </button>
         {isLoading ? (
           <ClipLoader
-            isLoading={isLoading}
-            size={150}
+            loading={isLoading}
+            size={75}
             className="ReactModalPortal__spinner"
           />
         ) : (

@@ -22,7 +22,7 @@
       border-radius: var(--radius-conditional-2);
       box-shadow: var(--shadow-2);
 
-      span {
+      .newsletter-name {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

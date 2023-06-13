@@ -36,8 +36,8 @@ const NewsletterItem = ({ item, getData }: Props) => {
   };
 
   return (
-    <li data-testid="newsletter-item">
-      <span>{item.name}</span>
+    <li className="newsletter-item" data-testid="newsletter-item">
+      <span className="newsletter-name">{item.name}</span>
       <Image
         src={`/images/icons/trash.svg`}
         alt={'Delete button'}
