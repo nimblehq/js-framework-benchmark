@@ -4,10 +4,10 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Newsletter } from '@prisma/client';
+import { StatusCodes } from 'http-status-codes';
 
 import { action } from './_app.newsletter.update.$id';
-import { authenticator } from '../config/auth.server';
+import appHandler from '../lib/handler/app.handler';
 import { prismaMock } from '../tests/database';
 import { newsletterFactory } from '../tests/factories/newsletter.factory';
 import { userFactory } from '../tests/factories/user.factory';
@@ -19,111 +19,81 @@ jest.mock('../config/auth.server', () => ({
   },
 }));
 
+jest.mock('../lib/handler/app.handler');
+
 describe('PUT /newsletter/update/:id', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('givens valid newsletter params with a creator user', () => {
-    it('update a newsletter', async () => {
-      const userAttributes = { id: '1' };
-      const newsletterAttributes = { userId: '1' };
-      const user = { ...userFactory, ...userAttributes };
-      const newsletter = { ...newsletterFactory, ...newsletterAttributes };
+  describe('given the user is authenticated', () => {
+    const userAttributes = { id: '1' };
+    const user = { ...userFactory, ...userAttributes };
 
-      (authenticator.isAuthenticated as jest.Mock).mockResolvedValue(user);
-      prismaMock.user.findUnique.mockResolvedValue(user);
-      prismaMock.newsletter.findUnique.mockResolvedValue(newsletter);
-      prismaMock.newsletter.update.mockResolvedValue(newsletter);
+    (appHandler as jest.Mock).mockImplementation((req, callback) =>
+      callback(user)
+    );
 
-      const body = new URLSearchParams({
-        name: newsletter.name,
-        content: newsletter.content,
-      });
+    describe('given valid newsletter params', () => {
+      it('update a newsletter', async () => {
+        const updateResultMock = { count: 1 };
+        const newsletterAttributes = { userId: '1' };
+        const newsletter = { ...newsletterFactory, ...newsletterAttributes };
 
-      const request = makeRequest({
-        url: `/newsletter/update/${newsletter.id}`,
-        method: 'put',
-        body,
-      });
+        prismaMock.newsletter.findUnique.mockResolvedValue(newsletter);
+        prismaMock.newsletter.updateMany.mockResolvedValue(updateResultMock);
 
-      const result: any = await action({
-        request,
-        params: {},
-        context: {},
-      });
+        const body = new URLSearchParams({
+          name: newsletter.name,
+          content: newsletter.content,
+        });
 
-      expect(await result.json()).toMatchObject<Newsletter>({
-        id: newsletter.id,
-        name: expect.any(String),
-        content: expect.any(String),
-        userId: newsletter.userId,
-        createAt: expect.any(String),
-        updateAt: expect.any(String),
-      });
-    });
-  });
+        const request = makeRequest({
+          url: `/newsletter/update/${newsletter.id}`,
+          method: 'put',
+          body,
+        });
 
-  describe('given an invalid newsletter params', () => {
-    it('returns error NOT FOUND', async () => {
-      const user = { ...userFactory };
-      const newsletter = { ...newsletterFactory };
+        const result: any = await action({
+          request,
+          params: {},
+          context: {},
+        });
 
-      (authenticator.isAuthenticated as jest.Mock).mockResolvedValue(user);
-      prismaMock.user.findUnique.mockResolvedValue(user);
-
-      const body = new URLSearchParams({
-        name: newsletter.name,
-        content: newsletter.content,
-      });
-
-      const request = makeRequest({
-        url: `/newsletter/update/${newsletter.id}`,
-        method: 'put',
-        body,
-      });
-
-      const result: any = await action({
-        request,
-        params: {},
-        context: {},
-      });
-
-      expect(await result.json()).toMatchObject({
-        fieldErrors: { Error: 'Newsletter not found' },
+        expect(await result.json()).toMatchObject({
+          name: expect.any(String),
+          content: expect.any(String),
+        });
       });
     });
-  });
 
-  describe('givens valid newsletter params with a NOT creator user', () => {
-    it('returns error NO PERMISSION', async () => {
-      const user = { ...userFactory };
-      const newsletter = { ...newsletterFactory };
+    describe('given an invalid newsletter params', () => {
+      it('returns error NOT FOUND', async () => {
+        const newsletter = { ...newsletterFactory };
 
-      (authenticator.isAuthenticated as jest.Mock).mockResolvedValue(user);
-      prismaMock.user.findUnique.mockResolvedValue(user);
-      prismaMock.newsletter.findUnique.mockResolvedValue(newsletter);
-      prismaMock.newsletter.update.mockResolvedValue(newsletter);
+        const body = new URLSearchParams({
+          name: newsletter.name,
+          content: newsletter.content,
+        });
 
-      const body = new URLSearchParams({
-        name: newsletter.name,
-        content: newsletter.content,
-      });
+        const request = makeRequest({
+          url: `/newsletter/update/${newsletter.id}`,
+          method: 'put',
+          body,
+        });
 
-      const request = makeRequest({
-        url: `/newsletter/update/${newsletter.id}`,
-        method: 'put',
-        body,
-      });
-
-      const result: any = await action({
-        request,
-        params: {},
-        context: {},
-      });
-
-      expect(await result.json()).toMatchObject({
-        fieldErrors: { Error: 'You are not allowed to update this newsletter' },
+        try {
+          await action({
+            request,
+            params: {},
+            context: {},
+          });
+        } catch (error) {
+          expect(error).toMatchObject({
+            status: StatusCodes.NOT_FOUND,
+            statusText: 'Newsletter not found',
+          });
+        }
       });
     });
   });

@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { ActionArgs, json } from '@remix-run/node';
 import { Form, useActionData, useNavigate } from '@remix-run/react';
 import { withZod } from '@remix-validated-form/with-zod';
+import { StatusCodes } from 'http-status-codes';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
 
@@ -25,49 +26,36 @@ export async function action({ request, params }: ActionArgs) {
       return validationError(result.error);
     }
 
-    const newsletterExists = await NewsletterRepository.findOne({
-      where: { id: params.id },
-    });
-
-    if (!newsletterExists) {
-      return validationError({
-        fieldErrors: {
-          Error: 'Newsletter not found',
-        },
-      });
-    }
-
-    if (newsletterExists.userId !== user.id) {
-      return validationError({
-        fieldErrors: {
-          Error: 'You are not allowed to update this newsletter',
-        },
-      });
-    }
-
     const newsletterUpdated = await NewsletterRepository.update({
-      where: { id: params.id },
+      where: { id: params.id, userId: user.id },
       data: { ...result.data },
     });
 
-    return json({ ...newsletterUpdated });
+    if (!newsletterUpdated || newsletterUpdated.count === 0) {
+      throw new Response(null, {
+        status: StatusCodes.NOT_FOUND,
+        statusText: 'Newsletter not found',
+      });
+    }
+
+    return json({ ...result.data });
   });
 }
 
 export default function Index() {
-  const newsletterUpdated = useActionData();
+  const result = useActionData();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (newsletterUpdated) {
+    if (result) {
       addNotification({
-        text: `${newsletterUpdated.name} Newsletter updated successfully`,
+        text: `${result.name} Newsletter updated successfully`,
         type: 'success',
       });
 
       navigate('/');
     }
-  }, [newsletterUpdated]);
+  }, [result]);
 
   return (
     <div>

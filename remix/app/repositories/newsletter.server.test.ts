@@ -43,14 +43,14 @@ describe('Newsletter Repository', () => {
     it('updates a newsletter', async () => {
       const newsletter = { ...newsletterFactory };
 
-      prismaMock.newsletter.update.mockResolvedValue(newsletter);
+      prismaMock.newsletter.updateMany.mockResolvedValue({ count: 1 });
 
       await expect(
         NewsletterRepository.update({
           where: { id: newsletter.id },
           data: newsletter,
         })
-      ).resolves.toEqual(newsletter);
+      ).resolves.toEqual({ count: 1 });
     });
   });
 });

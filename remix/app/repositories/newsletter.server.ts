@@ -18,8 +18,8 @@ class NewsletterRepository {
     return (await dbClient.newsletter.findUnique({ where })) as Newsletter;
   }
 
-  static async update({ where, data }: Prisma.NewsletterUpdateArgs) {
-    return (await dbClient.newsletter.update({ where, data })) as Newsletter;
+  static async update(args: Prisma.NewsletterUpdateManyArgs) {
+    return dbClient.newsletter.updateMany(args);
   }
 }
 
