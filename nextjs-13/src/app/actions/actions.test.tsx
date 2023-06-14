@@ -114,14 +114,14 @@ describe('updateNewsletter', () => {
     });
   });
 
-  describe('newsletter NOT exists', () => {
+  describe('newsletter does NOT exist', () => {
     beforeEach(() => {
       updateRecord.mockResolvedValue({ count: 0 });
     });
 
     it('returns error', async () => {
       await expect(updateNewsletter(data)).rejects.toThrow(
-        'Newsletter not exists'
+        'Newsletter could not be updated'
       );
       expect(updateRecord).toHaveBeenCalledWith(args);
     });
@@ -145,14 +145,14 @@ describe('deleteNewsletter', () => {
     });
   });
 
-  describe('newsletter NOT exists', () => {
+  describe('newsletter does NOT exist', () => {
     beforeEach(() => {
       deleteRecord.mockResolvedValue({ count: 0 });
     });
 
     it('returns error', async () => {
       await expect(deleteNewsletter(newsletter.id)).rejects.toThrow(
-        'Newsletter not exists'
+        'Newsletter could not be deleted'
       );
 
       expect(deleteRecord).toHaveBeenCalledWith(newsletter.id, user.id);

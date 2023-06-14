@@ -14,7 +14,7 @@ export async function deleteNewsletter(id: string) {
     const result = await deleteRecord(id, currentUser.id);
 
     if (result.count === 0) {
-      throw new RequestError({ message: 'Newsletter not exists' });
+      throw new RequestError({ message: 'Newsletter could not be deleted' });
     }
   });
 }
@@ -42,7 +42,7 @@ export async function updateNewsletter({
     });
 
     if (result.count === 0) {
-      throw new RequestError({ message: 'Newsletter not exists' });
+      throw new RequestError({ message: 'Newsletter could not be updated' });
     }
   });
 }
