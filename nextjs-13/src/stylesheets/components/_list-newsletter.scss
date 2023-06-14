@@ -13,12 +13,13 @@
 
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+
     margin-bottom: var(--size-3);
     padding: var(--size-2);
 
     color: black;
     cursor: pointer;
-    justify-content: space-between;
     background: var(--gray-0);
     border-radius: var(--radius-conditional-2);
     box-shadow: var(--shadow-2);
@@ -34,5 +35,10 @@
     padding: 0;
     border: 0;
     box-shadow: none;
+  }
+
+  &__list-icon {
+    display: flex;
+    flex-direction: row;
   }
 }
