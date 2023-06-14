@@ -32,7 +32,7 @@ describe('DELETE /v1/newsletter/:id', () => {
     });
   });
 
-  describe('newsletter NOT exists', () => {
+  describe('newsletter does NOT exist', () => {
     beforeEach(() => {
       deleteNewsletter.mockResolvedValue({ count: 0 });
     });
@@ -44,7 +44,7 @@ describe('DELETE /v1/newsletter/:id', () => {
       expect(deleteNewsletter).toHaveBeenCalledWith(newsletter.id, user.id);
       expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
-        message: 'Newsletter not exists',
+        message: 'Newsletter could not be deleted',
       });
     });
   });
