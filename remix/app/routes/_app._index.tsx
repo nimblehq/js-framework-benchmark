@@ -3,6 +3,7 @@ import type { LoaderArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
 import AppLink from '../components/AppLink';
+import NewsletterList from '../components/NewsletterList';
 import appHandler from '../lib/handler/app.handler';
 import NewsletterRepository from '../repositories/newsletter.server';
 
@@ -23,18 +24,13 @@ export default function Index() {
 
   return (
     <>
-      <section>
-        <div className="flex justify-end">
+      <section className="flex flex-col gap-4">
+        <div className="flex justify-end ">
           <AppLink href="/newsletter/create" name={'Create Newsletter'} />
         </div>
-        <ul>
-          {newsletters.map((newsletter) => (
-            <li key={newsletter.id}>
-              <h3>{newsletter.name}</h3>
-              <span>{newsletter.content}</span>
-            </li>
-          ))}
-        </ul>
+        <div className="flex justify-center">
+          <NewsletterList newsletters={newsletters} />
+        </div>
       </section>
     </>
   );
