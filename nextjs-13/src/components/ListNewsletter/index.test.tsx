@@ -6,7 +6,7 @@ import ListNewsletter from './index';
 
 describe('ListNewsletter', () => {
   it('renders the component', async () => {
-    render(<ListNewsletter />);
+    render(<ListNewsletter records={[]} />);
 
     await waitFor(() =>
       expect(screen.getByTestId('list-newsletter')).toBeVisible()
@@ -19,13 +19,7 @@ describe('ListNewsletter', () => {
       { id: 2, name: 'Newsletter 2' },
     ];
 
-    const promise = {
-      read() {
-        return records;
-      },
-    };
-
-    render(<ListNewsletter promise={promise} />);
+    render(<ListNewsletter records={records} />);
     const list = screen.getByTestId('list-newsletter');
 
     await waitFor(() => expect(list).toHaveTextContent('Newsletter 1'));
