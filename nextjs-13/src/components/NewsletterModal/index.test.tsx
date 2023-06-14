@@ -6,7 +6,7 @@ import { act } from 'react-dom/test-utils';
 
 import requestManager from 'lib/request/manager';
 
-import CreateOrUpdateNewsletterModal, { Props } from './index';
+import NewsletterModal, { Props } from './index';
 
 jest.mock('react-toastify', () => ({
   toast: {
@@ -35,7 +35,7 @@ jest.mock('react-textarea-autosize', () => {
 
 type OmittableProps = Partial<Props>;
 
-const CreateOrUpdateNewsletterModalWrapper = ({
+const NewsletterModalWrapper = ({
   modalIsOpen,
   setIsOpen,
   onAfterCloseCallback,
@@ -43,7 +43,7 @@ const CreateOrUpdateNewsletterModalWrapper = ({
   currentNewsletter,
 }: OmittableProps) => {
   return (
-    <CreateOrUpdateNewsletterModal
+    <NewsletterModal
       modalIsOpen={modalIsOpen ?? true}
       setIsOpen={setIsOpen ?? (() => undefined)}
       onAfterCloseCallback={onAfterCloseCallback ?? (() => undefined)}
@@ -53,16 +53,18 @@ const CreateOrUpdateNewsletterModalWrapper = ({
   );
 };
 
-describe('CreateOrUpdateNewsletterModal', () => {
+describe('NewsletterModal', () => {
   it('renders without modal initially', () => {
-    render(<CreateOrUpdateNewsletterModalWrapper modalIsOpen={false} />);
+    render(<NewsletterModalWrapper modalIsOpen={false} />);
+
     const modalElement = screen.queryByTestId('modal-content');
 
     expect(modalElement).toBeNull();
   });
 
   it('renders with modal when open', () => {
-    render(<CreateOrUpdateNewsletterModalWrapper modalIsOpen={true} />);
+    render(<NewsletterModalWrapper modalIsOpen={true} />);
+
     const modalElement = screen.queryByTestId('modal-content');
 
     expect(modalElement).toBeInTheDocument();
@@ -70,23 +72,26 @@ describe('CreateOrUpdateNewsletterModal', () => {
 
   it('closes the modal when trigger close', () => {
     const setIsOpenMock = jest.fn();
-    render(<CreateOrUpdateNewsletterModalWrapper setIsOpen={setIsOpenMock} />);
+    render(<NewsletterModalWrapper setIsOpen={setIsOpenMock} />);
+
     const closeButton = screen.getByText('X');
     fireEvent.click(closeButton);
 
     expect(setIsOpenMock).toHaveBeenCalledWith(false);
   });
 
-  it('sets the name field when entering name', () => {
-    render(<CreateOrUpdateNewsletterModalWrapper />);
+  it('enters name', () => {
+    render(<NewsletterModalWrapper />);
+
     const nameInput = screen.getByLabelText('Name');
     fireEvent.change(nameInput, { target: { value: 'Test Name' } });
 
     expect(nameInput.value).toBe('Test Name');
   });
 
-  it('sets the content field when entering content', () => {
-    render(<CreateOrUpdateNewsletterModalWrapper />);
+  it('enters content', () => {
+    render(<NewsletterModalWrapper />);
+
     const contentTextarea = screen.getByLabelText('Content');
     fireEvent.change(contentTextarea, { target: { value: 'Test Content' } });
 
@@ -96,7 +101,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
   describe('modalType', () => {
     describe('modalType is "create"', () => {
       it('renders title text correctly', async () => {
-        render(<CreateOrUpdateNewsletterModalWrapper modalType="create" />);
+        render(<NewsletterModalWrapper modalType="create" />);
 
         const titleElement = screen.getByTestId('title');
         expect(titleElement).toBeInTheDocument();
@@ -104,7 +109,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
       });
 
       it('renders button text correctly', async () => {
-        render(<CreateOrUpdateNewsletterModalWrapper modalType="create" />);
+        render(<NewsletterModalWrapper modalType="create" />);
 
         const titleElement = screen.getByTestId('btn-submit');
         expect(titleElement).toBeInTheDocument();
@@ -116,7 +121,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
         const setIsOpen = jest.fn();
 
         render(
-          <CreateOrUpdateNewsletterModalWrapper
+          <NewsletterModalWrapper
             onAfterCloseCallback={onAfterCloseCallback}
             setIsOpen={setIsOpen}
             modalType="create"
@@ -159,7 +164,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
 
     describe('modalType is "update"', () => {
       it('renders title text correctly', async () => {
-        render(<CreateOrUpdateNewsletterModalWrapper modalType="update" />);
+        render(<NewsletterModalWrapper modalType="update" />);
 
         const titleElement = screen.getByTestId('title');
         expect(titleElement).toBeInTheDocument();
@@ -167,7 +172,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
       });
 
       it('renders button text correctly', async () => {
-        render(<CreateOrUpdateNewsletterModalWrapper modalType="update" />);
+        render(<NewsletterModalWrapper modalType="update" />);
 
         const titleElement = screen.getByTestId('btn-submit');
         expect(titleElement).toBeInTheDocument();
@@ -184,7 +189,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
         };
 
         render(
-          <CreateOrUpdateNewsletterModalWrapper
+          <NewsletterModalWrapper
             onAfterCloseCallback={onAfterCloseCallback}
             setIsOpen={setIsOpen}
             modalType="update"
@@ -238,7 +243,7 @@ describe('CreateOrUpdateNewsletterModal', () => {
   it('handles form submission error', async () => {
     requestManager.mockRejectedValue(new Error('Invalid params'));
 
-    render(<CreateOrUpdateNewsletterModalWrapper modalType="create" />);
+    render(<NewsletterModalWrapper modalType="create" />);
 
     const nameInput = screen.getByLabelText('Name');
     const contentTextarea = screen.getByLabelText('Content');

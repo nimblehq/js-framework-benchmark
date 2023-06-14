@@ -35,7 +35,7 @@ export type Props = {
   currentNewsletter: Newsletter;
 };
 
-const CreateOrUpdateNewsletterModal = ({
+const NewsletterModal = ({
   modalIsOpen,
   setIsOpen,
   onAfterCloseCallback,
@@ -90,7 +90,7 @@ const CreateOrUpdateNewsletterModal = ({
   };
 
   return (
-    <div data-testid="create-or-update-newsletter-modal">
+    <div data-testid="newsletter-modal">
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={onRequestClose}
@@ -156,4 +156,4 @@ const CreateOrUpdateNewsletterModal = ({
   );
 };
 
-export default CreateOrUpdateNewsletterModal;
+export default NewsletterModal;
