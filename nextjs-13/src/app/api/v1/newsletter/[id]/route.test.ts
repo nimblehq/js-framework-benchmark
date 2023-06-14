@@ -84,7 +84,7 @@ describe('PUT /v1/newsletter/:id', () => {
     });
   });
 
-  describe('newsletter NOT exists', () => {
+  describe('newsletter does NOT exist', () => {
     beforeEach(() => {
       updateNewsletter.mockResolvedValue({ count: 0 });
     });
@@ -98,7 +98,7 @@ describe('PUT /v1/newsletter/:id', () => {
       expect(updateNewsletter).toHaveBeenCalledWith(args);
       expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
-        message: 'Newsletter not exists',
+        message: 'Newsletter could not be updated',
       });
     });
   });
