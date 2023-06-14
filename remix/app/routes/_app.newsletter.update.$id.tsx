@@ -6,7 +6,7 @@ import { withZod } from '@remix-validated-form/with-zod';
 import { validationError } from 'remix-validated-form';
 import { z } from 'zod';
 
-import { setToastItems } from '../helpers/localStorage.helper';
+import { addNotification } from '../helpers/localStorage.helper';
 import appHandler from '../lib/handler/app.handler';
 import NewsletterRepository from '../repositories/newsletter.server';
 
@@ -60,10 +60,10 @@ export default function Index() {
 
   useEffect(() => {
     if (newsletterUpdated) {
-      setToastItems(
-        'success',
-        `${newsletterUpdated.name} Newsletter updated successfully`
-      );
+      addNotification({
+        text: `${newsletterUpdated.name} Newsletter updated successfully`,
+        type: 'success',
+      });
 
       navigate('/');
     }
