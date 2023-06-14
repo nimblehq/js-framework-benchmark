@@ -41,15 +41,15 @@ describe('POST /v1/newsletter', () => {
 
       createNewsletter.mockResolvedValue(newsletter);
 
-      const res = await POST(requestBody);
-      const responseBody = await res.json();
+      const response = await POST(requestBody);
+      const responseBody = await response.json();
 
       expect(createNewsletter).toHaveBeenCalledWith({
         name: newsletter.name,
         content: newsletter.content,
         user: { connect: { id: user.id } },
       });
-      expect(res.status).toBe(StatusCodes.OK);
+      expect(response.status).toBe(StatusCodes.OK);
       expect(responseBody.newsletter).toMatchObject<Newsletter>({
         id: newsletterAttributes.id,
         name: expect.any(String),
@@ -81,15 +81,15 @@ describe('POST /v1/newsletter', () => {
         throw new Prisma.PrismaClientValidationError();
       });
 
-      const res = await POST(requestBody);
-      const responseBody = await res.json();
+      const response = await POST(requestBody);
+      const responseBody = await response.json();
 
       expect(createNewsletter).toHaveBeenCalledWith({
         name: null,
         content: content,
         user: { connect: { id: user.id } },
       });
-      expect(res.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
+      expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
         message: 'Invalid params',
       });
@@ -105,11 +105,11 @@ describe('GET /v1/newsletter', () => {
     appHandler.mockImplementation((req, callback) => callback(user, {}));
     queryNewsletterByUserId.mockResolvedValue([newsletter]);
 
-    const res = await GET({});
-    const responseBody = await res.json();
+    const response = await GET({});
+    const responseBody = await response.json();
 
     expect(queryNewsletterByUserId).toHaveBeenCalledWith(user.id);
-    expect(res.status).toBe(StatusCodes.OK);
+    expect(response.status).toBe(StatusCodes.OK);
     expect(responseBody.records[0]).toMatchObject<Newsletter>({
       id: newsletterAttributes.id,
       name: expect.any(String),

@@ -1,19 +1,40 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { ClipLoader } from 'react-spinners';
 
 import Head from 'next/head';
 import { redirect } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 import CreateNewsletterModal from '@components/CreateNewsletterModal';
+import ListNewsletter from '@components/ListNewsletter';
+import requestManager from 'lib/request/manager';
+import toast from 'lib/toast/makeToast';
 
 const Home = () => {
   const { status } = useSession();
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [records, setRecords] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  if (status === 'loading') {
-    return <p>Loading...</p>;
-  }
+  useEffect(() => {
+    const getData = async () => {
+      setIsLoading(true);
+
+      try {
+        const response = await requestManager('GET', 'v1/newsletter');
+
+        setIsLoading(false);
+        setRecords(response.records);
+      } catch (error) {
+        toast(error.message, 'error');
+        setIsLoading(false);
+      }
+    };
+
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (status === 'unauthenticated') {
     redirect('/auth/sign-in');
@@ -28,6 +49,14 @@ const Home = () => {
         <div className="home__tab">Newsletter</div>
       </div>
       <div className="home__dashboard">
+        <div>
+          <h3>Your Newsletters</h3>
+          {isLoading ? (
+            <ClipLoader loading={isLoading} size={75} />
+          ) : (
+            <ListNewsletter records={records} />
+          )}
+        </div>
         <div>
           <button
             onClick={() => setIsOpen(true)}

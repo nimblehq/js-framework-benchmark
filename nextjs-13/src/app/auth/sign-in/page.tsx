@@ -15,7 +15,7 @@ const AuthSignInPage = () => {
       <Head>
         <title>Sign in | NextNewsletter 🚀</title>
       </Head>
-      <h4>NextNewsletter 🚀</h4>
+      <h4 className="title">NextNewsletter 🚀</h4>
       <button
         className="btn"
         data-testid="loginButton"
