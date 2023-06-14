@@ -135,7 +135,7 @@ describe('GET /v1/newsletter/:id', () => {
     });
   });
 
-  describe('newsletter NOT exists', () => {
+  describe('newsletter does NOT exist', () => {
     it('returns error', async () => {
       findNewsletter.mockResolvedValue(null);
 
@@ -145,7 +145,7 @@ describe('GET /v1/newsletter/:id', () => {
       expect(findNewsletter).toHaveBeenCalledWith('1');
       expect(res.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
-        message: 'Newsletter not exists',
+        message: 'Newsletter could not be viewed',
       });
     });
   });

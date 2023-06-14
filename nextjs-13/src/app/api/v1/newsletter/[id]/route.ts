@@ -80,7 +80,7 @@ export async function GET(
 
     if (!record)
       return NextResponse.json(
-        { message: 'Newsletter not exists' },
+        { message: 'Newsletter could not be viewed' },
         { status: StatusCodes.UNPROCESSABLE_ENTITY }
       );
 
