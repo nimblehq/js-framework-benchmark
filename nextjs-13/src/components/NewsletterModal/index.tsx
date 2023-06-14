@@ -18,7 +18,7 @@ const customStyles = {
   },
 };
 
-export type ModalType = 'create' | 'update';
+export type FormAction = 'create' | 'update';
 export type Newsletter =
   | {
       id: string;
@@ -31,7 +31,7 @@ export type Props = {
   modalIsOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   onAfterCloseCallback: () => void;
-  modalType: ModalType;
+  formAction: FormAction;
   currentNewsletter: Newsletter;
 };
 
@@ -39,7 +39,7 @@ const NewsletterModal = ({
   modalIsOpen,
   setIsOpen,
   onAfterCloseCallback,
-  modalType,
+  formAction,
   currentNewsletter,
 }: Props) => {
   const [name, setName] = useState('');
@@ -60,16 +60,16 @@ const NewsletterModal = ({
     onAfterCloseCallback();
   };
 
-  const action = `${modalType === 'create' ? 'Create' : 'Update'}`;
+  const action = `${formAction === 'create' ? 'Create' : 'Update'}`;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
 
     try {
-      const method = modalType === 'create' ? 'POST' : 'PUT';
+      const method = formAction === 'create' ? 'POST' : 'PUT';
       const url =
-        modalType === 'create'
+        formAction === 'create'
           ? 'v1/newsletter'
           : `v1/newsletter/${currentNewsletter?.id}`;
 

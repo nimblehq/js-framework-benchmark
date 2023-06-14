@@ -39,7 +39,7 @@ const NewsletterModalWrapper = ({
   modalIsOpen,
   setIsOpen,
   onAfterCloseCallback,
-  modalType,
+  formAction,
   currentNewsletter,
 }: OmittableProps) => {
   return (
@@ -47,7 +47,7 @@ const NewsletterModalWrapper = ({
       modalIsOpen={modalIsOpen ?? true}
       setIsOpen={setIsOpen ?? (() => undefined)}
       onAfterCloseCallback={onAfterCloseCallback ?? (() => undefined)}
-      modalType={modalType ?? 'create'}
+      formAction={formAction ?? 'create'}
       currentNewsletter={currentNewsletter ?? undefined}
     />
   );
@@ -98,10 +98,10 @@ describe('NewsletterModal', () => {
     expect(contentTextarea.value).toBe('Test Content');
   });
 
-  describe('modalType', () => {
-    describe('modalType is "create"', () => {
+  describe('formAction', () => {
+    describe('formAction is "create"', () => {
       it('renders title text correctly', async () => {
-        render(<NewsletterModalWrapper modalType="create" />);
+        render(<NewsletterModalWrapper formAction="create" />);
 
         const titleElement = screen.getByTestId('title');
         expect(titleElement).toBeInTheDocument();
@@ -109,7 +109,7 @@ describe('NewsletterModal', () => {
       });
 
       it('renders button text correctly', async () => {
-        render(<NewsletterModalWrapper modalType="create" />);
+        render(<NewsletterModalWrapper formAction="create" />);
 
         const titleElement = screen.getByTestId('btn-submit');
         expect(titleElement).toBeInTheDocument();
@@ -124,7 +124,7 @@ describe('NewsletterModal', () => {
           <NewsletterModalWrapper
             onAfterCloseCallback={onAfterCloseCallback}
             setIsOpen={setIsOpen}
-            modalType="create"
+            formAction="create"
           />
         );
 
@@ -162,9 +162,9 @@ describe('NewsletterModal', () => {
       });
     });
 
-    describe('modalType is "update"', () => {
+    describe('formAction is "update"', () => {
       it('renders title text correctly', async () => {
-        render(<NewsletterModalWrapper modalType="update" />);
+        render(<NewsletterModalWrapper formAction="update" />);
 
         const titleElement = screen.getByTestId('title');
         expect(titleElement).toBeInTheDocument();
@@ -172,7 +172,7 @@ describe('NewsletterModal', () => {
       });
 
       it('renders button text correctly', async () => {
-        render(<NewsletterModalWrapper modalType="update" />);
+        render(<NewsletterModalWrapper formAction="update" />);
 
         const titleElement = screen.getByTestId('btn-submit');
         expect(titleElement).toBeInTheDocument();
@@ -192,7 +192,7 @@ describe('NewsletterModal', () => {
           <NewsletterModalWrapper
             onAfterCloseCallback={onAfterCloseCallback}
             setIsOpen={setIsOpen}
-            modalType="update"
+            formAction="update"
             currentNewsletter={currentNewsletter}
           />
         );
@@ -243,7 +243,7 @@ describe('NewsletterModal', () => {
   it('handles form submission error', async () => {
     requestManager.mockRejectedValue(new Error('Invalid params'));
 
-    render(<NewsletterModalWrapper modalType="create" />);
+    render(<NewsletterModalWrapper formAction="create" />);
 
     const nameInput = screen.getByLabelText('Name');
     const contentTextarea = screen.getByLabelText('Content');

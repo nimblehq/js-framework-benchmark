@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 
 import ListNewsletter from '@components/ListNewsletter';
 import NewsletterModal, {
-  ModalType,
+  FormAction,
   Newsletter,
 } from '@components/NewsletterModal';
 import requestManager from 'lib/request/manager';
@@ -19,7 +19,7 @@ const Home = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [records, setRecords] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [modalType, setModalType] = useState<ModalType>('create');
+  const [formAction, setFormAction] = useState<FormAction>('create');
   const [currentNewsletter, setCurrentNewsletter] =
     useState<Newsletter>(undefined);
 
@@ -43,12 +43,12 @@ const Home = () => {
   }, []);
 
   async function openCreateModal() {
-    setModalType('create');
+    setFormAction('create');
     setIsOpen(true);
   }
 
   async function openUpdateModal(item) {
-    setModalType('update');
+    setFormAction('update');
     setIsOpen(true);
     setCurrentNewsletter({
       ...{
@@ -93,7 +93,7 @@ const Home = () => {
             setIsOpen={setIsOpen}
             onAfterCloseCallback={getNewletters}
             currentNewsletter={currentNewsletter}
-            modalType={modalType}
+            formAction={formAction}
           />
         </div>
       </div>
