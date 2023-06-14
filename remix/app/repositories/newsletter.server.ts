@@ -13,6 +13,14 @@ class NewsletterRepository {
       orderBy: { createAt: 'desc' },
     })) as Newsletter[];
   }
+
+  static async findOne({ where }: Prisma.NewsletterFindUniqueArgs) {
+    return (await dbClient.newsletter.findUnique({ where })) as Newsletter;
+  }
+
+  static async update(args: Prisma.NewsletterUpdateManyArgs) {
+    return dbClient.newsletter.updateMany(args);
+  }
 }
 
 export default NewsletterRepository;

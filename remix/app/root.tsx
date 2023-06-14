@@ -76,5 +76,14 @@ export function ErrorBoundary() {
     );
   }
 
+  if (isRouteErrorResponse(error) && error.status === StatusCodes.NOT_FOUND) {
+    return (
+      <div>
+        <h3>{error.statusText}</h3>
+        <Link to={'/'}>Go to home</Link>;
+      </div>
+    );
+  }
+
   return <div>Something unexpected went wrong. Sorry about that.</div>;
 }
