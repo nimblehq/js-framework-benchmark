@@ -20,17 +20,23 @@ const customStyles = {
 type Props = {
   modalIsOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  onAfterCloseCallback: () => undefined;
 };
 
-const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
+const CreateNewsletterModal = ({
+  modalIsOpen,
+  setIsOpen,
+  onAfterCloseCallback,
+}: Props) => {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const closeModal = () => {
+  const onRequestClose = () => {
     setIsOpen(false);
     setName('');
     setContent('');
+    onAfterCloseCallback();
   };
 
   const handleSubmit = async (event) => {
@@ -45,7 +51,7 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
         },
       });
 
-      closeModal();
+      onRequestClose();
       setIsLoading(false);
       toast('Created newsletter success!', 'success');
     } catch (error) {
@@ -58,11 +64,14 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
     <div data-testid="create-newsletter-modal">
       <Modal
         isOpen={modalIsOpen}
-        onRequestClose={closeModal}
+        onRequestClose={onRequestClose}
         style={customStyles}
         ariaHideApp={false}
       >
-        <button onClick={closeModal} className="ReactModalPortal__btn-close">
+        <button
+          onClick={onRequestClose}
+          className="ReactModalPortal__btn-close"
+        >
           X
         </button>
         {isLoading ? (

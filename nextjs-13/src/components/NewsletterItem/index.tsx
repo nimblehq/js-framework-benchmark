@@ -9,10 +9,10 @@ interface Props {
     id: string;
     name: string;
   };
-  getData: () => undefined;
+  onAfterCloseCallback: () => undefined;
 }
 
-const NewsletterItem = ({ item, getData }: Props) => {
+const NewsletterItem = ({ item, onAfterCloseCallback }: Props) => {
   const MySwal = withReactContent(Swal);
 
   const handleDelete = async () => {
@@ -25,9 +25,13 @@ const NewsletterItem = ({ item, getData }: Props) => {
         try {
           MySwal.fire('Deleting', 'Deleting...');
           await requestManager('DELETE', `v1/newsletter/${item.id}`);
-          MySwal.fire('Deleted!', 'Your file has been deleted.', 'success');
+          MySwal.fire(
+            'Deleted!',
+            'Your newsletter has been deleted.',
+            'success'
+          );
 
-          getData();
+          onAfterCloseCallback();
         } catch (error) {
           MySwal.fire('Something went wrong.', error.message, 'error');
         }
@@ -38,14 +42,18 @@ const NewsletterItem = ({ item, getData }: Props) => {
   return (
     <li className="newsletter-item" data-testid="newsletter-item">
       <span className="newsletter-name">{item.name}</span>
-      <Image
-        src={`/images/icons/trash.svg`}
-        alt={'Delete button'}
-        width={16}
-        height={16}
+      <button
+        className="newsletter-button"
         onClick={handleDelete}
         data-testid="btn-delete"
-      />
+      >
+        <Image
+          src={`/images/icons/trash.svg`}
+          alt={'Delete button'}
+          width={16}
+          height={16}
+        />
+      </button>
     </li>
   );
 };

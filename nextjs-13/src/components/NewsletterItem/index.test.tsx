@@ -15,7 +15,7 @@ jest.mock('sweetalert2-react-content', () => () => ({
 describe('ListNewsletter', () => {
   it('renders the component', async () => {
     const item = { id: 1, name: 'Newsletter 1' };
-    render(<NewsletterItem item={item} getData={null} />);
+    render(<NewsletterItem item={item} onAfterCloseCallback={null} />);
 
     expect(screen.getByTestId('newsletter-item')).toBeInTheDocument();
     expect(screen.getByText(item.name)).toBeInTheDocument();
@@ -24,8 +24,10 @@ describe('ListNewsletter', () => {
 
   it('deletes record and refresh data on delete button click', async () => {
     const item = { id: 1, name: 'Newsletter 1' };
-    const getData = jest.fn();
-    render(<NewsletterItem item={item} getData={getData} />);
+    const onAfterCloseCallback = jest.fn();
+    render(
+      <NewsletterItem item={item} onAfterCloseCallback={onAfterCloseCallback} />
+    );
 
     fireEvent.click(screen.getByTestId('btn-delete'));
 
@@ -36,6 +38,6 @@ describe('ListNewsletter', () => {
       );
     });
 
-    await waitFor(() => expect(getData).toHaveBeenCalled());
+    await waitFor(() => expect(onAfterCloseCallback).toHaveBeenCalled());
   });
 });

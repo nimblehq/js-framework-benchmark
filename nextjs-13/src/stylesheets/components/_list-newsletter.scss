@@ -27,6 +27,12 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
+      .newsletter-button {
+        padding: 0;
+        border: 0;
+        box-shadow: none;
+      }
     }
   }
 }

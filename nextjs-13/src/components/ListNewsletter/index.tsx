@@ -7,16 +7,20 @@ interface Record {
 
 interface Props {
   records: Record[];
-  getData: () => undefined;
+  onAfterCloseCallback: () => undefined;
 }
 
-const ListNewsletter = ({ records, getData }: Props) => {
+const ListNewsletter = ({ records, onAfterCloseCallback }: Props) => {
   return (
     <div className="list-newsletter" data-testid="list-newsletter">
       <div>
         <ul className="newsletter-wrapper">
           {records.map((item) => (
-            <NewsletterItem key={item.id} item={item} getData={getData} />
+            <NewsletterItem
+              key={item.id}
+              item={item}
+              onAfterCloseCallback={onAfterCloseCallback}
+            />
           ))}
         </ul>
       </div>
