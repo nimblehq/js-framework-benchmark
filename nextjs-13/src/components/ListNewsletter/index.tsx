@@ -3,17 +3,11 @@ interface Record {
   name: string;
 }
 
-interface PromiseWrapper {
-  read: () => Record[];
-}
-
 interface Props {
-  promise: PromiseWrapper;
+  records: Record[];
 }
 
-const ListNewsletter = ({ promise }: Props) => {
-  const records = promise ? promise.read() : [];
-
+const ListNewsletter = ({ records }: Props) => {
   return (
     <div className="list-newsletter" data-testid="list-newsletter">
       <div>

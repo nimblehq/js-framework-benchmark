@@ -1,5 +1,5 @@
 'use client';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 
 import Head from 'next/head';
@@ -9,24 +9,29 @@ import { useSession } from 'next-auth/react';
 import CreateNewsletterModal from '@components/CreateNewsletterModal';
 import ListNewsletter from '@components/ListNewsletter';
 import requestManager from 'lib/request/manager';
-import promiseWrapper from 'lib/request/promiseWrapper';
+import toast from 'lib/toast/makeToast';
 
 const Home = () => {
   const { status } = useSession();
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [promise, setPromise] = useState();
-
-  async function fetchRecords() {
-    const response = await requestManager('GET', 'v1/newsletter');
-
-    return response.records;
-  }
-
-  async function getData() {
-    setPromise(promiseWrapper(fetchRecords()));
-  }
+  const [records, setRecords] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    const getData = async () => {
+      setIsLoading(true);
+
+      try {
+        const response = await requestManager('GET', 'v1/newsletter');
+
+        setIsLoading(false);
+        setRecords(response.records);
+      } catch (error) {
+        toast(error.message, 'error');
+        setIsLoading(false);
+      }
+    };
+
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -46,9 +51,11 @@ const Home = () => {
       <div className="home__dashboard">
         <div>
           <h3>Your Newsletters</h3>
-          <Suspense fallback={<ClipLoader loading={true} size={75} />}>
-            <ListNewsletter promise={promise} />
-          </Suspense>
+          {isLoading ? (
+            <ClipLoader loading={isLoading} size={75} />
+          ) : (
+            <ListNewsletter records={records} />
+          )}
         </div>
         <div>
           <button

@@ -55,40 +55,38 @@ describe('Home', () => {
       });
     });
 
-    describe('Suspense', () => {
-      describe('giving fetching data', () => {
-        beforeEach(() => {
-          requestManager.mockImplementation(() => new Promise(() => []));
-        });
+    describe('giving fetching data', () => {
+      beforeEach(() => {
+        requestManager.mockImplementation(() => new Promise(() => []));
+      });
 
-        it('renders ClipLoader', async () => {
-          render(<Home />);
+      it('renders ClipLoader', async () => {
+        render(<Home />);
 
-          expect(screen.getByTestId('clip-loader')).toBeInTheDocument();
-        });
+        expect(screen.getByTestId('clip-loader')).toBeInTheDocument();
+      });
 
-        it('does NOT render the list of newsletter', async () => {
-          render(<Home />);
+      it('does NOT render the list of newsletter', async () => {
+        render(<Home />);
 
-          expect(screen.queryByTestId('list-newsletter')).not.toBeVisible();
+        expect(screen.queryByTestId('list-newsletter')).not.toBeInTheDocument();
+      });
+    });
+
+    describe('giving NOT fetching data', () => {
+      it('does NOT render ClipLoader', async () => {
+        render(<Home />);
+
+        await waitFor(() => {
+          expect(screen.queryByTestId('clip-loader')).not.toBeInTheDocument();
         });
       });
 
-      describe('giving NOT fetching data', () => {
-        it('does NOT render ClipLoader', async () => {
-          render(<Home />);
+      it('renders ListNewsletter', async () => {
+        render(<Home />);
 
-          await waitFor(() => {
-            expect(screen.queryByTestId('clip-loader')).not.toBeInTheDocument();
-          });
-        });
-
-        it('renders ListNewsletter', async () => {
-          render(<Home />);
-
-          await waitFor(() => {
-            expect(screen.getByTestId('list-newsletter')).toBeVisible();
-          });
+        await waitFor(() => {
+          expect(screen.getByTestId('list-newsletter')).toBeVisible();
         });
       });
     });

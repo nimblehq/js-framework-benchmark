@@ -25,7 +25,7 @@ type Props = {
 const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const closeModal = () => {
     setIsOpen(false);
@@ -35,7 +35,7 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
 
     try {
       await requestManager('POST', 'v1/newsletter', {
@@ -46,10 +46,10 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
       });
 
       closeModal();
-      setLoading(false);
+      setIsLoading(false);
       toast('Created newsletter success!', 'success');
     } catch (error) {
-      setLoading(false);
+      setIsLoading(false);
       toast(error.message, 'error');
     }
   };
@@ -65,9 +65,9 @@ const CreateNewsletterModal = ({ modalIsOpen, setIsOpen }: Props) => {
         <button onClick={closeModal} className="ReactModalPortal__btn-close">
           X
         </button>
-        {loading ? (
+        {isLoading ? (
           <ClipLoader
-            loading={loading}
+            isLoading={isLoading}
             size={150}
             className="ReactModalPortal__spinner"
           />
