@@ -5,15 +5,23 @@ import { setButtonType } from './helper';
 interface AppLinkProps {
   name: string;
   href: string;
-  color?: string;
+  type?:
+    | 'primary'
+    | 'secondary'
+    | 'danger'
+    | 'success'
+    | 'warning'
+    | 'info'
+    | 'light'
+    | 'dark';
 }
 
-export default function AppLink({ name, href, color }: AppLinkProps) {
+export default function AppLink({ name, href, type }: AppLinkProps) {
   return (
     <Link
       to={href}
       className={`text-center px-4 py-2 font-semibold shadow rounded-lg ${setButtonType(
-        color
+        type
       )}`}
       data-testid={'app-link'}
     >

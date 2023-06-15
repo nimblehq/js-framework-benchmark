@@ -27,7 +27,7 @@ export default function NewsletterList({ newsletters }: NewsletterListProps) {
               <AppLink
                 href={`/newsletter/update/${newsletter.id}`}
                 name={'Edit'}
-                color="info"
+                type="info"
               />
             </div>
           </div>
