@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 
 import MultiSelectWrapper from '@components/MultiSelectWrapper';
@@ -41,7 +41,7 @@ const SendNewsletter = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (selected.length === 0) {
+    if (!selected.length) {
       return makeToast('Please select atleast one newsletter', 'error');
     }
 
@@ -70,8 +70,8 @@ const SendNewsletter = () => {
         {isLoading ? (
           <ClipLoader isLoading={isLoading} size={150} />
         ) : (
-          <form className="newsletter-form" onSubmit={handleSubmit}>
-            <label className="newsletter-label" htmlFor="email">
+          <form className="send-newsletter__form" onSubmit={handleSubmit}>
+            <label className="send-newsletter__label" htmlFor="email">
               Email
             </label>
             <br />
@@ -82,23 +82,21 @@ const SendNewsletter = () => {
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="text-input"
+              className="send-newsletter__text-input"
               placeholder={'Enter email'}
             />
             <br />
 
-            <label className="newsletter-label" htmlFor="newsletters">
+            <label className="send-newsletter__label" htmlFor="newsletters">
               Newsletters
             </label>
             <br />
 
-            <Suspense fallback={<ClipLoader isLoading={true} size={150} />}>
-              <MultiSelectWrapper
-                records={records}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            </Suspense>
+            <MultiSelectWrapper
+              records={records}
+              selected={selected}
+              setSelected={setSelected}
+            />
             <div className="send-newsletter__footer">
               <button
                 type="submit"

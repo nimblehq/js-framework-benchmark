@@ -14,7 +14,15 @@
     --_size: var(--font-size-0);
   }
 
-  .text-input {
+  &__form {
+    margin-top: var(--size-3);
+  }
+
+  &__label {
+    font-weight: var(--font-weight-7);
+  }
+
+  &__text-input {
     height: 38px;
     width: 30rem;
     margin-top: var(--size-1);
@@ -26,14 +34,6 @@
       color: #AAAAAA;
       font-weight: var(--font-weight-5);
       font-size: 30;
-    }
-  }
-
-  .newsletter-form {
-    margin-top: var(--size-3);
-
-    .newsletter-label {
-      font-weight: var(--font-weight-7);
     }
   }
 

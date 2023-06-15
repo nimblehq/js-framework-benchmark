@@ -21,16 +21,14 @@ const MultiSelectWrapper = ({ records, selected, setSelected }: Props) => {
 
   return (
     <div className="multi-select-wrapper" data-testid="multi-select-wrapper">
-      <ul>
-        <MultiSelect
-          options={options}
-          value={selected}
-          onChange={setSelected}
-          ClearSelectedIcon={null}
-          className="react-multi-select"
-          labelledBy="Select"
-        />
-      </ul>
+      <MultiSelect
+        options={options}
+        value={selected}
+        onChange={setSelected}
+        ClearSelectedIcon={null}
+        className="react-multi-select"
+        labelledBy="Select"
+      />
     </div>
   );
 };
