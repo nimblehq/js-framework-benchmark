@@ -35,31 +35,32 @@ describe('Newsletter update', () => {
       callback(user)
     );
 
-    it('returns a newsletter', async () => {
-      const newsletter = { ...newsletterFactory };
+    describe('given valid newsletter params', () => {
+      it('returns a newsletter', async () => {
+        const newsletterAttributes = { userId: '1' };
+        const newsletter = { ...newsletterFactory, ...newsletterAttributes };
 
-      prismaMock.user.findUnique.mockResolvedValue(user);
+        prismaMock.newsletter.findFirst.mockResolvedValue(newsletter);
 
-      prismaMock.newsletter.findUnique.mockResolvedValue(newsletter);
+        const request = makeRequest({
+          url: `/newsletter/update/${newsletter.id}`,
+          method: 'get',
+        });
 
-      const request = makeRequest({
-        url: `/newsletter/update/${newsletter.id}`,
-        method: 'get',
-      });
+        const result: any = await loader({
+          request,
+          params: {},
+          context: {},
+        });
 
-      const result: any = await loader({
-        request,
-        params: {},
-        context: {},
-      });
-
-      expect(await result.json()).toMatchObject<Newsletter>({
-        id: newsletter.id,
-        name: expect.any(String),
-        content: expect.any(String),
-        userId: newsletter.userId,
-        createAt: expect.any(String),
-        updateAt: expect.any(String),
+        expect(await result.json()).toMatchObject<Newsletter>({
+          id: newsletter.id,
+          name: expect.any(String),
+          content: expect.any(String),
+          userId: newsletter.userId,
+          createAt: expect.any(String),
+          updateAt: expect.any(String),
+        });
       });
     });
   });

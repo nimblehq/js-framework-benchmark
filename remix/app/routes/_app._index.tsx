@@ -27,7 +27,7 @@ export default function Index() {
       <div className="flex justify-end ">
         <AppLink
           href="/newsletter/create"
-          name={'Create Newsletter'}
+          name="Create Newsletter"
           color="dark"
         />
       </div>

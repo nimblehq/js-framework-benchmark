@@ -62,18 +62,18 @@ export default function Index() {
       <ValidatedForm validator={validator} method="post">
         <div className="flex flex-col gap-6">
           <FormInput
-            label={'Name'}
-            name={'name'}
-            placeholder={'name'}
+            label="Name"
+            name="name"
+            placeholder="Name"
             format="short"
           />
           <FormInput
-            label={'Content'}
-            name={'content'}
-            placeholder={'content'}
+            label="Content"
+            name="content"
+            placeholder="Content"
             format="long"
           />
-          <SubmitButton name={'Create'} />
+          <SubmitButton name="Create" />
         </div>
       </ValidatedForm>
     </section>

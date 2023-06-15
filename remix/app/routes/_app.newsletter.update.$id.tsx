@@ -44,12 +44,14 @@ export async function action({ request, params }: ActionArgs) {
   });
 }
 
-export const loader = async ({ params }: ActionArgs) => {
-  const newsletter = await NewsletterRepository.findOne({
-    where: { id: params.id },
-  });
+export const loader = async ({ request, params }: ActionArgs) => {
+  return appHandler(request, async (user) => {
+    const newsletter = await NewsletterRepository.findFirst({
+      where: { id: params.id, userId: user.id },
+    });
 
-  return json({ ...newsletter });
+    return json({ ...newsletter });
+  });
 };
 
 export default function Index() {
@@ -89,18 +91,18 @@ export default function Index() {
       >
         <div className="flex flex-col gap-6">
           <FormInput
-            label={'Name'}
-            name={'name'}
-            placeholder={'name'}
+            label="Name"
+            name="name"
+            placeholder="Name"
             format="short"
           />
           <FormInput
-            label={'Content'}
-            name={'content'}
-            placeholder={'content'}
+            label="Content"
+            name="content"
+            placeholder="Content"
             format="long"
           />
-          <SubmitButton name={'Update'} />
+          <SubmitButton name="Update" />
         </div>
       </ValidatedForm>
     </section>

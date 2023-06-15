@@ -14,8 +14,8 @@ class NewsletterRepository {
     })) as Newsletter[];
   }
 
-  static async findOne({ where }: Prisma.NewsletterFindUniqueArgs) {
-    return (await dbClient.newsletter.findUnique({ where })) as Newsletter;
+  static async findFirst({ where }: Prisma.NewsletterFindFirstArgs) {
+    return (await dbClient.newsletter.findFirst({ where })) as Newsletter;
   }
 
   static async update(args: Prisma.NewsletterUpdateManyArgs) {
