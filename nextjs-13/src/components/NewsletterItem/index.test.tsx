@@ -13,31 +13,41 @@ jest.mock('sweetalert2-react-content', () => () => ({
 }));
 
 describe('ListNewsletter', () => {
-  it('renders the component', async () => {
-    const item = { id: 1, name: 'Newsletter 1' };
-    render(<NewsletterItem item={item} onAfterCloseCallback={null} />);
+  const item = { id: 1, name: 'Newsletter 1' };
+  const onAfterCloseCallback = jest.fn();
 
+  const setup = () => {
+    render(
+      <NewsletterItem item={item} onAfterCloseCallback={onAfterCloseCallback} />
+    );
+  };
+
+  beforeEach(() => {
+    setup();
+  });
+
+  it('renders the component', async () => {
     expect(screen.getByTestId('newsletter-item')).toBeInTheDocument();
     expect(screen.getByText(item.name)).toBeInTheDocument();
     expect(screen.getByTestId('btn-delete')).toBeInTheDocument();
   });
 
-  it('deletes record and refresh data on delete button click', async () => {
-    const item = { id: 1, name: 'Newsletter 1' };
-    const onAfterCloseCallback = jest.fn();
-    render(
-      <NewsletterItem item={item} onAfterCloseCallback={onAfterCloseCallback} />
-    );
-
-    fireEvent.click(screen.getByTestId('btn-delete'));
-
-    await waitFor(() => {
-      expect(requestManager).toHaveBeenCalledWith(
-        'DELETE',
-        `v1/newsletter/${item.id}`
-      );
+  describe('click delete button', () => {
+    beforeEach(() => {
+      fireEvent.click(screen.getByTestId('btn-delete'));
     });
 
-    await waitFor(() => expect(onAfterCloseCallback).toHaveBeenCalled());
+    it('deletes record', async () => {
+      await waitFor(() => {
+        expect(requestManager).toHaveBeenCalledWith(
+          'DELETE',
+          `v1/newsletter/${item.id}`
+        );
+      });
+    });
+
+    it('refreshes data', async () => {
+      await waitFor(() => expect(onAfterCloseCallback).toHaveBeenCalled());
+    });
   });
 });
