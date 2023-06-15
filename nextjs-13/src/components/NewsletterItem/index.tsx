@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import requestManager from 'lib/request/manager';
-import showAlert from 'lib/showAlert/showAlert';
+import showAlert from 'lib/showAlert';
 
 interface Props {
   item: {
