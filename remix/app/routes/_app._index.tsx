@@ -23,15 +23,17 @@ export default function Index() {
   };
 
   return (
-    <>
-      <section className="flex flex-col gap-4">
-        <div className="flex justify-end ">
-          <AppLink href="/newsletter/create" name={'Create Newsletter'} />
-        </div>
-        <div className="flex justify-center">
-          <NewsletterList newsletters={newsletters} />
-        </div>
-      </section>
-    </>
+    <section className="flex flex-col gap-4">
+      <div className="flex justify-end ">
+        <AppLink
+          href="/newsletter/create"
+          name="Create Newsletter"
+          type="dark"
+        />
+      </div>
+      <div className="flex justify-center">
+        <NewsletterList newsletters={newsletters} />
+      </div>
+    </section>
   );
 }

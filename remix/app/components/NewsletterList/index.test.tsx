@@ -1,4 +1,6 @@
 // Write a test newletter list component
+import { BrowserRouter } from 'react-router-dom';
+
 import { Newsletter } from '@prisma/client';
 import { render, screen } from '@testing-library/react';
 
@@ -10,7 +12,9 @@ describe('NewsletterList', () => {
     it('renders the componet', async () => {
       const newsletters: Newsletter[] = [newsletterFactory];
 
-      render(<NewsletterList newsletters={newsletters} />);
+      render(<NewsletterList newsletters={newsletters} />, {
+        wrapper: BrowserRouter,
+      });
 
       expect(screen.getByTestId('newsletters-list')).toBeInTheDocument();
     });

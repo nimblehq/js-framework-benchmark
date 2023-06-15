@@ -4,9 +4,10 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { Newsletter } from '@prisma/client';
 import { StatusCodes } from 'http-status-codes';
 
-import { action } from './_app.newsletter.update.$id';
+import { action, loader } from './_app.newsletter.update.$id';
 import appHandler from '../lib/handler/app.handler';
 import { prismaMock } from '../tests/database';
 import { newsletterFactory } from '../tests/factories/newsletter.factory';
@@ -21,8 +22,8 @@ jest.mock('../config/auth.server', () => ({
 
 jest.mock('../lib/handler/app.handler');
 
-describe('PUT /newsletter/update/:id', () => {
-  beforeEach(() => {
+describe('Newsletter update', () => {
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
@@ -35,10 +36,42 @@ describe('PUT /newsletter/update/:id', () => {
     );
 
     describe('given valid newsletter params', () => {
+      it('loads the newsletter details', async () => {
+        const newsletterAttributes = { userId: '1' };
+        const newsletter = { ...newsletterFactory, ...newsletterAttributes };
+
+        prismaMock.newsletter.findFirst.mockResolvedValue(newsletter);
+
+        const request = makeRequest({
+          url: `/newsletter/update/${newsletter.id}`,
+          method: 'get',
+        });
+
+        const result: any = await loader({
+          request,
+          params: {},
+          context: {},
+        });
+
+        expect(await result.json()).toMatchObject<Newsletter>({
+          id: newsletter.id,
+          name: expect.any(String),
+          content: expect.any(String),
+          userId: newsletter.userId,
+          createAt: expect.any(String),
+          updateAt: expect.any(String),
+        });
+      });
+    });
+
+    describe('given valid newsletter updated params', () => {
       it('update a newsletter', async () => {
         const updateResultMock = { count: 1 };
         const newsletterAttributes = { userId: '1' };
-        const newsletter = { ...newsletterFactory, ...newsletterAttributes };
+        const newsletter = {
+          ...newsletterFactory,
+          ...newsletterAttributes,
+        };
 
         prismaMock.newsletter.findUnique.mockResolvedValue(newsletter);
         prismaMock.newsletter.updateMany.mockResolvedValue(updateResultMock);
@@ -67,7 +100,7 @@ describe('PUT /newsletter/update/:id', () => {
       });
     });
 
-    describe('given an invalid newsletter params', () => {
+    describe('given INVALID newsletter params', () => {
       it('returns error NOT FOUND', async () => {
         const newsletter = { ...newsletterFactory };
 
