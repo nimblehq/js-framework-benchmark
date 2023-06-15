@@ -1,6 +1,6 @@
 import { Link } from '@remix-run/react';
 
-import { setButtonType } from '../../helpers/button.helper';
+import { setButtonType } from './helper';
 
 interface AppLinkProps {
   name: string;
