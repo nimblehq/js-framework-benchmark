@@ -79,7 +79,7 @@ describe('CreateNewsletterModal', () => {
     expect(setIsOpenMock).toHaveBeenCalledWith(false);
   });
 
-  it('enters name', () => {
+  it('sets the name field when entering name', () => {
     render(
       <CreateNewsletterModal
         modalIsOpen={true}
@@ -94,7 +94,7 @@ describe('CreateNewsletterModal', () => {
     expect(nameInput.value).toBe('Test Name');
   });
 
-  it('enters content', () => {
+  it('sets the content field when entering content', () => {
     render(
       <CreateNewsletterModal
         modalIsOpen={true}
