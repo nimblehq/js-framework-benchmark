@@ -1,8 +1,7 @@
 import Image from 'next/image';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 
 import requestManager from 'lib/request/manager';
+import showAlert from 'lib/showAlert/showAlert';
 
 interface Props {
   item: {
@@ -13,27 +12,21 @@ interface Props {
 }
 
 const NewsletterItem = ({ item, refreshRecordListCallback }: Props) => {
-  const MySwal = withReactContent(Swal);
-
   const handleDelete = async () => {
-    MySwal.fire(
+    showAlert(
       'Are you sure?',
       'You will not be able to retrieve this newsletter.',
       'warning'
     ).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          MySwal.fire('Deleting', 'Deleting...');
+          showAlert('Deleting', 'Deleting...');
           await requestManager('DELETE', `v1/newsletter/${item.id}`);
-          MySwal.fire(
-            'Deleted!',
-            'Your newsletter has been deleted.',
-            'success'
-          );
+          showAlert('Deleted!', 'Your newsletter has been deleted.', 'success');
 
           refreshRecordListCallback();
         } catch (error) {
-          MySwal.fire('Something went wrong.', error.message, 'error');
+          showAlert('Something went wrong.', error.message, 'error');
         }
       }
     });
