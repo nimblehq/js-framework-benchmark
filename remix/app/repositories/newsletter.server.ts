@@ -14,7 +14,7 @@ class NewsletterRepository {
     })) as Newsletter[];
   }
 
-  static async findFirst({ where }: Prisma.NewsletterFindFirstArgs) {
+  static async findOne({ where }: Prisma.NewsletterFindFirstArgs) {
     return (await dbClient.newsletter.findFirst({ where })) as Newsletter;
   }
 

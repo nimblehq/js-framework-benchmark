@@ -1,4 +1,4 @@
-export function setButtonColor(color?: string) {
+export function setButtonType(color?: string) {
   switch (color) {
     case 'primary':
       color = 'bg-blue-500 hover:bg-blue-700';

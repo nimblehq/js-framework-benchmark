@@ -27,14 +27,14 @@ describe('Newsletter Repository', () => {
     });
   });
 
-  describe('findFirst', () => {
+  describe('findOne', () => {
     it('returns a newsletter', async () => {
       const newsletter = { ...newsletterFactory };
 
       prismaMock.newsletter.findFirst.mockResolvedValue(newsletter);
 
       await expect(
-        NewsletterRepository.findFirst({ where: { id: newsletter.id } })
+        NewsletterRepository.findOne({ where: { id: newsletter.id } })
       ).resolves.toEqual(newsletter);
     });
   });

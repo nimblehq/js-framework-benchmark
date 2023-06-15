@@ -46,9 +46,13 @@ export async function action({ request, params }: ActionArgs) {
 
 export const loader = async ({ request, params }: ActionArgs) => {
   return appHandler(request, async (user) => {
-    const newsletter = await NewsletterRepository.findFirst({
+    const newsletter = await NewsletterRepository.findOne({
       where: { id: params.id, userId: user.id },
     });
+
+    if (!newsletter) {
+      return null;
+    }
 
     return json({ ...newsletter });
   });
@@ -60,7 +64,7 @@ export default function Index() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (Object.keys(newsletter).length === 0) {
+    if (!newsletter) {
       addNotification({
         text: 'Newsletter not found',
         type: 'error',

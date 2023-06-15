@@ -23,11 +23,11 @@ jest.mock('../config/auth.server', () => ({
 jest.mock('../lib/handler/app.handler');
 
 describe('Newsletter update', () => {
-  describe('loader', () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
+  describe('given the user is authenticated', () => {
     const userAttributes = { id: '1' };
     const user = { ...userFactory, ...userAttributes };
 
@@ -36,7 +36,7 @@ describe('Newsletter update', () => {
     );
 
     describe('given valid newsletter params', () => {
-      it('returns a newsletter', async () => {
+      it('loads the newsletter details', async () => {
         const newsletterAttributes = { userId: '1' };
         const newsletter = { ...newsletterFactory, ...newsletterAttributes };
 
@@ -63,85 +63,70 @@ describe('Newsletter update', () => {
         });
       });
     });
-  });
 
-  describe('action', () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
+    describe('given valid newsletter updated params', () => {
+      it('update a newsletter', async () => {
+        const updateResultMock = { count: 1 };
+        const newsletterAttributes = { userId: '1' };
+        const newsletter = {
+          ...newsletterFactory,
+          ...newsletterAttributes,
+        };
+
+        prismaMock.newsletter.findUnique.mockResolvedValue(newsletter);
+        prismaMock.newsletter.updateMany.mockResolvedValue(updateResultMock);
+
+        const body = new URLSearchParams({
+          name: newsletter.name,
+          content: newsletter.content,
+        });
+
+        const request = makeRequest({
+          url: `/newsletter/update/${newsletter.id}`,
+          method: 'put',
+          body,
+        });
+
+        const result: any = await action({
+          request,
+          params: {},
+          context: {},
+        });
+
+        expect(await result.json()).toMatchObject({
+          name: expect.any(String),
+          content: expect.any(String),
+        });
+      });
     });
 
-    describe('given the user is authenticated', () => {
-      const userAttributes = { id: '1' };
-      const user = { ...userFactory, ...userAttributes };
+    describe('given INVALID newsletter params', () => {
+      it('returns error NOT FOUND', async () => {
+        const newsletter = { ...newsletterFactory };
 
-      (appHandler as jest.Mock).mockImplementation((req, callback) =>
-        callback(user)
-      );
+        const body = new URLSearchParams({
+          name: newsletter.name,
+          content: newsletter.content,
+        });
 
-      describe('given valid newsletter params', () => {
-        it('update a newsletter', async () => {
-          const updateResultMock = { count: 1 };
-          const newsletterAttributes = { userId: '1' };
-          const newsletter = {
-            ...newsletterFactory,
-            ...newsletterAttributes,
-          };
+        const request = makeRequest({
+          url: `/newsletter/update/${newsletter.id}`,
+          method: 'put',
+          body,
+        });
 
-          prismaMock.newsletter.findUnique.mockResolvedValue(newsletter);
-          prismaMock.newsletter.updateMany.mockResolvedValue(updateResultMock);
-
-          const body = new URLSearchParams({
-            name: newsletter.name,
-            content: newsletter.content,
-          });
-
-          const request = makeRequest({
-            url: `/newsletter/update/${newsletter.id}`,
-            method: 'put',
-            body,
-          });
-
-          const result: any = await action({
+        try {
+          await action({
             request,
             params: {},
             context: {},
           });
-
-          expect(await result.json()).toMatchObject({
-            name: expect.any(String),
-            content: expect.any(String),
+        } catch (error) {
+          expect(error).toMatchObject({
+            status: StatusCodes.NOT_FOUND,
+            statusText: 'Newsletter not found',
           });
-        });
-      });
-
-      describe('given an invalid newsletter params', () => {
-        it('returns error NOT FOUND', async () => {
-          const newsletter = { ...newsletterFactory };
-
-          const body = new URLSearchParams({
-            name: newsletter.name,
-            content: newsletter.content,
-          });
-
-          const request = makeRequest({
-            url: `/newsletter/update/${newsletter.id}`,
-            method: 'put',
-            body,
-          });
-
-          try {
-            await action({
-              request,
-              params: {},
-              context: {},
-            });
-          } catch (error) {
-            expect(error).toMatchObject({
-              status: StatusCodes.NOT_FOUND,
-              statusText: 'Newsletter not found',
-            });
-          }
-        });
+        }
       });
     });
   });
