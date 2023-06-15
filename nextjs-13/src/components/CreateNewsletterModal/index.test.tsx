@@ -36,7 +36,11 @@ jest.mock('react-textarea-autosize', () => {
 describe('CreateNewsletterModal', () => {
   it('renders without modal initially', () => {
     render(
-      <CreateNewsletterModal modalIsOpen={false} setIsOpen={() => undefined} />
+      <CreateNewsletterModal
+        modalIsOpen={false}
+        onAfterCloseCallback={() => undefined}
+        setIsOpen={() => undefined}
+      />
     );
 
     const modalElement = screen.queryByTestId('modal-content');
@@ -46,7 +50,11 @@ describe('CreateNewsletterModal', () => {
 
   it('renders with modal when open', () => {
     render(
-      <CreateNewsletterModal modalIsOpen={true} setIsOpen={() => undefined} />
+      <CreateNewsletterModal
+        modalIsOpen={true}
+        onAfterCloseCallback={() => undefined}
+        setIsOpen={() => undefined}
+      />
     );
 
     const modalElement = screen.queryByTestId('modal-content');
@@ -58,7 +66,11 @@ describe('CreateNewsletterModal', () => {
     const setIsOpenMock = jest.fn();
 
     render(
-      <CreateNewsletterModal modalIsOpen={true} setIsOpen={setIsOpenMock} />
+      <CreateNewsletterModal
+        modalIsOpen={true}
+        onAfterCloseCallback={setIsOpenMock}
+        setIsOpen={setIsOpenMock}
+      />
     );
 
     const closeButton = screen.getByText('X');
@@ -67,9 +79,13 @@ describe('CreateNewsletterModal', () => {
     expect(setIsOpenMock).toHaveBeenCalledWith(false);
   });
 
-  it('enters name', () => {
+  it('sets the name field when entering name', () => {
     render(
-      <CreateNewsletterModal modalIsOpen={true} setIsOpen={() => undefined} />
+      <CreateNewsletterModal
+        modalIsOpen={true}
+        onAfterCloseCallback={() => undefined}
+        setIsOpen={() => undefined}
+      />
     );
 
     const nameInput = screen.getByLabelText('Name');
@@ -78,9 +94,13 @@ describe('CreateNewsletterModal', () => {
     expect(nameInput.value).toBe('Test Name');
   });
 
-  it('enters content', () => {
+  it('sets the content field when entering content', () => {
     render(
-      <CreateNewsletterModal modalIsOpen={true} setIsOpen={() => undefined} />
+      <CreateNewsletterModal
+        modalIsOpen={true}
+        onAfterCloseCallback={() => undefined}
+        setIsOpen={() => undefined}
+      />
     );
 
     const contentTextarea = screen.getByLabelText('Content');
@@ -91,7 +111,11 @@ describe('CreateNewsletterModal', () => {
 
   it('submits the form successfully', async () => {
     render(
-      <CreateNewsletterModal modalIsOpen={true} setIsOpen={() => undefined} />
+      <CreateNewsletterModal
+        modalIsOpen={true}
+        onAfterCloseCallback={() => undefined}
+        setIsOpen={() => undefined}
+      />
     );
 
     const nameInput = screen.getByLabelText('Name');
@@ -123,7 +147,11 @@ describe('CreateNewsletterModal', () => {
     requestManager.mockRejectedValue(new Error('Invalid params'));
 
     render(
-      <CreateNewsletterModal modalIsOpen={true} setIsOpen={() => undefined} />
+      <CreateNewsletterModal
+        modalIsOpen={true}
+        onAfterCloseCallback={() => undefined}
+        setIsOpen={() => undefined}
+      />
     );
 
     const nameInput = screen.getByLabelText('Name');

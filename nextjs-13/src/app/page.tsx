@@ -17,22 +17,22 @@ const Home = () => {
   const [records, setRecords] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const getNewletters = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await requestManager('GET', 'v1/newsletter');
+
+      setIsLoading(false);
+      setRecords(response.records);
+    } catch (error) {
+      toast(error.message, 'error');
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      setIsLoading(true);
-
-      try {
-        const response = await requestManager('GET', 'v1/newsletter');
-
-        setIsLoading(false);
-        setRecords(response.records);
-      } catch (error) {
-        toast(error.message, 'error');
-        setIsLoading(false);
-      }
-    };
-
-    getData();
+    getNewletters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -54,7 +54,10 @@ const Home = () => {
           {isLoading ? (
             <ClipLoader loading={isLoading} size={75} />
           ) : (
-            <ListNewsletter records={records} />
+            <ListNewsletter
+              records={records}
+              refreshRecordListCallback={getNewletters}
+            />
           )}
         </div>
         <div>
@@ -67,6 +70,7 @@ const Home = () => {
           <CreateNewsletterModal
             modalIsOpen={modalIsOpen}
             setIsOpen={setIsOpen}
+            onAfterCloseCallback={getNewletters}
           />
         </div>
       </div>
