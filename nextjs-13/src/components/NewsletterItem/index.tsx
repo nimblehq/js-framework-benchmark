@@ -9,10 +9,10 @@ interface Props {
     id: string;
     name: string;
   };
-  onAfterCloseCallback: () => undefined;
+  refreshRecordListCallback: () => undefined;
 }
 
-const NewsletterItem = ({ item, onAfterCloseCallback }: Props) => {
+const NewsletterItem = ({ item, refreshRecordListCallback }: Props) => {
   const MySwal = withReactContent(Swal);
 
   const handleDelete = async () => {
@@ -31,7 +31,7 @@ const NewsletterItem = ({ item, onAfterCloseCallback }: Props) => {
             'success'
           );
 
-          onAfterCloseCallback();
+          refreshRecordListCallback();
         } catch (error) {
           MySwal.fire('Something went wrong.', error.message, 'error');
         }
@@ -40,10 +40,13 @@ const NewsletterItem = ({ item, onAfterCloseCallback }: Props) => {
   };
 
   return (
-    <li className="newsletter-item" data-testid="newsletter-item">
-      <span className="newsletter-name">{item.name}</span>
+    <li
+      className="list-newsletter__newsletter-item"
+      data-testid="newsletter-item"
+    >
+      <span className="list-newsletter__newsletter-name">{item.name}</span>
       <button
-        className="newsletter-button"
+        className="list-newsletter__newsletter-button"
         onClick={handleDelete}
         data-testid="btn-delete"
       >

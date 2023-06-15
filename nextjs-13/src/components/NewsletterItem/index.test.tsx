@@ -14,11 +14,14 @@ jest.mock('sweetalert2-react-content', () => () => ({
 
 describe('ListNewsletter', () => {
   const item = { id: 1, name: 'Newsletter 1' };
-  const onAfterCloseCallback = jest.fn();
+  const refreshRecordListCallback = jest.fn();
 
   const setup = () => {
     render(
-      <NewsletterItem item={item} onAfterCloseCallback={onAfterCloseCallback} />
+      <NewsletterItem
+        item={item}
+        refreshRecordListCallback={refreshRecordListCallback}
+      />
     );
   };
 
@@ -47,7 +50,7 @@ describe('ListNewsletter', () => {
     });
 
     it('refreshes data', async () => {
-      await waitFor(() => expect(onAfterCloseCallback).toHaveBeenCalled());
+      await waitFor(() => expect(refreshRecordListCallback).toHaveBeenCalled());
     });
   });
 });

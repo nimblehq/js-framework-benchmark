@@ -56,7 +56,7 @@ const Home = () => {
           ) : (
             <ListNewsletter
               records={records}
-              onAfterCloseCallback={getNewletters}
+              refreshRecordListCallback={getNewletters}
             />
           )}
         </div>
