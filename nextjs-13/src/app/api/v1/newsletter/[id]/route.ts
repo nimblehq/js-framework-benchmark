@@ -55,7 +55,7 @@ export async function PUT(
         data,
       });
 
-      if (result.count === 0) {
+      if (!result.count) {
         return NextResponse.json(
           { message: 'Newsletter could not be updated' },
           { status: StatusCodes.UNPROCESSABLE_ENTITY }

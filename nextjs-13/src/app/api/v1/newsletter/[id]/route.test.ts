@@ -55,47 +55,55 @@ describe('DELETE /v1/newsletter/:id', () => {
 });
 
 describe('PUT /v1/newsletter/:id', () => {
-  const user = { ...userFactory, id: '1' };
-  const newsletter = { id: '2' };
-  const data = {
-    name: 'New name',
-    content: 'New content',
-  };
-  const where = {
-    id: newsletter.id,
-    user: user,
-  };
-  const requestBody = { json: () => data };
-  const args = { where, data };
-
-  beforeEach(() => {
-    appHandler.mockImplementation((_, callback) => callback(user, {}));
-    updateNewsletter.mockResolvedValue({ count: 1 });
-  });
-
   describe('newsletter exists', () => {
     it('updates the newsletter', async () => {
-      const response = await PUT(requestBody, {
-        params: { id: newsletter.id },
-      });
+      const user = { ...userFactory, id: '1' };
+      const newsletter = { id: '2' };
+      const data = {
+        name: 'New name',
+        content: 'New content',
+      };
+      const where = {
+        id: newsletter.id,
+        user: user,
+      };
 
-      expect(updateNewsletter).toHaveBeenCalledWith(args);
+      appHandler.mockImplementation((_, callback) => callback(user, {}));
+      updateNewsletter.mockResolvedValue({ count: 1 });
+
+      const response = await PUT(
+        { json: () => data },
+        { params: { id: newsletter.id } }
+      );
+
+      expect(updateNewsletter).toHaveBeenCalledWith({ where, data });
       expect(response.status).toBe(StatusCodes.OK);
     });
   });
 
   describe('newsletter does NOT exist', () => {
-    beforeEach(() => {
-      updateNewsletter.mockResolvedValue({ count: 0 });
-    });
-
     it('returns error', async () => {
-      const response = await PUT(requestBody, {
-        params: { id: newsletter.id },
-      });
+      const user = { ...userFactory, id: '1' };
+      const newsletter = { id: '2' };
+      const data = {
+        name: 'New name',
+        content: 'New content',
+      };
+      const where = {
+        id: newsletter.id,
+        user: user,
+      };
+
+      appHandler.mockImplementation((_, callback) => callback(user, {}));
+      updateNewsletter.mockResolvedValue({ count: 0 });
+
+      const response = await PUT(
+        { json: () => data },
+        { params: { id: newsletter.id } }
+      );
       const responseBody = await response.json();
 
-      expect(updateNewsletter).toHaveBeenCalledWith(args);
+      expect(updateNewsletter).toHaveBeenCalledWith({ where, data });
       expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
         message: 'Newsletter could not be updated',
