@@ -1,0 +1,42 @@
+.ReactModalPortal {
+  padding: var(--size-2);
+
+  h3, input, textarea {
+    margin-top: var(--size-1);
+    margin-bottom: var(--size-3);
+    width: 100%;
+  }
+
+  label {
+    font-weight: var(--font-weight-7);
+  }
+
+  &__btn-close {
+    position: absolute;
+    top: var(--size-3);
+    right: var(--size-3);
+  }
+
+  &__btn-submit {
+    --_size: var(--font-size-0);
+    --_bg: linear-gradient(var(--indigo-5), var(--indigo-7));
+    --_border: var(--indigo-6);
+    --_text: var(--indigo-0);
+    --_ink-shadow: 0 1px 0 var(--indigo-9);
+    --_size: var(--font-size-0);
+  }
+
+  &__modal-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -75px;
+    margin-left: -75px;
+  }
+}

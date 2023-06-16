@@ -31,7 +31,7 @@ describe('Auth sign-out', () => {
 
   describe('POST /auth/sign-out', () => {
     it('returns to /auth/sign-in', async () => {
-      const request = makeRequest({ url: '/auth/sign-out', method: 'POST' });
+      const request = makeRequest({ url: '/auth/sign-out', method: 'post' });
 
       const result: any = await action({
         request,
@@ -54,7 +54,7 @@ describe('Auth sign-out', () => {
 
       const request = makeRequest({
         url: '/auth/sign',
-        method: 'POST',
+        method: 'post',
         headers: {
           Cookie: await sessionStorage.commitSession(session),
         },
