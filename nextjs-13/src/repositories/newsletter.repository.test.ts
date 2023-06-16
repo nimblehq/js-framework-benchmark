@@ -5,6 +5,7 @@ import {
   createNewsletter,
   deleteNewsletter,
   queryNewsletterByUserId,
+  updateNewsletter,
 } from './newsletter.repository';
 
 describe('Newsletter Respository', () => {
@@ -49,6 +50,26 @@ describe('Newsletter Respository', () => {
       await expect(queryNewsletterByUserId(userId)).resolves.toEqual(
         newsletters
       );
+    });
+  });
+
+  describe('updateNewsletter', () => {
+    it('update a newsletter', async () => {
+      const result = { count: 1 };
+      dbClientMock.newsletter.updateMany.mockResolvedValue(result);
+
+      const args = {
+        where: {
+          id: '1',
+          userId: '1',
+        },
+        data: {
+          name: 'New name',
+          content: 'New content',
+        },
+      };
+
+      await expect(updateNewsletter(args)).resolves.toEqual(result);
     });
   });
 
