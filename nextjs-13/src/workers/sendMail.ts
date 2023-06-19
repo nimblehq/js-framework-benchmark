@@ -3,12 +3,12 @@ import fs from 'fs';
 import Handlebars from 'handlebars';
 import { createTransport } from 'nodemailer';
 
-import { queryNewsletters } from 'repositories/newsletter.repository';
+import { queryNewsletterList } from 'repositories/newsletter.repository';
 
 const sendMail = async (job) => {
   const { senderId, senderName, ids, to } = job.data;
 
-  const newsletters = await queryNewsletters(senderId, ids);
+  const newsletters = await queryNewsletterList(senderId, ids);
   const items = newsletters.map((newsletter) => {
     return {
       id: newsletter.id,

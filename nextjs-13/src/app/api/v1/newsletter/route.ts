@@ -5,7 +5,7 @@ import appHandler from 'lib/handler/app.handler';
 import getInvalidParamsError from 'lib/request/getInvalidParamsError';
 import {
   createNewsletter,
-  queryNewsletters,
+  queryNewsletterList,
 } from 'repositories/newsletter.repository';
 
 export async function POST(req: NextRequest) {
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   return appHandler(req, async (currentUser, _) => {
-    const records = await queryNewsletters(currentUser.id);
+    const records = await queryNewsletterList(currentUser.id);
 
     return NextResponse.json({ records: records }, { status: StatusCodes.OK });
   });

@@ -12,7 +12,7 @@ const deleteNewsletter = async (id: string, userId: string) =>
 const updateNewsletter = async (args: Prisma.NewsletterUpdateManyArgs) =>
   dbClient.newsletter.updateMany(args);
 
-const queryNewsletters = async (userId: string, ids = []) => {
+const queryNewsletterList = async (userId: string, ids = []) => {
   const where = !ids.length
     ? { userId: userId }
     : { userId: userId, id: { in: ids } };
@@ -33,7 +33,7 @@ const countNewsletters = async (userId: string, ids = []) => {
 
 export {
   createNewsletter,
-  queryNewsletters,
+  queryNewsletterList,
   deleteNewsletter,
   updateNewsletter,
   countNewsletters,

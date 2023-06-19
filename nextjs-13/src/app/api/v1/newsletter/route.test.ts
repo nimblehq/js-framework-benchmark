@@ -9,7 +9,7 @@ import appHandler from 'lib/handler/app.handler';
 import { invalidParamsMessage } from 'lib/request/getInvalidParamsError';
 import {
   createNewsletter,
-  queryNewsletters,
+  queryNewsletterList,
 } from 'repositories/newsletter.repository';
 
 import { GET, POST } from './route';
@@ -104,12 +104,12 @@ describe('GET /v1/newsletter', () => {
     const newsletterAttributes = { id: '1', userId: user.id };
     const newsletter = { ...newsletterFactory, ...newsletterAttributes };
     appHandler.mockImplementation((req, callback) => callback(user, {}));
-    queryNewsletters.mockResolvedValue([newsletter]);
+    queryNewsletterList.mockResolvedValue([newsletter]);
 
     const response = await GET({});
     const responseBody = await response.json();
 
-    expect(queryNewsletters).toHaveBeenCalledWith(user.id);
+    expect(queryNewsletterList).toHaveBeenCalledWith(user.id);
     expect(response.status).toBe(StatusCodes.OK);
     expect(responseBody.records[0]).toMatchObject<Newsletter>({
       id: newsletterAttributes.id,
