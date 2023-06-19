@@ -10,7 +10,6 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "workerr": "dotenv -e .env.local -- npx tsx --watch src/workers/sample.worker.ts",
     "worker": "npx tsx --watch src/workers/sample.worker.ts"
   },
   "dependencies": {
