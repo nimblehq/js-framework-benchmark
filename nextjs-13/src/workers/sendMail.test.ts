@@ -52,7 +52,7 @@ describe('sendMail', () => {
       from: `Nimble Newsletter <mailgun@${process.env.MAILGUN_DOMAIN}`,
       to: data.email,
       subject: `${user.name} just invited you to view newsletters`,
-      html: `<p>Nimble Newsletter just invited you to view these newsletters:</p><ul><li><a href="${process.env.NEXTAUTH_URL}/newsletter/${data.ids[0]}">${newsLetterName}</a></li></ul>`,
+      html: `<p>Nimble Newsletter just invited you to view these newsletters:</p>\n<ul>\n    <li><a href="${process.env.NEXTAUTH_URL}/newsletter/${data.ids[0]}">${newsLetterName}</a></li>\n</ul>\n`,
     });
   });
 });

@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 import Handlebars from 'handlebars';
 import { createTransport } from 'nodemailer';
 
@@ -14,16 +16,10 @@ const sendMail = async (job) => {
     };
   });
 
-  const source =
-    '<p>Nimble Newsletter just invited you to view these newsletters:</p>' +
-    '<ul>' +
-    '{{#each items}}' +
-    `<li><a href="${process.env.NEXTAUTH_URL}/newsletter/{{this.id}}">{{this.name}}</a></li>` +
-    '{{/each}}' +
-    '</ul>';
+  const source = fs.readFileSync('src/mailers/newsletterInvite.hbs', 'utf8');
 
   const template = Handlebars.compile(source);
-  const html = template({ items });
+  const html = template({ items, baseUrl: process.env.NEXTAUTH_URL });
 
   const transporter = createTransport({
     host: process.env.MAILGUN_SMTP_HOST,
