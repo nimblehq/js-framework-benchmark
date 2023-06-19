@@ -2,8 +2,10 @@ import { StatusCodes } from 'http-status-codes';
 import { NextResponse, NextRequest } from 'next/server';
 
 import appHandler from 'lib/handler/app.handler';
-import getError from 'lib/request/getError';
-import getInvalidParamsError from 'lib/request/getInvalidParamsError';
+import {
+  invalidParamsResponseError,
+  badRequestResponse,
+} from 'lib/request/error';
 import { countNewsletters } from 'repositories/newsletter.repository';
 import { sendMailQueue } from 'workers/email.worker';
 
@@ -22,18 +24,18 @@ export async function POST(req: NextRequest) {
       const email = body.email;
 
       if (!validateEmail(email)) {
-        return getError('Invalid email');
+        return badRequestResponse('Invalid email');
       }
 
       const ids = [...new Set(body.ids)];
       if (!ids.length) {
-        return getError('Invalid newsletters');
+        return badRequestResponse('Invalid newsletters');
       }
 
       const newslettersCount = await countNewsletters(currentUser.id, ids);
       const allIdsAreValid = newslettersCount === ids.length;
       if (!allIdsAreValid) {
-        return getError('Invalid newsletters');
+        return badRequestResponse('Invalid newsletters');
       }
 
       sendMailQueue.add('sendMail', {
@@ -48,7 +50,7 @@ export async function POST(req: NextRequest) {
         { status: StatusCodes.OK }
       );
     } catch (err) {
-      return getInvalidParamsError();
+      return invalidParamsResponseError();
     }
   });
 }

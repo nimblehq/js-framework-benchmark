@@ -6,7 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import { newsletterFactory } from '@test/factories/newsletter.factory';
 import appHandler from 'lib/handler/app.handler';
-import { invalidParamsMessage } from 'lib/request/getInvalidParamsError';
+import { invalidParamsResponseError } from 'lib/request/error';
 import {
   createNewsletter,
   queryNewsletterList,
@@ -92,7 +92,7 @@ describe('POST /v1/newsletter', () => {
       });
       expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
-        message: invalidParamsMessage,
+        message: invalidParamsResponseError(),
       });
     });
   });

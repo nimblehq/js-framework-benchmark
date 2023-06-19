@@ -3,7 +3,7 @@
  */
 import { createTransport } from 'nodemailer';
 
-import { queryNewsletters } from 'repositories/newsletter.repository';
+import { queryNewsletterList } from 'repositories/newsletter.repository';
 
 import sendMail from './sendMail';
 
@@ -26,7 +26,7 @@ describe('sendMail', () => {
       },
     ];
 
-    queryNewsletters.mockResolvedValue(newsletters);
+    queryNewsletterList.mockResolvedValue(newsletters);
 
     process.env.NEXTAUTH_URL = 'http://localhost:3300';
     process.env.MAILGUN_DOMAIN = 'nimble.mailgun.org';

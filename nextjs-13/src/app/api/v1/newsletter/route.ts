@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { NextResponse, NextRequest } from 'next/server';
 
 import appHandler from 'lib/handler/app.handler';
-import getInvalidParamsError from 'lib/request/getInvalidParamsError';
+import { invalidParamsResponseError } from 'lib/request/error';
 import {
   createNewsletter,
   queryNewsletterList,
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
         { status: StatusCodes.OK }
       );
     } catch (err) {
-      return getInvalidParamsError();
+      return invalidParamsResponseError();
     }
   });
 }

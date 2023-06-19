@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { NextResponse, NextRequest } from 'next/server';
 
 import appHandler from 'lib/handler/app.handler';
-import getInvalidParamsError from 'lib/request/getInvalidParamsError';
+import { invalidParamsResponseError } from 'lib/request/error';
 import {
   deleteNewsletter,
   updateNewsletter,
@@ -28,7 +28,7 @@ export async function DELETE(
         { status: StatusCodes.OK }
       );
     } catch (err) {
-      return getInvalidParamsError();
+      return invalidParamsResponseError();
     }
   });
 }
@@ -65,7 +65,7 @@ export async function PUT(
         { status: StatusCodes.OK }
       );
     } catch (err) {
-      return getInvalidParamsError();
+      return invalidParamsResponseError();
     }
   });
 }
