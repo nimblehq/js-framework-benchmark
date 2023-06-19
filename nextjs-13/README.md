@@ -61,7 +61,6 @@ cp .env.sample .env
     yarn worker
     ```
 
-
 6. Open [http://localhost:3300](http://localhost:3300) with your browser to see the result.
 
 ## Tests
