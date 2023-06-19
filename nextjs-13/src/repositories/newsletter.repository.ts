@@ -13,8 +13,9 @@ const updateNewsletter = async (args: Prisma.NewsletterUpdateManyArgs) =>
   dbClient.newsletter.updateMany(args);
 
 const queryNewsletters = async (userId: string, ids = []) => {
-  const where =
-    ids.length === 0 ? { userId: userId } : { userId: userId, id: { in: ids } };
+  const where = !ids.length
+    ? { userId: userId }
+    : { userId: userId, id: { in: ids } };
 
   return dbClient.newsletter.findMany({
     where: where,

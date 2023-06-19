@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       }
 
       const ids = [...new Set(body.ids)];
-      if (ids.length === 0) {
+      if (!ids.length) {
         return getError('Invalid newsletters');
       }
 
