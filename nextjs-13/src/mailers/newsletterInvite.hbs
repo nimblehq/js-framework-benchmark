@@ -1,6 +1,4 @@
-<p>Nimble Newsletter just invited you to view these newsletters:</p>
+<p>Nimble Newsletter just invited you to view a newsletter:</p>
 <ul>
-  {{#each items}}
-    <li><a href="{{../baseUrl}}/newsletter/{{this.id}}">{{this.name}}</a></li>
-  {{/each}}
+  <li><a href="{{baseUrl}}/newsletter/{{newsletter.id}}">{{newsletter.name}}</a></li>
 </ul>

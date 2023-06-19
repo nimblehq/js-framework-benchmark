@@ -3,23 +3,17 @@ import fs from 'fs';
 import Handlebars from 'handlebars';
 import { createTransport } from 'nodemailer';
 
-import { queryNewsletterList } from 'repositories/newsletter.repository';
+import { findNewsletter } from 'repositories/newsletter.repository';
 
 const sendMail = async (job) => {
-  const { senderId, senderName, ids, to } = job.data;
+  const { id, to, senderId, senderName } = job.data;
 
-  const newsletters = await queryNewsletterList(senderId, ids);
-  const items = newsletters.map((newsletter) => {
-    return {
-      id: newsletter.id,
-      name: newsletter.name,
-    };
-  });
+  const newsletter = (await findNewsletter(senderId, id))[0];
+  if (!newsletter) return;
 
   const source = fs.readFileSync('src/mailers/newsletterInvite.hbs', 'utf8');
-
   const template = Handlebars.compile(source);
-  const html = template({ items, baseUrl: process.env.NEXTAUTH_URL });
+  const html = template({ newsletter, baseUrl: process.env.NEXTAUTH_URL });
 
   const transporter = createTransport({
     host: process.env.MAILGUN_SMTP_HOST,
@@ -37,7 +31,7 @@ const sendMail = async (job) => {
   await transporter.sendMail({
     from: `Nimble Newsletter <mailgun@${process.env.MAILGUN_DOMAIN}`,
     to: to,
-    subject: `${senderName} just invited you to view newsletters`,
+    subject: `${senderName} just invited you to view a newsletter`,
     html: html,
   });
 };

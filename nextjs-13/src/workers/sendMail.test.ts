@@ -3,7 +3,7 @@
  */
 import { createTransport } from 'nodemailer';
 
-import { queryNewsletterList } from 'repositories/newsletter.repository';
+import { findNewsletter } from 'repositories/newsletter.repository';
 
 import sendMail from './sendMail';
 
@@ -19,14 +19,12 @@ describe('sendMail', () => {
     };
     const newsLetterName = 'Vision Pro release';
 
-    const newsletters = [
+    findNewsletter.mockResolvedValue([
       {
         id: data.ids[0],
         name: newsLetterName,
       },
-    ];
-
-    queryNewsletterList.mockResolvedValue(newsletters);
+    ]);
 
     process.env.NEXTAUTH_URL = 'http://localhost:3300';
     process.env.MAILGUN_DOMAIN = 'nimble.mailgun.org';
@@ -51,8 +49,8 @@ describe('sendMail', () => {
     expect(mockSendMail).toHaveBeenCalledWith({
       from: `Nimble Newsletter <mailgun@${process.env.MAILGUN_DOMAIN}`,
       to: data.email,
-      subject: `${user.name} just invited you to view newsletters`,
-      html: `<p>Nimble Newsletter just invited you to view these newsletters:</p>\n<ul>\n    <li><a href="${process.env.NEXTAUTH_URL}/newsletter/${data.ids[0]}">${newsLetterName}</a></li>\n</ul>\n`,
+      subject: `${user.name} just invited you to view a newsletter`,
+      html: `<p>Nimble Newsletter just invited you to view a newsletter:</p>\n<ul>\n  <li><a href="${process.env.NEXTAUTH_URL}/newsletter/${data.ids[0]}">${newsLetterName}</a></li>\n</ul>\n`,
     });
   });
 });

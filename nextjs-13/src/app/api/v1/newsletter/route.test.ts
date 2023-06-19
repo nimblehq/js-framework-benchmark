@@ -6,10 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import { newsletterFactory } from '@test/factories/newsletter.factory';
 import appHandler from 'lib/handler/app.handler';
-import {
-  errorMessageList,
-  invalidParamsResponseError,
-} from 'lib/request/error';
+import { errorMessageList } from 'lib/request/error';
 import {
   createNewsletter,
   queryNewsletterList,

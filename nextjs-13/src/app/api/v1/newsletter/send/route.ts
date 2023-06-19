@@ -6,7 +6,6 @@ import {
   invalidParamsResponseError,
   badRequestResponse,
 } from 'lib/request/error';
-import { countNewsletters } from 'repositories/newsletter.repository';
 import { sendMailQueue } from 'workers/email.worker';
 
 const validateEmail = (email) => {
@@ -32,18 +31,19 @@ export async function POST(req: NextRequest) {
         return badRequestResponse('Invalid newsletters');
       }
 
-      const newslettersCount = await countNewsletters(currentUser.id, ids);
-      const allIdsAreValid = newslettersCount === ids.length;
-      if (!allIdsAreValid) {
-        return badRequestResponse('Invalid newsletters');
-      }
-
-      sendMailQueue.add('sendMail', {
-        ids,
-        to: email,
-        senderId: currentUser.id,
-        senderName: currentUser.name,
-      });
+      sendMailQueue.addBulk(
+        ids.map((id) => {
+          return {
+            name: 'sendMail',
+            data: {
+              id,
+              to: email,
+              senderId: currentUser.id,
+              senderName: currentUser.name,
+            },
+          };
+        })
+      );
 
       return NextResponse.json(
         { status: 'success' },
