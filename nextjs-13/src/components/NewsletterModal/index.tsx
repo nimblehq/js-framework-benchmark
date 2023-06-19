@@ -1,8 +1,9 @@
 'use client';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import TextareaAutosize from 'react-textarea-autosize';
 
+import 'react-toastify/dist/ReactToastify.css';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 import requestManager from 'lib/request/manager';
@@ -17,20 +18,40 @@ const customStyles = {
   },
 };
 
-type Props = {
+export type FormAction = 'create' | 'update';
+export type Newsletter =
+  | {
+      id: string;
+      name: string;
+      content: string;
+    }
+  | undefined;
+
+export type Props = {
   modalIsOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  onAfterCloseCallback: () => undefined;
+  onAfterCloseCallback: () => void;
+  formAction: FormAction;
+  currentNewsletter: Newsletter;
 };
 
-const CreateNewsletterModal = ({
+const NewsletterModal = ({
   modalIsOpen,
   setIsOpen,
   onAfterCloseCallback,
+  formAction,
+  currentNewsletter,
 }: Props) => {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (currentNewsletter) {
+      setName(currentNewsletter.name);
+      setContent(currentNewsletter.content);
+    }
+  }, [currentNewsletter]);
 
   const onRequestClose = () => {
     setIsOpen(false);
@@ -39,12 +60,20 @@ const CreateNewsletterModal = ({
     onAfterCloseCallback();
   };
 
+  const action = `${formAction === 'create' ? 'Create' : 'Update'}`;
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
 
     try {
-      await requestManager('POST', 'v1/newsletter', {
+      const method = formAction === 'create' ? 'POST' : 'PUT';
+      const url =
+        formAction === 'create'
+          ? 'v1/newsletter'
+          : `v1/newsletter/${currentNewsletter?.id}`;
+
+      await requestManager(method, url, {
         data: {
           name,
           content,
@@ -53,7 +82,7 @@ const CreateNewsletterModal = ({
 
       onRequestClose();
       setIsLoading(false);
-      toast('Created newsletter success!', 'success');
+      toast(`${action} newsletter success!`, 'success');
     } catch (error) {
       setIsLoading(false);
       toast(error.message, 'error');
@@ -61,7 +90,7 @@ const CreateNewsletterModal = ({
   };
 
   return (
-    <div data-testid="create-newsletter-modal">
+    <div data-testid="newsletter-modal">
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={onRequestClose}
@@ -82,7 +111,7 @@ const CreateNewsletterModal = ({
           />
         ) : (
           <div data-testid="modal-content">
-            <h3>Create your newsletter</h3>
+            <h3 data-testid="title">{`${action} your newsletter`}</h3>
 
             <form onSubmit={handleSubmit}>
               <label htmlFor="name">Name</label>
@@ -111,8 +140,12 @@ const CreateNewsletterModal = ({
 
               <div className="ReactModalPortal__modal-footer">
                 <div></div>
-                <button type="submit" className="ReactModalPortal__btn-submit">
-                  Create
+                <button
+                  type="submit"
+                  className="ReactModalPortal__btn-submit"
+                  data-testid="btn-submit"
+                >
+                  {action}
                 </button>
               </div>
             </form>
@@ -123,4 +156,4 @@ const CreateNewsletterModal = ({
   );
 };
 
-export default CreateNewsletterModal;
+export default NewsletterModal;

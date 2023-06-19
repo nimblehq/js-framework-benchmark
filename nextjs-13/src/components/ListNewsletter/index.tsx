@@ -8,9 +8,14 @@ interface Record {
 interface Props {
   records: Record[];
   refreshRecordListCallback: () => undefined;
+  openUpdateModal: () => undefined;
 }
 
-const ListNewsletter = ({ records, refreshRecordListCallback }: Props) => {
+const ListNewsletter = ({
+  records,
+  refreshRecordListCallback,
+  openUpdateModal,
+}: Props) => {
   return (
     <div className="list-newsletter" data-testid="list-newsletter">
       <div>
@@ -20,6 +25,7 @@ const ListNewsletter = ({ records, refreshRecordListCallback }: Props) => {
               key={item.id}
               item={item}
               refreshRecordListCallback={refreshRecordListCallback}
+              openUpdateModal={openUpdateModal}
             />
           ))}
         </ul>

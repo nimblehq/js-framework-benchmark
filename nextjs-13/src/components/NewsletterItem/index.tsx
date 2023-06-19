@@ -9,9 +9,18 @@ interface Props {
     name: string;
   };
   refreshRecordListCallback: () => undefined;
+  openUpdateModal: () => undefined;
 }
 
-const NewsletterItem = ({ item, refreshRecordListCallback }: Props) => {
+const NewsletterItem = ({
+  item,
+  refreshRecordListCallback,
+  openUpdateModal,
+}: Props) => {
+  const handleUpdate = async () => {
+    openUpdateModal(item);
+  };
+
   const handleDelete = async () => {
     showAlert(
       'Are you sure?',
@@ -38,18 +47,32 @@ const NewsletterItem = ({ item, refreshRecordListCallback }: Props) => {
       data-testid="newsletter-item"
     >
       <span className="list-newsletter__newsletter-name">{item.name}</span>
-      <button
-        className="list-newsletter__newsletter-button"
-        onClick={handleDelete}
-        data-testid="btn-delete"
-      >
-        <Image
-          src={`/images/icons/trash.svg`}
-          alt={'Delete button'}
-          width={16}
-          height={16}
-        />
-      </button>
+      <div className="list-newsletter__list-icon">
+        <button
+          className="list-newsletter__newsletter-button"
+          onClick={handleUpdate}
+          data-testid="btn-edit"
+        >
+          <Image
+            src={`/images/icons/edit.svg`}
+            alt={'Update button'}
+            width={16}
+            height={16}
+          />
+        </button>
+        <button
+          className="list-newsletter__newsletter-button"
+          onClick={handleDelete}
+          data-testid="btn-delete"
+        >
+          <Image
+            src={`/images/icons/trash.svg`}
+            alt={'Delete button'}
+            width={16}
+            height={16}
+          />
+        </button>
+      </div>
     </li>
   );
 };
