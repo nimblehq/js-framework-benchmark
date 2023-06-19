@@ -45,6 +45,12 @@ cp .env.sample .env
 
 4. Start maildev
 
+    ```
+    # set these 2 env variables into those in .env if you want to use maildev
+    MAILGUN_SMTP_HOST=0.0.0.0
+    MAILGUN_SMTP_PORT=1025
+    ```
+
     ```bash
     maildev
     # then go to http://0.0.0.0:1080/#/

@@ -28,9 +28,6 @@ const sendMail = async (job) => {
   const transporter = createTransport({
     host: process.env.MAILGUN_SMTP_HOST,
     port: process.env.MAILGUN_SMTP_PORT,
-    // change host and port envs to this to use maildev mail catcher
-    // host: '0.0.0.0',
-    // port: 1025,
     secure: false,
     tls: {
       rejectUnauthorized: false,
