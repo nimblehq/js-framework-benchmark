@@ -6,9 +6,10 @@ import { StatusCodes } from 'http-status-codes';
 
 import { newsletterFactory } from '@test/factories/newsletter.factory';
 import appHandler from 'lib/handler/app.handler';
+import { errorMessageList } from 'lib/request/error';
 import {
   createNewsletter,
-  queryNewsletterByUserId,
+  queryNewsletterList,
 } from 'repositories/newsletter.repository';
 
 import { GET, POST } from './route';
@@ -62,7 +63,7 @@ describe('POST /v1/newsletter', () => {
   });
 
   describe('given invalid params', () => {
-    it('return invalid data error', async () => {
+    it('returns invalid params error', async () => {
       const user = { id: '1' };
       const content = newsletterFactory.content;
       const requestBody = {
@@ -91,7 +92,7 @@ describe('POST /v1/newsletter', () => {
       });
       expect(response.status).toBe(StatusCodes.UNPROCESSABLE_ENTITY);
       expect(responseBody).toMatchObject({
-        message: 'Invalid params',
+        message: errorMessageList[StatusCodes.UNPROCESSABLE_ENTITY],
       });
     });
   });
@@ -103,12 +104,12 @@ describe('GET /v1/newsletter', () => {
     const newsletterAttributes = { id: '1', userId: user.id };
     const newsletter = { ...newsletterFactory, ...newsletterAttributes };
     appHandler.mockImplementation((req, callback) => callback(user, {}));
-    queryNewsletterByUserId.mockResolvedValue([newsletter]);
+    queryNewsletterList.mockResolvedValue([newsletter]);
 
     const response = await GET({});
     const responseBody = await response.json();
 
-    expect(queryNewsletterByUserId).toHaveBeenCalledWith(user.id);
+    expect(queryNewsletterList).toHaveBeenCalledWith(user.id);
     expect(response.status).toBe(StatusCodes.OK);
     expect(responseBody.records[0]).toMatchObject<Newsletter>({
       id: newsletterAttributes.id,

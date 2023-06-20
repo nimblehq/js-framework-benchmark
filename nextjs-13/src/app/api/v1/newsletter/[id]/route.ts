@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { NextResponse, NextRequest } from 'next/server';
 
 import appHandler from 'lib/handler/app.handler';
+import { invalidParamsResponseError } from 'lib/request/error';
 import {
   deleteNewsletter,
   updateNewsletter,
@@ -27,10 +28,7 @@ export async function DELETE(
         { status: StatusCodes.OK }
       );
     } catch (err) {
-      return NextResponse.json(
-        { message: 'Invalid params' },
-        { status: StatusCodes.UNPROCESSABLE_ENTITY }
-      );
+      return invalidParamsResponseError();
     }
   });
 }
@@ -67,10 +65,7 @@ export async function PUT(
         { status: StatusCodes.OK }
       );
     } catch (err) {
-      return NextResponse.json(
-        { message: 'Invalid params' },
-        { status: StatusCodes.UNPROCESSABLE_ENTITY }
-      );
+      return invalidParamsResponseError();
     }
   });
 }

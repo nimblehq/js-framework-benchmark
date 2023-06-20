@@ -10,7 +10,7 @@ The application is bootstrapped with [`create-next-app`](https://github.com/verc
 - Define the local environment variables by copying `.env.sample`:
 
 ```
-cp .env.sample .env.local
+cp .env.sample .env
 ```
 
 - Fill in all environment variables by their respective values
@@ -43,19 +43,35 @@ cp .env.sample .env.local
     yarn dev
     ```
 
-4. Open [http://localhost:3300](http://localhost:3300) with your browser to see the result.
+4. Start maildev
+
+    ```
+    # set these 2 env variables into those in .env if you want to use maildev
+    MAILGUN_SMTP_HOST=0.0.0.0
+    MAILGUN_SMTP_PORT=1025
+    ```
+
+    ```bash
+    maildev
+    # then go to http://0.0.0.0:1080/#/
+    ```
+
+5. Start redis + worker
+
+    ```bash
+    # install redis if not already, port 6379
+    redis-server
+    ```
+
+    ```bash
+    yarn worker
+    ```
+
+6. Open [http://localhost:3300](http://localhost:3300) with your browser to see the result.
 
 ## Tests
 
-1. Define the local environment variables by copying `.env.sample`:
-
-```
-cp .env.sample .env.test
-```
-
-2. Fill in all environment variables by their respective values
-
-3. Run tests:
+1. Run tests:
 
     ```bash
     yarn test
