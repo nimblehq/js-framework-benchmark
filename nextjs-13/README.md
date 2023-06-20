@@ -27,44 +27,10 @@ cp .env.sample .env
     yarn install
     ```
 
-2. Migrate database:
+2. Run the development process:
 
     ```bash
-    prisma generate
-
-    prisma migrate dev
-    ```
-
-3. Run the development server:
-
-    ```bash
-    npm run dev
-    # or
-    yarn dev
-    ```
-
-4. Start maildev
-
-    ```
-    # set these 2 env variables into those in .env if you want to use maildev
-    MAILGUN_SMTP_HOST=0.0.0.0
-    MAILGUN_SMTP_PORT=1025
-    ```
-
-    ```bash
-    maildev
-    # then go to http://0.0.0.0:1080/#/
-    ```
-
-5. Start redis + worker
-
-    ```bash
-    # install redis if not already, port 6379
-    redis-server
-    ```
-
-    ```bash
-    yarn worker
+    make dev
     ```
 
 6. Open [http://localhost:3300](http://localhost:3300) with your browser to see the result.
