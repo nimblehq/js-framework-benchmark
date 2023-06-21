@@ -38,7 +38,7 @@ const SendNewsletter = () => {
     getNewletters();
   };
 
-  const handleSubmit = async (event) => {
+  const resetState = async (event) => {
     event.preventDefault();
 
     if (!selected.length) {
@@ -70,7 +70,7 @@ const SendNewsletter = () => {
         {isLoading ? (
           <ClipLoader isLoading={isLoading} size={150} />
         ) : (
-          <form className="send-newsletter__form" onSubmit={handleSubmit}>
+          <form className="send-newsletter__form" onSubmit={resetState}>
             <label className="send-newsletter__label" htmlFor="email">
               Email
             </label>
