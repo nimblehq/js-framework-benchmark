@@ -42,7 +42,7 @@ const SendNewsletter = () => {
     event.preventDefault();
 
     if (!selected.length) {
-      return makeToast('Please select atleast one newsletter', 'error');
+      return makeToast('Please select at least one newsletter', 'error');
     }
 
     setIsLoading(true);
