@@ -106,7 +106,7 @@ describe('SendNewsletter', () => {
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith(
-        'Please select atleast one newsletter',
+        'Please select at least one newsletter',
         {
           position: 'top-center',
           autoClose: 3000,

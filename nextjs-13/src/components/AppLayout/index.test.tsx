@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { redirect, usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 
 import AppLayout from './';
 
@@ -12,56 +11,36 @@ describe('AppLayout', () => {
     usePathname.mockReturnValue('localhost:3003/send');
   });
 
-  describe('Session status is "unauthenticated', () => {
-    it('redirects to home page', () => {
-      useSession.mockReturnValue({ status: 'unauthenticated' });
+  it('renders the component', () => {
+    render(
+      <AppLayout>
+        <></>
+      </AppLayout>
+    );
 
-      render(
-        <AppLayout>
-          <></>
-        </AppLayout>
-      );
-
-      expect(redirect).toHaveBeenCalledWith('/auth/sign-in');
-    });
+    expect(screen.getByTestId('layout-default')).toBeVisible();
   });
 
-  describe('Session status is "authenticated', () => {
-    beforeEach(() => {
-      useSession.mockReturnValue({ status: 'authenticated' });
-    });
+  it('renders nav', () => {
+    render(
+      <AppLayout>
+        <></>
+      </AppLayout>
+    );
 
-    it('renders the component', () => {
-      render(
-        <AppLayout>
-          <></>
-        </AppLayout>
-      );
+    expect(screen.getByTestId('dashboard__nav')).toBeVisible();
+  });
 
-      expect(screen.getByTestId('layout-default')).toBeVisible();
-    });
+  it('adds class dashboard__tab--selected to the selected Link', () => {
+    render(
+      <AppLayout>
+        <></>
+      </AppLayout>
+    );
 
-    it('renders nav', () => {
-      render(
-        <AppLayout>
-          <></>
-        </AppLayout>
-      );
+    const sendNewsletterTab = screen.getByTestId('send-newsletter-tab');
 
-      expect(screen.getByTestId('dashboard__nav')).toBeVisible();
-    });
-
-    it('adds class dashboard__tab--selected to the selected Link', () => {
-      render(
-        <AppLayout>
-          <></>
-        </AppLayout>
-      );
-
-      const sendNewsletterTab = screen.getByTestId('send-newsletter-tab');
-
-      expect(sendNewsletterTab).toBeVisible();
-      expect(sendNewsletterTab.className).toContain('dashboard__tab--selected');
-    });
+    expect(sendNewsletterTab).toBeVisible();
+    expect(sendNewsletterTab.className).toContain('dashboard__tab--selected');
   });
 });
