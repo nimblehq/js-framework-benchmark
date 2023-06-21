@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 
 import Header from '@components/Header';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isRoot = !pathname.includes('/send');
   const { status } = useSession();
