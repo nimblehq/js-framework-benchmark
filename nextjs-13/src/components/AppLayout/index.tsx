@@ -2,19 +2,13 @@
 
 import classNames from 'classnames';
 import Link from 'next/link';
-import { redirect, usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 
 import Header from '@components/Header';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isRoot = !pathname.includes('/send');
-  const { status } = useSession();
-
-  if (status === 'unauthenticated') {
-    redirect('/auth/sign-in');
-  }
 
   return (
     <div className="layout-default" data-testid="layout-default">
