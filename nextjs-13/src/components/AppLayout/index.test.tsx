@@ -8,6 +8,9 @@ jest.mock('next/navigation');
 
 describe('AppLayout', () => {
   beforeEach(() => {
+    // Because AppLayout use usePathname to get the current
+    // path name to differentiate the background-color
+    // of the selected tabs and non-selected tabs
     usePathname.mockReturnValue('localhost:3003/send');
   });
 
