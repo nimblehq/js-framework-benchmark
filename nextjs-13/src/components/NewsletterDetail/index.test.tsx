@@ -8,7 +8,7 @@ import NewsletterDetail from './index';
 
 describe('NewsletterDetail', () => {
   it('renders the component', async () => {
-    render(<NewsletterDetail />);
+    render(<NewsletterDetail newsletter={{}} />);
 
     await waitFor(() => expect(screen.getByTestId('newsletter')).toBeVisible());
   });
@@ -20,13 +20,7 @@ describe('NewsletterDetail', () => {
       content: newsletterFactory.content,
     };
 
-    const promise = {
-      read() {
-        return record;
-      },
-    };
-
-    render(<NewsletterDetail promise={promise} />);
+    render(<NewsletterDetail newsletter={record} />);
 
     expect(screen.getByText(record.name)).toBeInTheDocument();
     expect(screen.getByText(record.content)).toBeInTheDocument();

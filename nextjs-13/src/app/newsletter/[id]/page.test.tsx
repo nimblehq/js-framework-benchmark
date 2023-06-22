@@ -29,40 +29,38 @@ describe('ViewNewsletter', () => {
     });
   });
 
-  describe('Suspense', () => {
-    describe('giving fetching data', () => {
-      beforeEach(() => {
-        requestManager.mockImplementation(() => new Promise(() => []));
-      });
+  describe('given fetching data', () => {
+    beforeEach(() => {
+      requestManager.mockImplementation(() => new Promise(() => []));
+    });
 
-      it('renders ClipLoader', async () => {
-        render(<ViewNewsletter />);
+    it('renders ClipLoader', async () => {
+      render(<ViewNewsletter />);
 
-        expect(screen.getByTestId('clip-loader')).toBeInTheDocument();
-      });
+      expect(screen.getByTestId('clip-loader')).toBeInTheDocument();
+    });
 
-      it('NOT renders NewsletterDetail', async () => {
-        render(<ViewNewsletter />);
+    it('NOT renders NewsletterDetail', async () => {
+      render(<ViewNewsletter />);
 
-        expect(screen.queryByTestId('newsletter')).not.toBeVisible();
+      expect(screen.queryByTestId('newsletter')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('given NOT fetching data', () => {
+    it('NOT renders ClipLoader', async () => {
+      render(<ViewNewsletter />);
+
+      await waitFor(() => {
+        expect(screen.queryByTestId('clip-loader')).not.toBeInTheDocument();
       });
     });
 
-    describe('giving NOT fetching data', () => {
-      it('NOT renders ClipLoader', async () => {
-        render(<ViewNewsletter />);
+    it('renders ListNewsletter', async () => {
+      render(<ViewNewsletter />);
 
-        await waitFor(() => {
-          expect(screen.queryByTestId('clip-loader')).not.toBeInTheDocument();
-        });
-      });
-
-      it('renders ListNewsletter', async () => {
-        render(<ViewNewsletter />);
-
-        await waitFor(() => {
-          expect(screen.getByTestId('newsletter')).toBeVisible();
-        });
+      await waitFor(() => {
+        expect(screen.getByTestId('newsletter')).toBeInTheDocument();
       });
     });
   });

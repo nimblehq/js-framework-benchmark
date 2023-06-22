@@ -6,17 +6,11 @@ interface Record {
   content: string;
 }
 
-interface PromiseWrapper {
-  read: () => Record;
-}
-
 interface Props {
-  promise: PromiseWrapper;
+  newsletter: Record;
 }
 
-const NewsletterDetail = ({ promise }: Props) => {
-  const newsletter = promise ? promise.read() : {};
-
+const NewsletterDetail = ({ newsletter }: Props) => {
   return (
     <div className="newsletter" data-testid="newsletter">
       <h3 className="name">{newsletter.name}</h3>

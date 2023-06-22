@@ -68,7 +68,7 @@ const SendNewsletter = () => {
       <div>
         <h3 data-testid="title">Your Newsletters</h3>
         {isLoading ? (
-          <ClipLoader isLoading={isLoading} size={150} />
+          <ClipLoader isLoading={isLoading} size={75} />
         ) : (
           <form className="send-newsletter__form" onSubmit={resetState}>
             <label className="send-newsletter__label" htmlFor="email">
