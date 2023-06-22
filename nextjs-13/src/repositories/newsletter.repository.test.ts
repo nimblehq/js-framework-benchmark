@@ -4,6 +4,7 @@ import { newsletterFactory } from '@test/factories/newsletter.factory';
 import {
   createNewsletter,
   deleteNewsletter,
+  findNewsletter,
   queryNewsletterList,
   updateNewsletter,
 } from './newsletter.repository';
@@ -79,6 +80,36 @@ describe('Newsletter Respository', () => {
       await expect(deleteNewsletter(newsletterAttributes)).resolves.toEqual(
         result
       );
+    });
+  });
+
+  describe('findNewsletter', () => {
+    describe('given there is a matching newsletter', () => {
+      it('returns a newsletter', async () => {
+        const newsletterAttributes = {
+          id: '1',
+        };
+        const newsletter = { ...newsletterFactory, ...newsletterAttributes };
+
+        dbClientMock.newsletter.findUnique.mockResolvedValue(newsletter);
+
+        await expect(findNewsletter(newsletterAttributes.id)).resolves.toEqual(
+          newsletter
+        );
+      });
+    });
+
+    describe('given there is NO matching newsletter', () => {
+      it('returns null', async () => {
+        const newsletterAttributes = {
+          id: '1',
+        };
+        dbClientMock.newsletter.findUnique.mockResolvedValue(null);
+
+        await expect(
+          findNewsletter(newsletterAttributes.id)
+        ).resolves.toBeNull();
+      });
     });
   });
 });
