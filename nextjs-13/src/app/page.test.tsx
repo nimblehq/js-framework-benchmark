@@ -28,7 +28,7 @@ describe('Home', () => {
     });
   });
 
-  describe('giving fetching data', () => {
+  describe('given fetching data', () => {
     beforeEach(() => {
       requestManager.mockImplementation(() => new Promise(() => []));
     });
@@ -46,7 +46,7 @@ describe('Home', () => {
     });
   });
 
-  describe('giving NOT fetching data', () => {
+  describe('given NOT fetching data', () => {
     it('does NOT render ClipLoader', async () => {
       render(<Home />);
 

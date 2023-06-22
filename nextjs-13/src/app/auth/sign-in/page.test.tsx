@@ -8,7 +8,7 @@ jest.mock('next-auth/react');
 jest.mock('next/navigation');
 
 describe('SignInPage', () => {
-  it('renders h4', () => {
+  it('renders the title', () => {
     render(<SignInPage />);
 
     expect(screen.getByText('NextNewsletter 🚀')).toBeInTheDocument();
