@@ -1,34 +1,11 @@
+
 .home {
   display: flex;
   flex-direction: row;
+  flex-grow: 2;
   justify-content: space-between;
-  height: 100vh;
-
-  &__nav {
-    width: 18rem;
-    padding: var(--size-3);
-    background: #001529;
-  }
-
-  &__tab {
-    --_size: var(--font-size-1);
-    display: flex;
-    padding: var(--size-2);
-    color: white;
-    border-radius: var(--radius-conditional-2);
-    cursor: pointer;
-    background: linear-gradient(var(--indigo-5), var(--indigo-7));
-  }
-
-  &__dashboard {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 2;
-    padding: var(--size-3);
-    justify-content: space-between;
-
-    background: var(--gray-2);
-  }
+  padding: var(--size-3);
+  background: var(--gray-2);
 
   &__create-button {
     --_bg: linear-gradient(var(--indigo-5), var(--indigo-7));

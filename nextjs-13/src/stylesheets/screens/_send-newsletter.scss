@@ -1,0 +1,55 @@
+.send-newsletter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-grow: 2;
+  padding: var(--size-3);
+  background: var(--gray-2);
+
+  &__create-button {
+    --_bg: linear-gradient(var(--indigo-5), var(--indigo-7));
+    --_border: var(--indigo-6);
+    --_text: var(--indigo-0);
+    --_ink-shadow: 0 1px 0 var(--indigo-9);
+    --_size: var(--font-size-0);
+  }
+
+  &__form {
+    margin-top: var(--size-3);
+  }
+
+  &__label {
+    font-weight: var(--font-weight-7);
+  }
+
+  &__text-input {
+    height: 38px;
+    width: 30rem;
+    margin-top: var(--size-1);
+    margin-bottom: var(--size-3);
+    background: white;
+    border: 1px solid #ccc;
+
+    &::placeholder {
+      color: #AAAAAA;
+      font-weight: var(--font-weight-5);
+      font-size: 30;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: var(--size-3);
+  }
+
+  &__btn-submit {
+    --_size: var(--font-size-0);
+    --_bg: linear-gradient(var(--indigo-5), var(--indigo-7));
+    --_border: var(--indigo-6);
+    --_text: var(--indigo-0);
+    --_ink-shadow: 0 1px 0 var(--indigo-9);
+    --_size: var(--font-size-0);
+  }
+}

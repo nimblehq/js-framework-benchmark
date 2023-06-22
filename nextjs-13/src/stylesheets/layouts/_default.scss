@@ -8,4 +8,34 @@
     padding-top: var(--size-5);
     padding-bottom: var(--size-5);
   }
+
+  .dashboard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100vh;
+
+    &__nav {
+      width: 18rem;
+      background: #001529;
+      padding: var(--size-3);
+    }
+
+    &__tab {
+      --_size: var(--font-size-1);
+      display: flex;
+      padding: var(--size-2);
+      margin-bottom: var(--size-3);
+      color: black;
+      text-align: end;
+      text-decoration:none;
+      cursor: pointer;
+      background: #ADD8E6;
+      border-radius: var(--radius-conditional-2);
+
+      &--selected {
+        background: #1E90FF;
+      }
+    }
+  }
 }

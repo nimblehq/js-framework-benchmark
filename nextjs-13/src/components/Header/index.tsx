@@ -9,7 +9,7 @@ const Header = ({ ...rest }) => {
   return (
     <header className="app-header" data-testid="appHeader" {...rest}>
       <nav className="app-header__navigation">
-        <Link href="home">NextNewsletter 🚀</Link>
+        <Link href="/">NextNewsletter 🚀</Link>
         {user && <HeaderUserProfile name={user.name} />}
       </nav>
     </header>

@@ -2,8 +2,9 @@ import React from 'react';
 import { toast } from 'react-toastify';
 
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import { StatusCodes } from 'http-status-codes';
 
+import { errorMessageList } from 'lib/request/error';
 import requestManager from 'lib/request/manager';
 
 import NewsletterModal, { Props } from './index';
@@ -241,7 +242,9 @@ describe('NewsletterModal', () => {
   });
 
   it('handles form submission error', async () => {
-    requestManager.mockRejectedValue(new Error('Invalid params'));
+    requestManager.mockRejectedValue(
+      new Error(errorMessageList[StatusCodes.UNPROCESSABLE_ENTITY])
+    );
 
     render(<NewsletterModalWrapper formAction="create" />);
 
@@ -249,17 +252,19 @@ describe('NewsletterModal', () => {
     const contentTextarea = screen.getByLabelText('Content');
     const createButton = screen.getByText('Create');
 
-    // eslint-disable-next-line testing-library/no-unnecessary-act
-    await act(async () => {
-      fireEvent.change(nameInput, { target: { value: 'Test Name' } });
-      fireEvent.change(contentTextarea, { target: { value: '' } });
-      fireEvent.submit(createButton);
-    });
+    fireEvent.change(nameInput, { target: { value: 'Test Name' } });
+    fireEvent.change(contentTextarea, { target: { value: '' } });
+    fireEvent.submit(createButton);
 
-    expect(toast.error).toHaveBeenCalledWith('Invalid params', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith(
+        errorMessageList[StatusCodes.UNPROCESSABLE_ENTITY],
+        {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: false,
+        }
+      );
     });
   });
 });
