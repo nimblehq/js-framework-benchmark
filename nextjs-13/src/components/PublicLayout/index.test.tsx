@@ -34,7 +34,7 @@ describe('PublicLayout', () => {
   });
 
   describe('Session status is not "unauthenticated', () => {
-    it('NOT renders the banner', () => {
+    it('does NOT render the banner', () => {
       useSession.mockReturnValue({ status: 'authenticated' });
 
       render(

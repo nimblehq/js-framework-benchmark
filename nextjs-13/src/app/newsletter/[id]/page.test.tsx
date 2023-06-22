@@ -40,7 +40,7 @@ describe('ViewNewsletter', () => {
       expect(screen.getByTestId('clip-loader')).toBeInTheDocument();
     });
 
-    it('NOT renders NewsletterDetail', async () => {
+    it('does NOT render NewsletterDetail', async () => {
       render(<ViewNewsletter />);
 
       expect(screen.queryByTestId('newsletter')).not.toBeInTheDocument();
@@ -48,7 +48,7 @@ describe('ViewNewsletter', () => {
   });
 
   describe('given NOT fetching data', () => {
-    it('NOT renders ClipLoader', async () => {
+    it('does NOT render ClipLoader', async () => {
       render(<ViewNewsletter />);
 
       await waitFor(() => {

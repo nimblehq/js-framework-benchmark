@@ -1,16 +1,16 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 
 import { useParams, redirect } from 'next/navigation';
 
 import NewsletterDetail from '@components/NewsletterDetail';
 import requestManager from 'lib/request/manager';
-import makeToast from 'lib/toast/makeToast';
 
 const ViewNewsletter = () => {
   const [record, setRecord] = useState([]);
+  const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const params = useParams();
@@ -25,9 +25,8 @@ const ViewNewsletter = () => {
       setIsLoading(false);
       setRecord(response.record);
     } catch (error) {
-      makeToast(error.message, 'error');
+      setHasError(true);
       setIsLoading(false);
-      redirect('/auth/sign-in');
     }
   };
 
@@ -35,6 +34,10 @@ const ViewNewsletter = () => {
     getNewletter();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (hasError) redirect('/auth/sign-in');
+  }, [hasError]);
 
   return (
     <div className="view-newsletter" data-testid="view-newsletter">

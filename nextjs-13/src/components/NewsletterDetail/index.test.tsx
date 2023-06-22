@@ -13,7 +13,7 @@ describe('NewsletterDetail', () => {
     await waitFor(() => expect(screen.getByTestId('newsletter')).toBeVisible());
   });
 
-  it('renders list of newsletters', async () => {
+  it('renders a newsletter', async () => {
     const record = {
       id: newsletterFactory.id,
       name: newsletterFactory.name,
