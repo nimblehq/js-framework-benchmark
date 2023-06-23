@@ -2,16 +2,16 @@
  * @jest-environment node
  */
 import { Prisma } from '@prisma/client';
+import { StatusCodes } from 'http-status-codes';
 
 import { newsletterFactory } from '@test/factories/newsletter.factory';
 import { userFactory } from '@test/factories/user.factory';
-import { invalidParamsMessage } from 'lib/request/getInvalidParamsError';
+import { errorMessageList } from 'lib/request/error';
 import withAuth from 'lib/withAuth/withAuth';
 import {
   createNewsletter as createRecord,
   updateNewsletter as updateRecord,
   deleteNewsletter as deleteRecord,
-  countNewsletters,
 } from 'repositories/newsletter.repository';
 import { sendMailQueue } from 'workers/email.worker';
 
@@ -29,7 +29,7 @@ jest.mock('lib/withAuth/withAuth');
 jest.mock('repositories/newsletter.repository');
 jest.mock('workers/email.worker', () => ({
   sendMailQueue: {
-    add: jest.fn(),
+    addBulk: jest.fn(),
   },
 }));
 
@@ -43,7 +43,7 @@ describe('createNewsletter', () => {
       const user = { id: '1' };
       const newsletterAttributes = { id: '1', userId: user.id };
       const newsletter = { ...newsletterFactory, ...newsletterAttributes };
-      const requestBody = {
+      const params = {
         name: newsletter.name,
         content: newsletter.content,
       };
@@ -51,7 +51,7 @@ describe('createNewsletter', () => {
       withAuth.mockImplementation((callback) => callback(user));
       createRecord.mockResolvedValue(newsletter);
 
-      await createNewsletter(requestBody);
+      await createNewsletter(params);
 
       expect(createRecord).toHaveBeenCalledWith({
         name: newsletter.name,
@@ -65,7 +65,7 @@ describe('createNewsletter', () => {
     it('returns invalid params error', async () => {
       const user = { id: '1' };
       const content = newsletterFactory.content;
-      const requestBody = {
+      const params = {
         name: null,
         content: content,
       };
@@ -74,8 +74,8 @@ describe('createNewsletter', () => {
       createRecord.mockImplementation(() => {
         throw new Prisma.PrismaClientValidationError();
       });
-      await expect(createNewsletter(requestBody)).rejects.toThrow(
-        invalidParamsMessage
+      await expect(createNewsletter(params)).rejects.toThrow(
+        errorMessageList[StatusCodes.UNPROCESSABLE_ENTITY]
       );
 
       expect(createRecord).toHaveBeenCalledWith({
@@ -88,42 +88,50 @@ describe('createNewsletter', () => {
 });
 
 describe('updateNewsletter', () => {
-  const user = { ...userFactory, id: '1' };
-  const newsletter = { id: '2' };
-  const data = {
-    name: 'New name',
-    content: 'New content',
-    id: newsletter.id,
-  };
-  const where = {
-    id: newsletter.id,
-    user: user,
-  };
-  const args = { where, data };
-
-  beforeEach(() => {
-    withAuth.mockImplementation((callback) => callback(user));
-    updateRecord.mockResolvedValue({ count: 1 });
-  });
-
   describe('newsletter exists', () => {
-    it('delete the newsletter', async () => {
+    it('updates the newsletter', async () => {
+      const user = { ...userFactory, id: '1' };
+      const newsletter = { id: '2' };
+      const data = {
+        id: newsletter.id,
+        name: 'New name',
+        content: 'New content',
+      };
+      const where = {
+        id: newsletter.id,
+        user: user,
+      };
+
+      withAuth.mockImplementation((callback) => callback(user));
+      updateRecord.mockResolvedValue({ count: 1 });
+
       await updateNewsletter(data);
 
-      expect(updateRecord).toHaveBeenCalledWith(args);
+      expect(updateRecord).toHaveBeenCalledWith({ where, data });
     });
   });
 
   describe('newsletter does NOT exist', () => {
-    beforeEach(() => {
-      updateRecord.mockResolvedValue({ count: 0 });
-    });
-
     it('returns error', async () => {
+      const user = { ...userFactory, id: '1' };
+      const newsletter = { id: '2' };
+      const data = {
+        id: newsletter.id,
+        name: 'New name',
+        content: 'New content',
+      };
+      const where = {
+        id: newsletter.id,
+        user: user,
+      };
+
+      withAuth.mockImplementation((callback) => callback(user));
+      updateRecord.mockResolvedValue({ count: 0 });
+
       await expect(updateNewsletter(data)).rejects.toThrow(
         'Newsletter could not be updated'
       );
-      expect(updateRecord).toHaveBeenCalledWith(args);
+      expect(updateRecord).toHaveBeenCalledWith({ where, data });
     });
   });
 });
@@ -138,7 +146,7 @@ describe('deleteNewsletter', () => {
   });
 
   describe('newsletter exists', () => {
-    it('delete the newsletter', async () => {
+    it('deletes the newsletter', async () => {
       await deleteNewsletter(newsletter.id);
 
       expect(deleteRecord).toHaveBeenCalledWith(newsletter.id, user.id);
@@ -164,47 +172,28 @@ describe('sendNewsletter', () => {
   describe('given invalid email', () => {
     it('returns invalid email error', async () => {
       const user = { id: '1' };
-      const requestBody = {
+      const params = {
         email: 'devnimblehq.co',
         ids: ['1'],
       };
 
       withAuth.mockImplementation((callback) => callback(user));
 
-      await expect(sendNewsletter(requestBody)).rejects.toThrow(
-        'Invalid email'
-      );
+      await expect(sendNewsletter(params)).rejects.toThrow('Invalid email');
     });
 
     describe('given valid email', () => {
       describe('given empty newsletter ids', () => {
         it('returns invalid newsletter error', async () => {
           const user = { id: '1' };
-          const requestBody = {
+          const params = {
             email: 'dev@nimblehq.co',
             ids: [],
           };
 
           withAuth.mockImplementation((callback) => callback(user));
 
-          await expect(sendNewsletter(requestBody)).rejects.toThrow(
-            'Invalid newsletters'
-          );
-        });
-      });
-
-      describe('given invalid newsletter ids', () => {
-        it('returns invalid newsletter error', async () => {
-          const user = { id: '1' };
-          const requestBody = {
-            email: 'dev@nimblehq.co',
-            ids: ['1'],
-          };
-
-          withAuth.mockImplementation((callback) => callback(user));
-          countNewsletters.mockResolvedValue(0);
-
-          await expect(sendNewsletter(requestBody)).rejects.toThrow(
+          await expect(sendNewsletter(params)).rejects.toThrow(
             'Invalid newsletters'
           );
         });
@@ -213,22 +202,26 @@ describe('sendNewsletter', () => {
       describe('given valid newsletter ids', () => {
         it('triggers sendMail', async () => {
           const user = { id: '1', name: 'Dave' };
-          const requestBody = {
+          const params = {
             email: 'dev@nimblehq.co',
             ids: ['1'],
           };
 
           withAuth.mockImplementation((callback) => callback(user));
-          countNewsletters.mockResolvedValue(requestBody.ids.length);
 
-          await sendNewsletter(requestBody);
+          await sendNewsletter(params);
 
-          expect(sendMailQueue.add).toHaveBeenCalledWith('sendMail', {
-            ids: requestBody.ids,
-            to: requestBody.email,
-            senderId: user.id,
-            senderName: user.name,
-          });
+          expect(sendMailQueue.addBulk).toHaveBeenCalledWith([
+            {
+              data: {
+                id: params.ids[0],
+                to: params.email,
+                senderId: user.id,
+                senderName: user.name,
+              },
+              name: 'sendMail',
+            },
+          ]);
         });
       });
     });

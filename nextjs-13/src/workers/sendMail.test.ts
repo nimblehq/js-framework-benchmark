@@ -3,7 +3,7 @@
  */
 import { createTransport } from 'nodemailer';
 
-import { findNewsletter } from 'repositories/newsletter.repository';
+import { findNewsletterByUser } from 'repositories/newsletter.repository';
 
 import sendMail from './sendMail';
 
@@ -19,7 +19,7 @@ describe('sendMail', () => {
     };
     const newsLetterName = 'Vision Pro release';
 
-    findNewsletter.mockResolvedValue([
+    findNewsletterByUser.mockResolvedValue([
       {
         id: data.ids[0],
         name: newsLetterName,

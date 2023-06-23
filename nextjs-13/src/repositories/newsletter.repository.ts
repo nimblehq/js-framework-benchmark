@@ -24,10 +24,14 @@ const queryNewsletterList = async (userId: string) => {
 const findNewsletter = async (id: string) =>
   dbClient.newsletter.findUnique({ where: { id: id } });
 
+const findNewsletterByUser = async (id: string, userId: string) =>
+  dbClient.newsletter.findMany({ where: { id, userId } });
+
 export {
   createNewsletter,
   queryNewsletterList,
   findNewsletter,
   deleteNewsletter,
   updateNewsletter,
+  findNewsletterByUser,
 };

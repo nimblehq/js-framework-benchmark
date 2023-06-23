@@ -5,6 +5,7 @@ import {
   createNewsletter,
   deleteNewsletter,
   findNewsletter,
+  findNewsletterByUser,
   queryNewsletterList,
   updateNewsletter,
 } from './newsletter.repository';
@@ -109,6 +110,42 @@ describe('Newsletter Respository', () => {
         await expect(
           findNewsletter(newsletterAttributes.id)
         ).resolves.toBeNull();
+      });
+    });
+  });
+
+  describe('findNewsletterByUser', () => {
+    describe('given there is a matching newsletter', () => {
+      it('returns a newsletter', async () => {
+        const userId = '1';
+
+        const newsletterAttributes = {
+          id: '1',
+          userId: userId,
+        };
+        const newsletter = { ...newsletterFactory, ...newsletterAttributes };
+
+        dbClientMock.newsletter.findMany.mockResolvedValue([newsletter]);
+
+        await expect(
+          findNewsletterByUser(newsletterAttributes.id, userId)
+        ).resolves.toEqual([newsletter]);
+      });
+    });
+
+    describe('given there is NO matching newsletter', () => {
+      it('returns null', async () => {
+        const userId = '1';
+
+        const newsletterAttributes = {
+          id: '1',
+          userId: userId,
+        };
+        dbClientMock.newsletter.findMany.mockResolvedValue([]);
+
+        await expect(
+          findNewsletterByUser(newsletterAttributes.id, userId)
+        ).resolves.toEqual([]);
       });
     });
   });

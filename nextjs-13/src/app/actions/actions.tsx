@@ -1,11 +1,11 @@
-import RequestError from 'lib/request/error';
-import { invalidParamsMessage } from 'lib/request/getInvalidParamsError';
+import { StatusCodes } from 'http-status-codes';
+
+import RequestError, { errorMessageList } from 'lib/request/error';
 import withAuth from 'lib/withAuth/withAuth';
 import {
   deleteNewsletter as deleteRecord,
   updateNewsletter as updateRecord,
   createNewsletter as createRecord,
-  countNewsletters as countRecords,
 } from 'repositories/newsletter.repository';
 import { sendMailQueue } from 'workers/email.worker';
 
@@ -13,7 +13,7 @@ export async function deleteNewsletter(id: string) {
   return withAuth(async (currentUser) => {
     const result = await deleteRecord(id, currentUser.id);
 
-    if (result.count === 0) {
+    if (!result.count) {
       throw new RequestError({ message: 'Newsletter could not be deleted' });
     }
   });
@@ -41,7 +41,7 @@ export async function updateNewsletter({
       data,
     });
 
-    if (result.count === 0) {
+    if (!result.count) {
       throw new RequestError({ message: 'Newsletter could not be updated' });
     }
   });
@@ -64,12 +64,14 @@ export async function createNewsletter({
 
       await createRecord(attributes);
     } catch (err) {
-      throw new RequestError({ message: invalidParamsMessage });
+      throw new RequestError({
+        message: errorMessageList[StatusCodes.UNPROCESSABLE_ENTITY],
+      });
     }
   });
 }
 
-const validateEmail = (email) => {
+const validateEmail = (email: string) => {
   return String(email)
     .toLowerCase()
     .match(
@@ -89,21 +91,22 @@ export async function sendNewsletter({
       throw new RequestError({ message: 'Invalid email' });
     }
 
-    if (ids.length === 0) {
+    if (!ids.length) {
       throw new RequestError({ message: 'Invalid newsletters' });
     }
 
-    const newslettersCount = await countRecords(currentUser.id, ids);
-    const allIdsAreValid = newslettersCount === ids.length;
-    if (!allIdsAreValid) {
-      throw new RequestError({ message: 'Invalid newsletters' });
-    }
-
-    sendMailQueue.add('sendMail', {
-      ids,
-      to: email,
-      senderId: currentUser.id,
-      senderName: currentUser.name,
-    });
+    sendMailQueue.addBulk(
+      ids.map((id) => {
+        return {
+          name: 'sendMail',
+          data: {
+            id,
+            to: email,
+            senderId: currentUser.id,
+            senderName: currentUser.name,
+          },
+        };
+      })
+    );
   });
 }
