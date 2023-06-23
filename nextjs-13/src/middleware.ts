@@ -5,6 +5,10 @@ export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
 
+const isPublicPath = (url: string) => {
+  return url.startsWith('/newsletter') || url.startsWith('/auth');
+};
+
 const middleware = async (req) => {
   const user = await getToken({ req });
   const url = req.nextUrl.pathname;
@@ -13,11 +17,7 @@ const middleware = async (req) => {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
-  if (
-    user === null &&
-    !url.startsWith('/auth') &&
-    !url.startsWith('/newsletter')
-  ) {
+  if (!user && !isPublicPath(url)) {
     return NextResponse.redirect(new URL('/auth/sign-in', req.url));
   }
 };
