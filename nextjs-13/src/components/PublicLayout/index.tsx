@@ -11,7 +11,7 @@ export default function PublicLayout({
   const { status } = useSession();
 
   return (
-    <div className="public" data-testid="public-newsletter">
+    <div className="layout-public" data-testid="public-newsletter">
       {status === 'unauthenticated' && (
         <div className="banner" data-testid="banner">
           <Link href="auth/sign-in">Sign up now</Link> to create your own
