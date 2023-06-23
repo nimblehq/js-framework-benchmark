@@ -4,7 +4,6 @@ import { useSession } from 'next-auth/react';
 import PublicLayout from './';
 
 jest.mock('next-auth/react');
-jest.mock('next/navigation');
 
 describe('PublicLayout', () => {
   it('renders the component', () => {
