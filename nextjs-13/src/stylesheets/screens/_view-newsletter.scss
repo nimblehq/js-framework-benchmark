@@ -1,0 +1,11 @@
+.view-newsletter {
+  .newsletter {
+    margin-top: var(--size-8);
+  }
+
+  .content {
+    margin-top: var(--size-5);
+    white-space: pre-wrap;
+    word-break: keep-all;
+  }
+}

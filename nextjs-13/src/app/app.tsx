@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { ApiMeResponse } from './api/v1/me/route';
 import AppLayout from '../components/AppLayout';
 import AuthLayout from '../components/AuthLayout';
+import PublicLayout from '../components/PublicLayout';
 import '../stylesheets/application.scss';
 import {
   UserState,
@@ -43,6 +44,10 @@ export default function RootLayout({
 
   if (pathname.includes('/sign-in')) {
     return <AuthLayout>{children}</AuthLayout>;
+  }
+
+  if (pathname.includes('/newsletter')) {
+    return <PublicLayout>{children}</PublicLayout>;
   }
 
   return (
