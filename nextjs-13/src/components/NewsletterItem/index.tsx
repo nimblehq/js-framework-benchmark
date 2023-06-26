@@ -1,6 +1,8 @@
+import { useTransition } from 'react';
+
 import Image from 'next/image';
 
-import requestManager from 'lib/request/manager';
+import { deleteNewsletter } from 'app/actions/newsletter';
 import showAlert from 'lib/showAlert';
 
 interface Props {
@@ -17,9 +19,7 @@ const NewsletterItem = ({
   refreshRecordListCallback,
   openUpdateModal,
 }: Props) => {
-  const handleUpdate = async () => {
-    openUpdateModal(item);
-  };
+  const startTransition = useTransition()[1];
 
   const handleDelete = async () => {
     showAlert(
@@ -28,17 +28,23 @@ const NewsletterItem = ({
       'warning'
     ).then(async (result) => {
       if (result.isConfirmed) {
-        try {
-          showAlert('Deleting', 'Deleting...');
-          await requestManager('DELETE', `v1/newsletter/${item.id}`);
-          showAlert('Deleted!', 'Your newsletter has been deleted.', 'success');
+        startTransition(async () => {
+          try {
+            showAlert('Deleting', 'Deleting...');
+            await deleteNewsletter(item.id);
+            showAlert('Deleted!', 'Your file has been deleted.', 'success');
 
-          refreshRecordListCallback();
-        } catch (error) {
-          showAlert('Something went wrong.', error.message, 'error');
-        }
+            refreshRecordListCallback();
+          } catch (error) {
+            showAlert('Something went wrong.', error.message, 'error');
+          }
+        });
       }
     });
+  };
+
+  const handleUpdate = async () => {
+    openUpdateModal(item);
   };
 
   return (

@@ -8,12 +8,17 @@ import requestManager from 'lib/request/manager';
 import Home from './page';
 
 jest.mock('next-auth/react');
-jest.mock('next/navigation');
 jest.mock('lib/request/manager');
 
 jest.mock('react-spinners', () => ({
   ClipLoader: () => <div data-testid="clip-loader">Loading...</div>,
 }));
+jest.mock('@components/NewsletterModal', () => {
+  return jest.fn(() => <div></div>);
+});
+jest.mock('@components/ListNewsletter', () => {
+  return jest.fn(() => <div data-testid="list-newsletter"></div>);
+});
 
 describe('Home', () => {
   beforeEach(() => {

@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { StatusCodes } from 'http-status-codes';
 
-import { errorMessageList } from 'lib/request/error';
-import requestManager from 'lib/request/manager';
+import { createNewsletter, updateNewsletter } from 'app/actions/newsletter';
+import RequestError, { errorMessageList } from 'lib/request/error';
 
 import NewsletterModal, { Props } from './index';
 
@@ -16,7 +16,6 @@ jest.mock('react-toastify', () => ({
   },
   ToastContainer: jest.fn(),
 }));
-
 jest.mock('lib/request/manager', () => jest.fn());
 
 // refs: https://github.com/Andarist/react-textarea-autosize#how-to-test-it-with-jest-and-react-test-renderer-if-you-need-ref
@@ -30,9 +29,12 @@ jest.mock('react-textarea-autosize', () => {
       value={props.value}
     />
   ));
-
   return TextareaAutosizeMock;
 });
+jest.mock('app/actions/newsletter', () => ({
+  createNewsletter: jest.fn(),
+  updateNewsletter: jest.fn(),
+}));
 
 type OmittableProps = Partial<Props>;
 
@@ -85,6 +87,7 @@ describe('NewsletterModal', () => {
     render(<NewsletterModalWrapper />);
 
     const nameInput = screen.getByLabelText('Name');
+
     fireEvent.change(nameInput, { target: { value: 'Test Name' } });
 
     expect(nameInput.value).toBe('Test Name');
@@ -94,6 +97,7 @@ describe('NewsletterModal', () => {
     render(<NewsletterModalWrapper />);
 
     const contentTextarea = screen.getByLabelText('Content');
+
     fireEvent.change(contentTextarea, { target: { value: 'Test Content' } });
 
     expect(contentTextarea.value).toBe('Test Content');
@@ -105,6 +109,7 @@ describe('NewsletterModal', () => {
         render(<NewsletterModalWrapper formAction="create" />);
 
         const titleElement = screen.getByTestId('title');
+
         expect(titleElement).toBeInTheDocument();
         expect(titleElement).toHaveTextContent('Create your newsletter');
       });
@@ -113,6 +118,7 @@ describe('NewsletterModal', () => {
         render(<NewsletterModalWrapper formAction="create" />);
 
         const titleElement = screen.getByTestId('btn-submit');
+
         expect(titleElement).toBeInTheDocument();
         expect(titleElement).toHaveTextContent('Create');
       });
@@ -140,8 +146,9 @@ describe('NewsletterModal', () => {
         fireEvent.submit(createButton);
 
         await waitFor(() => {
-          expect(requestManager).toHaveBeenCalledWith('POST', 'v1/newsletter', {
-            data: { name: 'Test Name', content: 'Test Content' },
+          expect(createNewsletter).toHaveBeenCalledWith({
+            name: 'Test Name',
+            content: 'Test Content',
           });
         });
         await waitFor(() => {
@@ -168,6 +175,7 @@ describe('NewsletterModal', () => {
         render(<NewsletterModalWrapper formAction="update" />);
 
         const titleElement = screen.getByTestId('title');
+
         expect(titleElement).toBeInTheDocument();
         expect(titleElement).toHaveTextContent('Update your newsletter');
       });
@@ -176,6 +184,7 @@ describe('NewsletterModal', () => {
         render(<NewsletterModalWrapper formAction="update" />);
 
         const titleElement = screen.getByTestId('btn-submit');
+
         expect(titleElement).toBeInTheDocument();
         expect(titleElement).toHaveTextContent('Update');
       });
@@ -202,6 +211,7 @@ describe('NewsletterModal', () => {
         const contentTextarea = screen.getByLabelText('Content');
         const updateButton = screen.getByText('Update');
         const newData = {
+          id: currentNewsletter.id,
           name: 'Old name',
           content: 'Old content',
         };
@@ -213,13 +223,7 @@ describe('NewsletterModal', () => {
         fireEvent.submit(updateButton);
 
         await waitFor(() => {
-          expect(requestManager).toHaveBeenCalledWith(
-            'PUT',
-            `v1/newsletter/${currentNewsletter.id}`,
-            {
-              data: newData,
-            }
-          );
+          expect(updateNewsletter).toHaveBeenCalledWith(newData);
         });
         await waitFor(() => {
           expect(onAfterCloseCallback).toHaveBeenCalled();
@@ -242,9 +246,11 @@ describe('NewsletterModal', () => {
   });
 
   it('handles form submission error', async () => {
-    requestManager.mockRejectedValue(
-      new Error(errorMessageList[StatusCodes.UNPROCESSABLE_ENTITY])
-    );
+    createNewsletter.mockImplementation(() => {
+      throw new RequestError({
+        message: errorMessageList[StatusCodes.UNPROCESSABLE_ENTITY],
+      });
+    });
 
     render(<NewsletterModalWrapper formAction="create" />);
 

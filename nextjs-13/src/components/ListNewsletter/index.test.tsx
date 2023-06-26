@@ -3,6 +3,12 @@ import React from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
 
 import ListNewsletter from './index';
+jest.mock('@components/NewsletterItem', () => {
+  const NewsletterItem = ({ item }: { item: { name: string } }) => {
+    return <div>{item.name}</div>;
+  };
+  return NewsletterItem;
+});
 
 describe('ListNewsletter', () => {
   it('renders the component', async () => {

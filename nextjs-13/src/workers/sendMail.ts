@@ -3,12 +3,12 @@ import fs from 'fs';
 import Handlebars from 'handlebars';
 import { createTransport } from 'nodemailer';
 
-import { findNewsletter } from 'repositories/newsletter.repository';
+import { findNewsletterByUser } from 'repositories/newsletter.repository';
 
 const sendMail = async (job) => {
   const { id, to, senderId, senderName } = job.data;
 
-  const newsletter = (await findNewsletter(senderId, id))[0];
+  const newsletter = (await findNewsletterByUser(id, senderId))[0];
   if (!newsletter) return;
 
   const source = fs.readFileSync('src/mailers/newsletterInvite.hbs', 'utf8');

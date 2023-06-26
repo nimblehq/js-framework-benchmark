@@ -1,12 +1,18 @@
 'use client';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+  useTransition,
+} from 'react';
 import Modal from 'react-modal';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import 'react-toastify/dist/ReactToastify.css';
 import ClipLoader from 'react-spinners/ClipLoader';
 
-import requestManager from 'lib/request/manager';
+import { createNewsletter, updateNewsletter } from 'app/actions/newsletter';
 import toast from 'lib/toast/makeToast';
 
 const customStyles = {
@@ -44,6 +50,7 @@ const NewsletterModal = ({
 }: Props) => {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
+  const startTransition = useTransition()[1];
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -66,27 +73,22 @@ const NewsletterModal = ({
     event.preventDefault();
     setIsLoading(true);
 
-    try {
-      const method = formAction === 'create' ? 'POST' : 'PUT';
-      const url =
-        formAction === 'create'
-          ? 'v1/newsletter'
-          : `v1/newsletter/${currentNewsletter?.id}`;
+    startTransition(async () => {
+      try {
+        if (formAction === 'create') {
+          await createNewsletter({ name, content });
+        } else {
+          await updateNewsletter({ id: currentNewsletter?.id, name, content });
+        }
 
-      await requestManager(method, url, {
-        data: {
-          name,
-          content,
-        },
-      });
-
-      onRequestClose();
-      setIsLoading(false);
-      toast(`${action} newsletter success!`, 'success');
-    } catch (error) {
-      setIsLoading(false);
-      toast(error.message, 'error');
-    }
+        setIsLoading(false);
+        toast(`${action} newsletter success!`, 'success');
+        onRequestClose();
+      } catch (error) {
+        setIsLoading(false);
+        toast(error.message, 'error');
+      }
+    });
   };
 
   return (

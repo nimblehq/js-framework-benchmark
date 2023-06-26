@@ -31,7 +31,15 @@ export const authOptions: NextAuthOptions = {
       if (account) {
         token.userId = account.id;
       }
+
       return Promise.resolve(token);
+    },
+    async session({ session, token }) {
+      if (token?.userId) {
+        session.user.id = token.userId;
+      }
+
+      return session;
     },
   },
 };
