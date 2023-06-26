@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { HttpCode, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getDashboard(): string {
-    return 'Nest Newsletter!';
-  }
+  @HttpCode(200)
+  getHealth() {}
 }
